@@ -3,6 +3,9 @@ logs
 *.log
 .data
 .logs
+.db/order/*.json
+.db/token/*.json
+.db/customer/*.json
 
 # Dependency directories
 node_modules/
