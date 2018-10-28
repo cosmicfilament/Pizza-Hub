@@ -1,12 +1,12 @@
 'use strict';
 /*eslint no-useless-escape: "off"*/
 
-/**
-    * @file customer class module basic user or customer object
-    * @module Customer class and enumerations
-    * @description encapsulates customer functionality
-    * @exports Customer, CUST_ENUMS
-*/
+  /**
+  * @file customer class module basic user or customer object
+  * @module Customer class and enumerations
+  * @description encapsulates customer functionality
+  * @exports Customer, CUST_ENUMS
+  */
 
 const helpers = require('./../utils/helpers');
 const config = require('./../lib/config');
@@ -26,7 +26,7 @@ const CUST_ENUMS = {
      * @classdesc Encapsulates what it is to be a customer
  */
 class Customer {
-    constructor(firstName = '', lastName = '', email = '', password = '', phone = '', address = '') {
+constructor(firstName = '', lastName = '', email = '', password = '', phone = '', address = '') {
         this.init(firstName, lastName, email, password, phone, address);
     }
 
@@ -52,7 +52,7 @@ class Customer {
      */
     static clone(obj) {
 
-        if (null === obj || obj === 'undefined') {
+if (null === obj || obj === 'undefined') {
             return obj;
         }
         const newCust = new Customer();
@@ -70,15 +70,15 @@ class Customer {
          * @param clear text password
      */
     static createPasswordHash(pwd) {
-        return crypto.createHmac('sha256', config.hashingSecret).update(pwd).digest('hex');
+return crypto.createHmac('sha256', config.hashingSecret).update(pwd).digest('hex');
     }
     /**
         * @summary validateFirstName
         * @description Customer validateFirstName method
      */
     validateFirstName() {
-        if (!helpers.validateString(this.firstName, CUST_ENUMS.MAX_NAME_STRING, '<=')) {
-            return 'firstName';
+if (!helpers.validateString(this.firstName, CUST_ENUMS.MAX_NAME_STRING, '<=')) {
+return 'firstName';
         }
         return true;
     }
@@ -87,8 +87,8 @@ class Customer {
         * @description Customer validateLastName method
      */
     validateLastName() {
-        if (!helpers.validateString(this.lastName, CUST_ENUMS.MAX_NAME_STRING, '<=')) {
-            return 'lastName';
+if (!helpers.validateString(this.lastName, CUST_ENUMS.MAX_NAME_STRING, '<=')) {
+return 'lastName';
         }
         return true;
     }
@@ -100,9 +100,9 @@ class Customer {
      */
     validateEmail() {
 
-        const err = 'email validation failed';
+const err = 'email validation failed';
 
-        if (!helpers.validateString(this.email, CUST_ENUMS.MAX_EMAIL_LENGTH, '<=')) {
+if (!helpers.validateString(this.email, CUST_ENUMS.MAX_EMAIL_LENGTH, '<=')) {
             return err;
         }
 
@@ -111,93 +111,93 @@ class Customer {
         // http://fightingforalostcause.net/misc/2006/compare-email-regex.php
         // http://thedailywtf.com/Articles/Validating_Email_Addresses.aspx
         // http://stackoverflow.com/questions/201323/what-is-the-best-regular-expression-for-validating-email-addresses/201378#201378
-        const tester = /^[-!#$%&'*+\/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
+const tester = /^[-!#$%&'*+\/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
 
-        const valid = tester.test(this.email);
-        if (!valid) {
-            return err;
-        }
-        // Further checking of some things regex can't handle
-        const parts = this.email.split('@');
-        if (parts[0].length > 64) {
-            return err;
-        }
-        const domainParts = parts[1].split('.');
-        const yuSoLong = domainParts.some((part) => { return part.length > 63; });
-        if (yuSoLong) {
-            return err;
-        }
-        return true;
-    }
-    /**
+const valid = tester.test(this.email);
+if (!valid) {
+  return err;
+}
+// Further checking of some things regex can't handle
+  const parts = this.email.split('@');
+if (parts[0].length > 64) {
+  return err;
+}
+const domainParts = parts[1].split('.');
+const yuSoLong = domainParts.some((part) => { return part.length > 63; });
+if (yuSoLong) {
+  return err;
+}
+return true;
+}
+/**
         * @summary validatePhone
         * @description Customer validatePhone method
      */
-    validatePhone() {
-        if (!helpers.validateString(this.phone, CUST_ENUMS.PHONE_NUMBER_LENGTH, '=')) {
-            return 'phone';
-        }
-        return true;
-    }
-    /**
+  validatePhone() {
+  if (!helpers.validateString(this.phone, CUST_ENUMS.PHONE_NUMBER_LENGTH, '=')) {
+    return 'phone';
+  }
+  return true;
+}
+/**
          * @summary validatePassword
          * @description validates the password min length only. works on the hashed or clear text password
          * @todo rewrite this so that if the pwd i clear text we can do better validation
      */
-    validatePassword() {
-        if (!helpers.validateString(this.password, CUST_ENUMS.MINIMUM_PASSWORD_LENGTH, '>=')) {
-            return 'password';
-        }
-        return true;
-    }
-    /**
+  validatePassword() {
+  if (!helpers.validateString(this.password, CUST_ENUMS.MINIMUM_PASSWORD_LENGTH, '>=')) {
+    return 'password';
+  }
+  return true;
+}
+/**
         * @summary validateAddress method
         * @description Customer validateAddress method
      */
-    validateAddress() {
-        if (!helpers.validateString(this.address, CUST_ENUMS.MAX_ADDRESS_LENGTH, '<=')) {
-            return 'address';
-        }
-        return true;
-    }
-    /**
+  validateAddress() {
+  if (!helpers.validateString(this.address, CUST_ENUMS.MAX_ADDRESS_LENGTH, '<=')) {
+    return 'address';
+  }
+  return true;
+}
+/**
          * @summary validateCustomer
          * @description method to validate the complete customer object using the above helper methods
          * @returns true if successfull or the name of the first property to fail on error
          * @throws nothing
      */
-    validateCustomer() {
+  validateCustomer() {
 
-        let result = this.validateFirstName();
-        if (result !== true) {
-            return result;
-        }
-        result = this.validateLastName();
-        if (result !== true) {
-            return result;
-        }
-        result = this.validateEmail();
-        if (result !== true) {
-            return result;
-        }
-        result = this.validatePhone();
-        if (result !== true) {
-            return result;
-        }
-        result = this.validatePassword();
-        if (result !== true) {
-            return result;
-        }
-        result = this.validateAddress();
-        if (result !== true) {
-            return result;
-        }
-        return true;
-    }
+  let result = this.validateFirstName();
+  if (result !== true) {
+    return result;
+  }
+  result = this.validateLastName();
+  if (result !== true) {
+    return result;
+  }
+  result = this.validateEmail();
+  if (result !== true) {
+    return result;
+  }
+  result = this.validatePhone();
+  if (result !== true) {
+    return result;
+  }
+  result = this.validatePassword();
+  if (result !== true) {
+    return result;
+  }
+  result = this.validateAddress();
+  if (result !== true) {
+    return result;
+  }
+  return true;
+}
 
 }
 
 module.exports = {
-    Customer,
-    CUST_ENUMS
-};
+  Customer,
+  CUST_ENUMS
+  };

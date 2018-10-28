@@ -7,10 +7,10 @@
 * @description entry point for the node server app
 */
 
-
 const server = require('./lib/server');
 const workers = require('./lib/workers');
 const helpers = require('./utils/helpers');
+const config = require('./lib/config');
 const fs = require('fs');
 
 // Declare the app
@@ -21,19 +21,19 @@ app.menu = [];
 
 // Init function
 app.init = () => {
-    // read in the menu and if it fails no use starting up the server
-    const leBuffier = fs.readFileSync(`${__dirname}/.db/menu/menu.json`);
-    if (!helpers.validateObject(leBuffier)) {
-        return helpers.log('red', 'Aborting server start. Could not parse the menu.');
-    }
-    app.menu = JSON.parse(leBuffier);
+  // read in the menu and if it fails no use starting up the server
+  const leBuffier = fs.readFileSync(`${__dirname}/.db/menu/${config.menuFile}`);
+  if (!helpers.validateObject(leBuffier)) {
+    return helpers.log('red', 'Aborting server start. Could not parse the menu.');
+  }
+  app.menu = JSON.parse(leBuffier);
 
-    // Start the server
-    server.init();
+  // Start the server
+  server.init();
 
-    // Workers are going to handle all of the checks
-    // Start the workers
-    workers.init();
+  // Workers are going to handle all of the checks
+  // Start the workers
+  workers.init();
 };
 
 // Self executing

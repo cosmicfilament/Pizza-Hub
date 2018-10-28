@@ -1,10 +1,10 @@
 'use strict';
 
 /**
-    * @file various helper functions
-    * @module helpers.js
-    * @description various helper functions that are needed across modules
-    *	@exports helpers
+  * @file various helper functions
+  * @module helpers.js
+  * @description various helper functions that are needed across modules
+  *	@exports helpers
 */
 
 // Container for all the helpers
@@ -47,10 +47,10 @@ helpers.validateBool = (value = false) => { //boolean
 // equ: boolean if true len = str.len else str greater than or equal to len
 // returns false if validation fails
 /**
-    * @summary validateString
-    * @description validates is a string and is empty and within length criteria
-    * @param str, len and comparator
-    * @returns string or false on fail
+  * @summary validateString
+  * @description validates is a string and is empty and within length criteria
+  * @param str, len and comparator
+  * @returns string or false on fail
 */
 helpers.validateString = (str = '', len = 20, comparator = '<=') => {
 
@@ -101,10 +101,10 @@ helpers.validateArray = (obj = '') => { // array object or false
 };
 // check if object is in fact an  object and that it is not empty
 /**
-    * @summary validateObject
-    * @description validates is an object and has properties
-    * @param object
-    * @returns object or false
+  * @summary validateObject
+  * @description validates is an object and has properties
+  * @param object
+  * @returns object or false
 */
 helpers.validateObject = (obj = '') => { //object or false
   if (typeof (obj) === 'object' && obj !== null && Object.keys(obj).length > 0) {
@@ -147,10 +147,15 @@ helpers.promiseError = (statusCode, message) => {
     'message': message
   };
 };
-
+/**
+  * @summary log
+  * @description writes in color to the console in staqing mode only
+  * @param statusCode and message
+  * @returns object as JSON string
+*/
 helpers.log = (color, msg) => {
 
-  if (config.envName === 'staging') {
+  if (config.debug === 'true') {
     switch (color) {
       case 'red':
         color = '\x1b[31m%s';
