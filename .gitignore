@@ -1,6 +1,6 @@
 # Logs
-.log/*.log
-.log/*.gz.b64
+*.log
+*.gz.b64
 # database
 .db/basket/**
 .db/customer/**
@@ -16,6 +16,6 @@ node_modules/
 # dotenv environment variables file
 .env
 # config file
-lib/config.js
+config.js
 # ssl cert files
-https/*.pem
+*.pem
