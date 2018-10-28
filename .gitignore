@@ -19,3 +19,5 @@ node_modules/
 **/config.js
 # ssl cert files
 **/*.pem
+# the package.json file for this project only
+package.json
