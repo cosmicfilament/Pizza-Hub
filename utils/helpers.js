@@ -1,35 +1,21 @@
 'use strict';
 
-/*
-*
- * Helpers functions for the handler modules
- *
- */
-
-// Dependencies
-const config = require('./config');
-const crypto = require('crypto');
+/**
+    * @file various helper functions
+    * @module helpers.js
+    * @description various helper functions that are needed across modules
+    *	@exports helpers
+*/
 
 // Container for all the helpers
 const helpers = {};
 
-helpers.TOKEN_STRING_LENGTH = 10;
-
-// constants used in this module and the handler modules
-
-Number.prototype.between = function (a, b, inclusive = true) { // boolean
-  const min = Math.min(a, b);
-  const max = Math.max(a, b);
-  return inclusive ? this >= min && this <= max : this > min && this < max;
-};
-
-helpers.promiseError = (statusCode, message) => {
-  return {
-    'statusCode': statusCode,
-    'message': message
-  };
-};
-
+/**
+    * @summary parseJsonToObject
+    * @param string
+    * @returns object
+    * @throws nothing
+*/
 // Parse a JSON string to an object in all cases, without throwing
 helpers.parseJsonToObject = (str = '') => { // string or false
   // gets rid of nuisance error output when there is no JSON data
@@ -37,20 +23,17 @@ helpers.parseJsonToObject = (str = '') => { // string or false
 
   try {
     return JSON.parse(str);
-  } catch (err) {
+  }
+  catch (err) {
     return {};
   }
 };
-
-// Create a SHA256 hash for password creation
-helpers.hash = (str = '', len) => { // string or false
-  if (typeof (str) == 'string' && str.length >= len) {
-    return crypto.createHmac('sha256', config.hashingSecret).update(str).digest('hex');
-  } else {
-    return false;
-  }
-};
-
+/**
+    * @summary validateBool
+    * @description validate is a boolean
+    * @param value
+    * @returns value or false on fail
+*/
 // validate boolean request inputs
 // value: boolean
 // returns result or false if value != boolean
@@ -63,6 +46,12 @@ helpers.validateBool = (value = false) => { //boolean
 // len: length. minimum length of the string if equ is false or exact length if equ is true
 // equ: boolean if true len = str.len else str greater than or equal to len
 // returns false if validation fails
+/**
+    * @summary validateString
+    * @description validates is a string and is empty and within length criteria
+    * @param str, len and comparator
+    * @returns string or false on fail
+*/
 helpers.validateString = (str = '', len = 20, comparator = '<=') => {
 
   // if it isn't a string why waste time
@@ -86,44 +75,24 @@ helpers.validateString = (str = '', len = 20, comparator = '<=') => {
       return false;
   }
 };
-
-// validate password input
-// password must be greater than or equal to 8 characters long
-// need to add more criteria to this function
-helpers.validatePassword = function (str = '', minLen = 8) { // string or false
-  return this.validateString(str, minLen, '>=');
-};
-
-// Create a string of random alphanumeric characters, of a given length
-// In our case we are setting string length to 20
-helpers.createRandomString = (strLength = helpers.TOKEN_STRING_LENGTH) => { // string or false
-  strLength = typeof (strLength) == 'number' && strLength >= helpers.TOKEN_STRING_LENGTH ? strLength : false;
-  if (strLength) {
-    // Define all the possible characters that could go into a string
-    const possibleCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-    // Start the final string
-    let str = '';
-    for (let i = 1; i <= strLength; i++) {
-      // Get a random charactert from the possibleCharacters string
-      let randomCharacter = possibleCharacters.charAt(Math.floor(Math.random() * possibleCharacters.length));
-      // Append this character to the string
-      str += randomCharacter;
-    }
-    // Return the final string
-    return str;
-  } else {
-    return false;
-  }
-};
-
+/**
+    * @summary validateStringArray
+    * @description checks for existance of a string in an array
+    * @param string, array
+    * @returns string on match or false
+*/
 helpers.validateStringArray = (str = '', arr = []) => { // string or false
   if (typeof (str) === 'string' && arr.indexOf(str.trim()) > -1) {
     return str.trim();
   }
-  return false; 8
+  return false;
 };
-
+/**
+    * @summary validateArray
+    * @description validates is an array and length
+    * @param object
+    * @returns the array of false
+*/
 helpers.validateArray = (obj = '') => { // array object or false
   if (typeof (obj) === 'object' && obj instanceof Array && obj.length > 0) {
     return obj;
@@ -131,27 +100,57 @@ helpers.validateArray = (obj = '') => { // array object or false
   return false;
 };
 // check if object is in fact an  object and that it is not empty
+/**
+    * @summary validateObject
+    * @description validates is an object and has properties
+    * @param object
+    * @returns object or false
+*/
 helpers.validateObject = (obj = '') => { //object or false
   if (typeof (obj) === 'object' && obj !== null && Object.keys(obj).length > 0) {
     return obj;
   }
   return false;
 };
-
-helpers.validateIntegerRange = (num = 0, start=0, len = 0) => { // number or false
+/**
+    * @summary between
+    * @description adds a prototype to number to check if a number is within a range
+    * @param num, num and inclusive boolean indicator
+    * @returns true or false
+*/
+Number.prototype.between = function (a, b, inclusive = true) { // boolean
+  const min = Math.min(a, b);
+  const max = Math.max(a, b);
+  return inclusive ? this >= min && this <= max : this > min && this < max;
+};
+/**
+    * @summary validateIntegerRange
+    * @description validates is a number and within a range
+    * @param number, start number and length
+    * @returns number or false
+*/
+helpers.validateIntegerRange = (num = 0, start = 0, len = 0) => { // number or false
   if (typeof (num) === 'number' && num % 1 === 0 && num.between(start, len)) {
     return num;
   }
   return false;
 };
-
-helpers.validateEmail = (str = '', len) => {
-  return helpers.validateString(str, len, '<=');
+/**
+    * @summary promiseError
+    * @description creates a json string for returning errors to the request handler in server.js
+    * @param statusCode and message
+    * @returns object as JSON string
+*/
+helpers.promiseError = (statusCode, message) => {
+  return {
+    'statusCode': statusCode,
+    'message': message
+  };
 };
 
 helpers.log = (color, msg) => {
-  if (config.envName === 'staging') {
 
+  if (config.envName === 'staging') {
     switch (color) {
       case 'red':
         color = '\x1b[31m%s';
@@ -177,8 +176,8 @@ helpers.log = (color, msg) => {
       case 'magenta':
         color = '\x1b[35m%s';
         break;
-    };
-    return console.log(color, msg);
+    }
+    console.log(color, msg);
   }
 };
 

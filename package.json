@@ -1,0 +1,22 @@
+{
+  "name": "pizza-hub",
+  "version": "1.0.0",
+  "description": "Nodejs Master Course Homework Assignment # 2",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cosmicfilament/Pizza-Hub.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cosmicfilament/Pizza-Hub/issues"
+  },
+  "homepage": "https://github.com/cosmicfilament/Pizza-Hub#readme"
+}

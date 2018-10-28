@@ -1,28 +1,17 @@
 'use strict';
 
-/*
-*
-*  Lightweight ripoff of Express
-*
+/**
+    * @file defaultHandler file that handles 404 and 405 errors
+    * @module defaultHandler.js
+    * @description  error handler functions
 */
 
 module.exports = {
-    home: () => {
-        const resObj = {
-            'content_type': 'text/html',
-            'statusCode': '200',
-            'payload': `
-            <!DOCTYPE html>
-            <html lang="en"><head>
-            <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-            <title>Welcome to Pizza Hub</title></head>
-            <body><h1>Welcome to Pizza Hub
-            </h1></body></html>
 
-                `};
-        return Promise.resolve(resObj);
-    },
+    /**
+         * @summary notAllowed
+         * @description  responds with 405 status code
+    */
     notAllowed: () => {
         const resObj = {
             'content_type': 'application/json',
@@ -31,11 +20,16 @@ module.exports = {
         };
         return Promise.resolve(resObj);
     },
+
+    /**
+         * @summary notFound function
+         * @description  responds with 404 status code
+    */
     notFound: () => {
         const resObj = {
             'content_type': 'application/json',
             'statusCode': '404',
-            'payload': JSON.stringify({ 'name': "404 - Not Found." })
+            'payload': JSON.stringify({ 'name': '404 - Not Found.' })
         };
         return Promise.resolve(resObj);
     }

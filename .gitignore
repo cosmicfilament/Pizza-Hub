@@ -1,12 +1,8 @@
 # Logs
 logs
 *.log
-.data
 .logs
-.db/order/*.json
-.db/token/*.json
-.db/customer/*.json
-
+.db
 # Dependency directories
 node_modules/
 
