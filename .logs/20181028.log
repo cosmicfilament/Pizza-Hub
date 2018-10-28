@@ -1,0 +1,98 @@
+1:49:02 AM:: Background workers have started
+1:49:02 AM:: The http server is listening on port 3000.
+1:49:02 AM:: The https server is listening on port 3001.
+1:49:02 AM:: <--------------------------------------------------------->
+1:50:38 AM:: Background workers have started
+1:50:38 AM:: The http server is listening on port 3000.
+1:50:38 AM:: The https server is listening on port 3001.
+1:50:38 AM:: <--------------------------------------------------------->
+1:51:38 AM:: Rotating logs failed with error code: TypeError: helpers.log is not a function
+1:52:08 AM:: Deleting token: 1JLf3ufViKBKpOT2xou1
+1:52:08 AM:: Deleting token: 2Y1UQGW3Vy9rNTjra1Ut
+1:52:08 AM:: Deleting token: B3rSy53AlIjfqWOISRRi
+1:52:08 AM:: Deleting token: fjW8zHNIGSwC9hyXk9ve
+1:52:08 AM:: Deleting token: FxrlAdNHkvaT7AYJovQU
+1:52:08 AM:: Deleting token: g0yqHyqfh42tqyHrlyu2
+1:52:08 AM:: Deleting token: J5e9JDrSXAzCjFJcnPFx
+1:52:08 AM:: Deleting token: Ottqewp8nX3EpzjrsvGq
+1:52:08 AM:: Deleting token: RbOUMTt478j4HFrwG1iD
+1:52:08 AM:: Deleting token: v15tJMq4qVTqzi1sYadV
+1:52:08 AM:: Deleting token: x3yfAHJZ6WYDKY9sAQhW
+1:55:26 AM:: Background workers have started
+1:55:26 AM:: The http server is listening on port 3000.
+1:55:26 AM:: The https server is listening on port 3001.
+1:55:26 AM:: <--------------------------------------------------------->
+1:55:56 AM:: Rotating logs failed with error code: TypeError: helpers.log is not a function
+1:56:37 AM:: Background workers have started
+1:56:38 AM:: The http server is listening on port 3000.
+1:56:38 AM:: The https server is listening on port 3001.
+1:56:38 AM:: <--------------------------------------------------------->
+1:57:10 AM:: Rotating logs failed with error code: TypeError: helpers.log is not a function
+1:57:23 AM:: Rotating logs failed with error code: TypeError: helpers.log is not a function
+1:57:53 AM:: Rotating logs failed with error code: TypeError: helpers.log is not a function
+1:58:40 AM:: Background workers have started
+1:58:40 AM:: The http server is listening on port 3000.
+1:58:40 AM:: The https server is listening on port 3001.
+1:58:40 AM:: <--------------------------------------------------------->
+1:58:54 AM:: Rotating logs failed with error code: TypeError: helpers.log is not a function
+2:00:58 AM:: Background workers have started
+2:00:58 AM:: The http server is listening on port 3000.
+2:00:58 AM:: The https server is listening on port 3001.
+2:00:58 AM:: <--------------------------------------------------------->
+2:01:10 AM:: Rotating logs failed with error code: TypeError: helpers.log is not a function
+2:02:41 AM:: Background workers have started
+2:02:41 AM:: The http server is listening on port 3000.
+2:02:41 AM:: The https server is listening on port 3001.
+2:02:41 AM:: <--------------------------------------------------------->
+2:02:57 AM:: Rotating logs failed with error code: TypeError: helpers.log is not a function
+2:03:27 AM:: Background workers have started
+2:03:27 AM:: The http server is listening on port 3000.
+2:03:27 AM:: The https server is listening on port 3001.
+2:03:27 AM:: <--------------------------------------------------------->
+2:03:39 AM:: Rotating logs failed with error code: TypeError: helpers.log is not a function
+2:04:26 AM:: Background workers have started
+2:04:26 AM:: The http server is listening on port 3000.
+2:04:26 AM:: The https server is listening on port 3001.
+2:04:26 AM:: <--------------------------------------------------------->
+2:04:39 AM:: Rotating logs failed with error code: TypeError: helpers.log is not a function
+2:08:42 AM:: Background workers have started
+2:08:42 AM:: The http server is listening on port 3000.
+2:08:42 AM:: The https server is listening on port 3001.
+2:08:42 AM:: <--------------------------------------------------------->
+2:08:55 AM:: Rotating logs failed with error code: TypeError: helpers.log is not a function
+2:09:08 AM:: Rotating logs failed with error code: TypeError: helpers.log is not a function
+2:19:01 AM:: Background workers have started
+2:19:01 AM:: The http server is listening on port 3000.
+2:19:01 AM:: The https server is listening on port 3001.
+2:19:01 AM:: <--------------------------------------------------------->
+2:19:16 AM:: Rotating logs failed with error code: TypeError: helpers.validateObject is not a function
+2:21:59 AM:: Background workers have started
+2:21:59 AM:: The http server is listening on port 3000.
+2:21:59 AM:: The https server is listening on port 3001.
+2:21:59 AM:: <--------------------------------------------------------->
+2:22:09 AM:: Rotating logs failed with error code: TypeError: helpers.log is not a function
+2:23:03 AM:: Background workers have started
+2:23:03 AM:: The http server is listening on port 3000.
+2:23:03 AM:: The https server is listening on port 3001.
+2:23:03 AM:: <--------------------------------------------------------->
+2:23:13 AM:: Rotating logs failed with error code: TypeError: helpers.validateArray is not a function
+2:23:45 AM:: Background workers have started
+2:23:45 AM:: The http server is listening on port 3000.
+2:23:45 AM:: The https server is listening on port 3001.
+2:23:45 AM:: <--------------------------------------------------------->
+2:25:15 AM:: Background workers have started
+2:25:15 AM:: The http server is listening on port 3000.
+2:25:15 AM:: The https server is listening on port 3001.
+2:25:15 AM:: <--------------------------------------------------------->
+2:25:25 AM:: Successfully rotated logs.
+2:25:35 AM:: Successfully rotated logs.
+2:25:45 AM:: Successfully rotated logs.
+2:25:55 AM:: Successfully rotated logs.
+2:27:01 AM:: Background workers have started
+2:27:01 AM:: The http server is listening on port 3000.
+2:27:01 AM:: The https server is listening on port 3001.
+2:27:01 AM:: <--------------------------------------------------------->
+2:27:11 AM:: Successfully rotated logs.
+2:27:21 AM:: Successfully rotated logs.
+2:27:31 AM:: Successfully rotated logs.
+2:27:41 AM:: Successfully rotated logs.
