@@ -1,0 +1,43 @@
+[
+    {
+        "title": "Pizza-Hub Menu"
+    },
+    {
+        "selection": "Pizza",
+        "choices": [
+            {
+                "desc": "8 Inch",
+                "price": "$10.00"
+            },
+            {
+                "desc": "12 Inch",
+                "price": "$14.00"
+            }
+        ]
+    },
+    {
+        "selection": "Toppings",
+        "choices": [
+            {
+                "desc": "sausage",
+                "price": "$1.50"
+            },
+            {
+                "desc": "pepperoni",
+                "price": "$1.50"
+            },
+            {
+                "desc": "peppers",
+                "price": "$1.00"
+            },
+            {
+                "desc": "onions",
+                "price": "$1.00"
+            },
+            {
+                "desc": "anchovies",
+                "price": "$1.00"
+            }
+        ]
+    }
+]
