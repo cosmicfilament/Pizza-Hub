@@ -21,3 +21,5 @@ node_modules/
 **/*.pem
 # the package.json file for this project only
 package.json
+# one off thing
+public/*.json
