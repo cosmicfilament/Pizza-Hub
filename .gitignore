@@ -16,4 +16,4 @@ node_modules/
 # dotenv environment variables file
 .env
 # config file
-config.js
+./lib/config.js

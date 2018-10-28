@@ -6,17 +6,17 @@
     * @exports Token, TOKEN_ENUMS
 */
 
-  const helpers = require('./../utils/helpers');
+const helpers = require('./../utils/helpers');
 const { CUST_ENUMS } = require('./customerModel');
 
 const TOKEN_ENUMS = {
   CHARS: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
   TOKEN_STRING_LENGTH: 20,
   // expires in 30 minutes
-    TOKEN_EXPIRY: 1000 * 60 * 30,
+  TOKEN_EXPIRY: 1000 * 60 * 30,
   // for validating the date object
-    MAX_INT: Number.MAX_SAFE_INTEGER
-  };
+  MAX_INT: Number.MAX_SAFE_INTEGER
+};
 
 /**
    * @summary Token class
@@ -24,10 +24,10 @@ const TOKEN_ENUMS = {
    * @classdesc Encapsulates what it is to be a validation Token
    * @exports Token
 */
-  class Token {
+class Token {
   constructor(id = '', phone = '') {
     // allow creation of an incomplete token, but set expiry to now
-      if (id === '' || phone === '') {
+    if (id === '' || phone === '') {
       this.id = id;
       this.phone = phone;
       this.expires = Date.now();
@@ -40,7 +40,7 @@ const TOKEN_ENUMS = {
         * @summary Token init method
         * @description initializes the Token object properties
     */
-    init(id, phone) {
+  init(id, phone) {
     this.id = id;
     this.phone = phone;
     this.expires = Date.now() + TOKEN_ENUMS.TOKEN_EXPIRY;
@@ -53,15 +53,15 @@ const TOKEN_ENUMS = {
         * @returns a new token object
         * @throws nothing
      */
-    static clone(obj) {
+  static clone(obj) {
 
     if (null === obj || obj === 'undefined') {
       return obj;
     }
     // sets expiry to now, which will be overriddent during the clone if obj has that property
-      const newToken = new Token();
+    const newToken = new Token();
     // deep copy of token, but leave out the customer password if somehow it is included
-      for (let prop in obj) {
+    for (let prop in obj) {
       if (obj.hasOwnProperty(prop) && prop !== 'password') {
         newToken[prop] = obj[prop];
       }
@@ -75,20 +75,20 @@ const TOKEN_ENUMS = {
         * @returns a new token object
         * @throws nothing
     */
-    static createTokenString() {
+  static createTokenString() {
 
     // Define all the possible characters that could go into a string
-      const possibleCharacters = TOKEN_ENUMS.CHARS;
+    const possibleCharacters = TOKEN_ENUMS.CHARS;
 
     let token = '';
     for (let i = 1; i <= TOKEN_ENUMS.TOKEN_STRING_LENGTH; i++) {
       // Get a random character from the possibleCharacters string
-        let randomCharacter = possibleCharacters.charAt(Math.floor(Math.random() * possibleCharacters.length));
+      let randomCharacter = possibleCharacters.charAt(Math.floor(Math.random() * possibleCharacters.length));
       // Append this character to the string
-        token += randomCharacter;
+      token += randomCharacter;
     }
     // Return the final string
-      return token;
+    return token;
   }
   /**
         * @summary Token updateExpiry method
@@ -97,7 +97,7 @@ const TOKEN_ENUMS = {
         * @returns a new Date object
         * @throws nothing
     */
-    updateExpiry(extend = true) {
+  updateExpiry(extend = true) {
     if (extend) {
       return Date.now() + TOKEN_ENUMS.TOKEN_EXPIRY;
     }
@@ -107,7 +107,7 @@ const TOKEN_ENUMS = {
         * @summary validateId
         * @description token validateId method
    */
-    validateId() {
+  validateId() {
     if (!helpers.validateString(this.id, TOKEN_ENUMS.TOKEN_STRING_LENGTH, '=')) {
       return 'token id';
     }
@@ -118,7 +118,7 @@ const TOKEN_ENUMS = {
         * @description token validatePhone method
    */
 
-    validatePhone() {
+  validatePhone() {
     if (!helpers.validateString(this.phone, CUST_ENUMS.PHONE_NUMBER_LENGTH, '=')) {
       return 'customer phone';
     }
@@ -129,7 +129,7 @@ const TOKEN_ENUMS = {
         * @description token validateExpiration method
    */
 
-    validateTokenExpiration() {
+  validateTokenExpiration() {
     if (!helpers.validateIntegerRange(this.expires, 1, TOKEN_ENUMS.MAX_INT)) {
       return 'expiration';
     }
@@ -144,7 +144,7 @@ const TOKEN_ENUMS = {
        * @returns true on success or the string name of the failed property on failure
        * @throws nothing
        */
-    validateToken() {
+  validateToken() {
     let result = this.validateId();
     if (result !== true) {
       return result;
@@ -166,4 +166,4 @@ const TOKEN_ENUMS = {
 module.exports = {
   Token,
   TOKEN_ENUMS
-  };
+};
