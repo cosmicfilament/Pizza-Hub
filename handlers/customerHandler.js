@@ -7,10 +7,9 @@
     * @exports create, read, update and delete functions
 */
 
-  const fDb = require('./../lib/fileDb');
+const fDb = require('./../lib/fileDb');
 const helpers = require('./../utils/helpers');
 const utils = require('./../utils/handlerUtils');
-
 const { Customer } = require('./../Models/customerModel');
 
 module.exports = {
@@ -22,7 +21,7 @@ module.exports = {
         * @returns JSON string with success msg or promise error on failure
         * @throws promise error
     */
-    create: async function (reqObj) {
+  create: async function (reqObj) {
 
     const cust = Customer.clone(reqObj.payload);
     let result = cust.validateCustomer();
@@ -30,26 +29,25 @@ module.exports = {
       throw (helpers.promiseError(400, `Validation failed on customer field: ${result}.`));
     }
     // create a password hash for the customer
-      const hashedPwd = Customer.createPasswordHash(cust.password);
+    const hashedPwd = Customer.createPasswordHash(cust.password);
     if (!hashedPwd) {
       throw (helpers.promiseError(500, 'Could not hash the customer\'s password.'));
     }
     // from this point on the password is no longer clear text
-      cust.password = hashedPwd;
+    cust.password = hashedPwd;
 
     try {
       // now save the new customer to the file db.
-        await fDb.create('customer', cust.phone, cust);
+      await fDb.create('customer', cust.phone, cust);
     }
     catch (error) {
-      helpers.log(`Error thrown trying to create new customer ${cust.phone}. ${error.message}`);
       throw (helpers.promiseError(409, `Could not create new customer record ${cust.phone}. Reason: ${error.message}`));
     }
     return {
       'content_type': 'application/json',
       'statusCode': '200',
       'payload': JSON.stringify(`Succeeded in creating file record for customer:  ${cust.phone}.`)
-      };
+    };
   },
   /**
         * @async
@@ -61,7 +59,7 @@ module.exports = {
         * @throws promise error
     */
 
-    read: async function (reqObj) {
+  read: async function (reqObj) {
 
     const cust = new Customer();
     cust.phone = reqObj.queryStringObject.phone;
@@ -72,30 +70,29 @@ module.exports = {
     }
 
     // validate the token passed in on the headers
-      result = await utils.validateCustomerToken(reqObj.headers.token);
+    result = await utils.validateCustomerToken(reqObj.headers.token);
     if (result !== true) {
       throw (helpers.promiseError(400, result));
     }
 
     try {
       // read the customer record
-        result = await fDb.read('customer', cust.phone);
+      result = await fDb.read('customer', cust.phone);
       if (!helpers.validateObject(result)) {
         throw (helpers.promiseError(409, `Error reading the file record for the customer: ${cust.phone}. Or that customer does not exist.`));
       }
     }
     catch (error) {
-      helpers.log(`Error thrown trying to read the customer ${cust.phone}. ${error.message}`);
       throw (helpers.promiseError(409, `Could not read customer record ${cust.phone}. Reason: ${error.message}`));
     }
     // don't transmit the pasword even if it is a hash
-      result.password = '';
+    result.password = '';
 
     return {
       'content_type': 'application/json',
       'statusCode': '200',
       'payload': JSON.stringify(result)
-      };
+    };
   },
   /**
         * @async
@@ -106,7 +103,7 @@ module.exports = {
         * @returns success message or promise error on failure
         * @throws promise error
     */
-    update: async function (reqObj) {
+  update: async function (reqObj) {
 
     const fieldsToUpdate = Customer.clone(reqObj.payload);
 
@@ -116,7 +113,7 @@ module.exports = {
     }
 
     // validate the token passed in on the headers
-      result = await utils.validateCustomerToken(reqObj.headers.token);
+    result = await utils.validateCustomerToken(reqObj.headers.token);
     if (result !== true) {
       throw (helpers.promiseError(400, result));
     }
@@ -124,21 +121,20 @@ module.exports = {
     let custToUpdate = {};
     try {
       // read the existing customer record and use it to build the update
-        custToUpdate = await fDb.read('customer', fieldsToUpdate.phone);
+      custToUpdate = await fDb.read('customer', fieldsToUpdate.phone);
       if (!helpers.validateObject(custToUpdate)) {
         throw (helpers.promiseError(409, `Error reading the file record for the customer: ${fieldsToUpdate.phone}. Or that customer does not exist.`));
       }
     }
     catch (error) {
-      helpers.log(`Error thrown trying to read the customer ${fieldsToUpdate.phone} during update call. ${error.message}`);
       throw (helpers.promiseError(409, `Error reading the file record for the customer: ${fieldsToUpdate.phone}. Or that customer does not exist.  Reason: ${error.message}`));
     }
 
     // test that there is atleast one update to make, validate it(them) and update the custToUpdate record with the changed field(s)
-        let dirtyFlag = false;
+    let dirtyFlag = false;
 
-        if (fieldsToUpdate.firstName !== '') {
-result = fieldsToUpdate.validateFirstName();
+    if (fieldsToUpdate.firstName !== '') {
+      result = fieldsToUpdate.validateFirstName();
       if (result !== true) {
         throw (helpers.promiseError(400, `Validation failed on customer field: ${result}.`));
       }
@@ -171,12 +167,12 @@ result = fieldsToUpdate.validateFirstName();
       }
       dirtyFlag = true;
       // create a password hash for the new password
-        const hashedPwd = Customer.createPasswordHash(fieldsToUpdate.password);
+      const hashedPwd = Customer.createPasswordHash(fieldsToUpdate.password);
       if (!hashedPwd) {
         throw (helpers.promiseError(500, 'Could not hash the user\'s password.'));
       }
       // password is no longer clear text.
-        custToUpdate.password = hashedPwd;
+      custToUpdate.password = hashedPwd;
     }
 
     if (fieldsToUpdate.address !== '') {
@@ -189,16 +185,15 @@ result = fieldsToUpdate.validateFirstName();
     }
 
     // if no data changed then no update
-      if (!dirtyFlag) {
+    if (!dirtyFlag) {
       throw (helpers.promiseError(400, `Nothing to update. Data did not change for customer with phone number: ${fieldsToUpdate.phone}`));
     }
 
     try {
       // else update the customer record
-        await fDb.update('customer', custToUpdate.phone, custToUpdate);
+      await fDb.update('customer', custToUpdate.phone, custToUpdate);
     }
     catch (error) {
-      helpers.log(`Error thrown trying to update the customer ${custToUpdate.phone} during update call. ${error.message}`);
       throw (helpers.promiseError(500, `Error updating the file record for the customer: ${custToUpdate.phone}. ${error.message}`));
     }
 
@@ -206,8 +201,8 @@ result = fieldsToUpdate.validateFirstName();
       'content_type': 'application/json',
       'statusCode': '200',
       'payload': JSON.stringify(`Successfully update the customer: ${custToUpdate.phone}.`)
-      };
-    },
+    };
+  },
   /**
         * @async
         * @summary Customer delete function.
@@ -217,7 +212,7 @@ result = fieldsToUpdate.validateFirstName();
         * @returns success message or promise error on failure
         * @throws promise error
     */
-    delete: async function (reqObj) {
+  delete: async function (reqObj) {
     const cust = new Customer();
     cust.phone = reqObj.queryStringObject.phone;
 
@@ -227,7 +222,7 @@ result = fieldsToUpdate.validateFirstName();
     }
 
     // validate the token passed in on the headers
-      result = await utils.validateCustomerToken(reqObj.headers.token);
+    result = await utils.validateCustomerToken(reqObj.headers.token);
     if (result !== true) {
       throw (helpers.promiseError(400, result));
     }
@@ -239,7 +234,6 @@ result = fieldsToUpdate.validateFirstName();
       }
     }
     catch (error) {
-      helpers.log(`Error thrown trying to delete the customer ${cust.phone}. ${error.message}`);
       throw (helpers.promiseError(409, `Error deleting the file record for the customer: ${cust.phone}. Reason: ${error.message}`));
     }
 
@@ -247,6 +241,6 @@ result = fieldsToUpdate.validateFirstName();
       'content_type': 'application/json',
       'statusCode': '200',
       'payload': JSON.stringify(`Successfully deleted the customer: ${cust.phone}.`)
-      };
+    };
   },
 };

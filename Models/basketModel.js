@@ -7,24 +7,24 @@
     * @exports Basket, BASKET_ENUMS
 */
 
-  const helpers = require('./../utils/helpers');
+const helpers = require('./../utils/helpers');
 const { CUST_ENUMS } = require('./customerModel');
 const { TOKEN_ENUMS } = require('./tokenModel');
 const { OrderSelection } = require('./orderItemModel');
 
 /** @enum */
-  const BASKET_ENUMS = {
+const BASKET_ENUMS = {
   TOKEN_STRING_LENGTH: 10,                                // unique id is pppppppppp_tttttttttt - p:phone# t:token
-    KEY_LENGTH: CUST_ENUMS.PHONE_NUMBER_LENGTH + 1 + 10,    // length of above
-    MAX_TIMESTAMP_LENGTH: 25                                // human readable timestamp
-  };
+  KEY_LENGTH: CUST_ENUMS.PHONE_NUMBER_LENGTH + 1 + 10,    // length of above
+  MAX_TIMESTAMP_LENGTH: 25                                // human readable timestamp
+};
 
 /**
      * @summary Basket class
      * @class
      * @classdesc Encapsulates a single cart or basket
    */
-  class Basket {
+class Basket {
   constructor(id = '', phone = '', orderSelections = []) {
     this.init(id, phone, orderSelections);
   }
@@ -32,7 +32,7 @@ const { OrderSelection } = require('./orderItemModel');
          * @summary init
          * @description Basket init method
    */
-    init(id, phone, orderSelections) {
+  init(id, phone, orderSelections) {
     this.id = id;
     this.phone = phone;
     this.orderSelections = this.parseOrderSelections(orderSelections);
@@ -43,11 +43,11 @@ const { OrderSelection } = require('./orderItemModel');
         * @description parses the chain of json arrays and objects in the menu.json file
         * @param orderSelections array
     */
-    parseOrderSelections(orderSelections) {
+  parseOrderSelections(orderSelections) {
     let ary = [];
     for (let selection of orderSelections) {
       // skip the menu title and only grab menu selections
-        if (selection.hasOwnProperty('choices')) {
+      if (selection.hasOwnProperty('choices')) {
         ary.push(new OrderSelection(selection));
       }
     }
@@ -57,7 +57,7 @@ const { OrderSelection } = require('./orderItemModel');
          * @summary getter total method
          * @description iterates thru the selection and choices summing up the total price
      */
-    get total() {
+  get total() {
 
     let t = 0.00;
     for (let orderSelectionTotal of this.orderSelections) {
@@ -71,7 +71,7 @@ const { OrderSelection } = require('./orderItemModel');
         * @summary timeStamp
         * @description Basket timeStamp method
    */
-    static timeStamp() {
+  static timeStamp() {
     const dateNow = new Date(Date.now());
     return `${dateNow.getFullYear()}_${dateNow.getMonth() + 1}_${dateNow.getDate()}_${dateNow.toLocaleTimeString('en-US')}`;
   }
@@ -83,7 +83,7 @@ const { OrderSelection } = require('./orderItemModel');
         * @returns a new basket object
         * @throws nothing
     */
-    static clone(obj) {
+  static clone(obj) {
 
     if (obj === null || obj === 'undefined') {
       return obj;
@@ -104,17 +104,17 @@ const { OrderSelection } = require('./orderItemModel');
          * @returns new basket id
          * @throws nothing
      */
-    createId() {
+  createId() {
 
     // Define all the possible characters that could go into a string
-      const possibleCharacters = TOKEN_ENUMS.CHARS;
+    const possibleCharacters = TOKEN_ENUMS.CHARS;
 
     let token = '';
     for (let i = 1; i <= BASKET_ENUMS.TOKEN_STRING_LENGTH; i++) {
       // Get a random character from the possibleCharacters string
-        let randomCharacter = possibleCharacters.charAt(Math.floor(Math.random() * possibleCharacters.length));
+      let randomCharacter = possibleCharacters.charAt(Math.floor(Math.random() * possibleCharacters.length));
       // Append this character to the string
-        token += randomCharacter;
+      token += randomCharacter;
     }
 
     this.id = `${this.phone}_${token}`;
@@ -124,7 +124,7 @@ const { OrderSelection } = require('./orderItemModel');
         * @summary validateId method
         * @description Basket validateId method
     */
-    validateId() {
+  validateId() {
     if (typeof (this.id) !== 'string' && this.id.length !== BASKET_ENUMS.KEY_LENGTH) {
       return 'Basket Id';
     }
@@ -134,7 +134,7 @@ const { OrderSelection } = require('./orderItemModel');
         * @summary validatePhone method
         * @description Basket validatePhone method
     */
-    validatePhone() {
+  validatePhone() {
     if (!helpers.validateString(this.phone, CUST_ENUMS.PHONE_NUMBER_LENGTH, '=')) {
       return 'phone';
     }
@@ -145,7 +145,7 @@ const { OrderSelection } = require('./orderItemModel');
         * @summary validateorderSelections method
         * @description just makes sure that the array is not empty
     */
-    validateorderSelections() {
+  validateorderSelections() {
 
     if (!helpers.validateArray(this.orderSelections)) {
       return 'orderSelections';
@@ -156,7 +156,7 @@ const { OrderSelection } = require('./orderItemModel');
         * @summary validateTimeStamp method
         * @description Basket validateTimeStamp method
     */
-    validateTimeStamp() {
+  validateTimeStamp() {
     if (!helpers.validateString(this.timestamp, BASKET_ENUMS.MAX_TIMESTAMP_LENGTH, '<=')) {
       return false;
     }
@@ -169,7 +169,7 @@ const { OrderSelection } = require('./orderItemModel');
         * @returns true if successfull or the name of the first property to fail on error
         * @throws nothing
     */
-    validateBasket(skipId = false) {
+  validateBasket(skipId = false) {
 
     let result = this.validatePhone();
     if (result !== true) {
@@ -193,4 +193,4 @@ const { OrderSelection } = require('./orderItemModel');
 module.exports = {
   Basket,
   BASKET_ENUMS
-  };
+};

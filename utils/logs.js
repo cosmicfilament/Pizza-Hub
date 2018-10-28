@@ -10,13 +10,13 @@
 const path = require('path');
 const zlib = require('zlib');
 const { promisify } = require('util');
-const { open, close, truncate, readFile, writeFile, readdir, appendFile } = require('fs');
+const { open, close, readFile, writeFile, readdir, appendFile, unlink } = require('fs');
 const config = require('./../lib/config');
 
 // fs functions converted from node callback to promises
 const openFileP = promisify(open);
 const closeFileP = promisify(close);
-const truncateFileP = promisify(truncate);
+const deleteFileP = promisify(unlink);
 const readFileP = promisify(readFile);
 const writeFileP = promisify(writeFile);
 const readDirP = promisify(readdir);
@@ -70,12 +70,8 @@ const unzipP = function (sourceData) {
 
 const logs = {};
 
-// Base directory of data folder
-const baseDir = path.join(__dirname, `/../.${logFileDir}/`);
-// current directory or target directory
-const getDir = () => {
-  return `${baseDir}/`;
-};
+// log directory
+const baseDir = path.join(__dirname, `../${config.logFileDir}`);
 
 // file in current or target directory
 const makeFName = (fName, logFile = true) => {
@@ -86,6 +82,7 @@ const makeFName = (fName, logFile = true) => {
     return `${baseDir}/${fName}.gz.b64`;
   }
 };
+
 /**
 * @summary append
 * @description appends to a log
@@ -123,7 +120,7 @@ logs.append = (file, str) => {
 logs.list = async function (includeCompressedLogs) {
 
   //read the directory contents
-  let logData = await readDirP(getDir()).catch((err) => {
+  let logData = await readDirP(baseDir).catch((err) => {
     console.log('\x1b[31m%s', `Error reading list of log files. ${err}`);
     return false;
   });
@@ -207,14 +204,14 @@ logs.decompress = (fileId) => {
     });
 };
 /**
-* @summary truncate
-* @description truncates a log file
+* @summary delete
+* @description deletes a log file
 * @param log file id
 * @returns status
 * @throws nothing
 */
-logs.truncate = (logId) => {
-  return truncateFileP(makeFName(logId))
+logs.delete = (logId) => {
+  return deleteFileP(makeFName(logId))
     .then(() => {
       return true;
     })
@@ -229,7 +226,7 @@ logs.truncate = (logId) => {
 * @description logs to the logfile
 * @param logData log message
 */
-logs.logToFile = (logData) => {
+logs.log = (logData) => {
 
   const timeNow = new Date(Date.now());
   // Convert the data to a string

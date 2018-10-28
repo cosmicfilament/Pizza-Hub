@@ -9,6 +9,7 @@
 
 //const config = require('./../lib/config');
 const helpers = require('./helpers');
+const logs = require('./logs');
 const https = require('https');
 const queryString = require('querystring');
 const config = require('../lib/config');
@@ -38,20 +39,18 @@ module.exports = {
         'protocol': 'https:',
         'hostname': 'api.mailgun.net',
         'method': 'POST',
-        'path': `/V3/${mailGunPath}.mailgun.org`,
-        'auth': `${mailGunAuth}`,
+        'path': `/V3/${config.mailGunPath}.mailgun.org`,
+        'auth': `${config.mailGunAuth}`,
         'headers': {
           'Content-Type': 'application/x-www-form-urlencoded',
           'Content-Length': Buffer.byteLength(strPayload)
         }
       };
       //Instantiate the request object
-      helpers.log('yellow', 'Starting email request');
-
       const req = https.request(requestDetails, async (result) => {
         // Grab the status of the sent request
         const status = result.statusCode;
-        helpers.log('yellow', `Email request returned ${status}`);
+        logs.log(`Email request returned ${status}`);
         // Callback successfully if the request went through
         if (status == 200 || status == 201) {
           resolve(status);

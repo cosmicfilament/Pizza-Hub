@@ -7,6 +7,8 @@
   *	@exports helpers
 */
 
+const config = require('./../lib/config');
+
 // Container for all the helpers
 const helpers = {};
 
@@ -155,7 +157,7 @@ helpers.promiseError = (statusCode, message) => {
 */
 helpers.log = (color, msg) => {
 
-  if (config.debug === 'true') {
+  if (config.debug === true) {
     switch (color) {
       case 'red':
         color = '\x1b[31m%s';

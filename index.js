@@ -9,8 +9,9 @@
 
 const server = require('./lib/server');
 const workers = require('./lib/workers');
-const helpers = require('./utils/helpers');
+const logs = require('./utils/logs');
 const config = require('./lib/config');
+const helpers = require('./utils/helpers');
 const fs = require('fs');
 
 // Declare the app
@@ -23,7 +24,9 @@ app.menu = [];
 app.init = () => {
   // read in the menu and if it fails no use starting up the server
   const leBuffier = fs.readFileSync(`${__dirname}/.db/menu/${config.menuFile}`);
+
   if (!helpers.validateObject(leBuffier)) {
+    logs.log('Aborting server start. Could not parse the menu.');
     return helpers.log('red', 'Aborting server start. Could not parse the menu.');
   }
   app.menu = JSON.parse(leBuffier);

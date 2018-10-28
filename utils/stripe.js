@@ -11,6 +11,7 @@ const https = require('https');
 const queryString = require('querystring');
 const helpers = require('./helpers');
 const config = require('../lib/config');
+const logs = require('./logs');
 
 // pretty much just copied the twilio stuff and changed a few lines.
 // oh and googled my butt off to stackoverflow and this:
@@ -53,11 +54,10 @@ module.exports = {
         }
       };
       //Instantiate the request object
-      helpers.log('cyan', 'Charge process started.');
       const req = https.request(requestDetails, async (result) => {
         // Grab the status of the sent request
         const status = result.statusCode;
-        helpers.log('cyan', `Charge process returned. ${status}`);
+        logs.log(`For ${id} charge process returned. ${status}`);
         // Callback successfully if the request went through
         if (status == 200 || status == 201) {
           resolve(status);
