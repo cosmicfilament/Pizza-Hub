@@ -16,7 +16,7 @@ node_modules/
 # dotenv environment variables file
 .env
 # config file
-**/config.js
+**/config.1.js
 # ssl cert files
 **/*.pem
 # the package.json file for this project only
