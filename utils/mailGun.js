@@ -7,12 +7,11 @@
     * @exports send function
 */
 
-//const config = require('./../lib/config');
 const helpers = require('./helpers');
 const logs = require('./logs');
 const https = require('https');
 const queryString = require('querystring');
-const config = require('../lib/config');
+const { envCfg } = require('../lib/config');
 
 /**
     * @summary send email
@@ -39,8 +38,8 @@ module.exports = {
         'protocol': 'https:',
         'hostname': 'api.mailgun.net',
         'method': 'POST',
-        'path': `/V3/${config.mailGunPath}.mailgun.org`,
-        'auth': `${config.mailGunAuth}`,
+        'path': `/V3/${envCfg.mailGunPath}.mailgun.org`,
+        'auth': `${envCfg.mailGunAuth}`,
         'headers': {
           'Content-Type': 'application/x-www-form-urlencoded',
           'Content-Length': Buffer.byteLength(strPayload)

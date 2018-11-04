@@ -1,9 +1,7 @@
 [
     {
-        "title": "Pizza-Hub Menu"
-    },
-    {
-        "selection": "Pizza",
+        "item": "Pizza",
+        "parent": true,
         "choices": [
             {
                 "desc": "8 Inch",
@@ -16,7 +14,8 @@
         ]
     },
     {
-        "selection": "Toppings",
+        "item": "Toppings",
+        "parent": false,
         "choices": [
             {
                 "desc": "sausage",
@@ -37,6 +36,20 @@
             {
                 "desc": "anchovies",
                 "price": "$1.00"
+            }
+        ]
+    },
+    {
+        "item": "calzone",
+        "parent": true,
+        "choices": [
+            {
+                "desc": "Meat Ball",
+                "price": "$8.00"
+            },
+            {
+                "desc": "Ham",
+                "price": "$9.00"
             }
         ]
     }

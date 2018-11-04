@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+        <meta name="description" content="Nodejs Master Course Homework Assignment Three">
+        <meta name="author" content="John P. Butler aka Zuben El Genubi">
+        <link rel="stylesheet" type="text/css" media="screen" href="public/css/app.css" />
+        <script src="public/js/app.js"></script>
+
+        <title>@@company@name@@</title>
+        <!--favicon icon-->
+        <link rel="icon" type="image/png" href="public/img/tcf-icon.png">
+    </head>
+
+    <body>
+
+        <!--  preloader start -->
+        <div id="tb-preloader">
+            <div class="tb-preloader-wave"></div>
+        </div>
+        <!-- preloader end -->
+
+        <!-- Wrapper -->
+        <div class="wrapper">
+            <!-- Header -->
+            <div class="header">
+                <!-- Logo -->
+                <a class="logo" href="/">
+                    <img src="public/img/tcf-logo-trans.png" alt="Logo" />
+                </a>
+                <!-- Navigation -->
+                <ul class="menu">
+                    <li>
+                        <!--* Displays the menu and some B.S. *-->
+                        <a href="/">Home</a>
+                    </li>
+                    <li class="loggedOut">
+                        <a href="/customer/create">Signup</a>
+                    </li>
+                    <li class="loggedOut">
+                        <!--* creates a session basically an empty basket *-->
+                        <a href="/session/create">Login</a>
+                    </li>
+                    <li class="loggedIn">
+                        <!--* Bring up menu with ability to make selections, order and checkout *-->
+                        <a href="/session/order">Order Pizza</a>
+                    </li>
+                    <li class="loggedIn">
+                        <!--* Change or delete order *-->
+                        <a href="/session/update">Modify Order</a>
+                    </li>
+                    <li class="loggedIn">
+                        <!--* checkout *-->
+                        <a href="/session/checkout">Check Out</a>
+                    </li>
+                    <li class="loggedIn">
+                        <!--* Can edit and delete a customer within this section *-->
+                        <a href="/customer/edit">Customer Profile</a>
+                    </li>
+                    <li class="loggedIn">
+                        <a href="#" id="logoutButton">Logout</a>
+                    </li>
+                </ul>
+                <!-- end navigation -->
+                <div class="clear"></div>
+            </div>
+            <!-- end header -->
+            <h1>@@company@name@@</h1>
+            <h2>@@company@slogan@@</h2>
+
+            @@@body@@@
+
+        </div>
+        <!-- end wrapper -->
+        <!-- Footer -->
+        <div class="footer">
+            <div class="copyright">Copyright @@company@dateCreated@@ @@company@name@@ | All Rights Reserved</div>
+        </div>
+        <!-- end footer -->
+    </body>
+
+</html>

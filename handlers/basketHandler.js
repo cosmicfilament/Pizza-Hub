@@ -16,14 +16,14 @@ const payment = require('./../utils/stripe');
 
 module.exports = {
   /**
-         * @async
-         * @summary Basket create function.
-         * @description  Creates a new basket based on data in the reqObj.payload.
-         * @param reqObj.payload (phone)- payload passes in the values used to create a new basket
-         * @param headers.token - must have a valid session token to process the create function
-         * @returns success msg or promise error on failure
-         * @throws promise error
-    */
+       * @async
+       * @summary Basket create function.
+       * @description  Creates a new basket based on data in the reqObj.payload.
+       * @param reqObj.payload (phone)- payload passes in the values used to create a new basket
+       * @param headers.token - must have a valid session token to process the create function
+       * @returns success msg or promise error on failure
+       * @throws promise error
+  */
   create: async function (reqObj) {
 
     const newBasket = Basket.clone(reqObj.payload);
@@ -69,14 +69,14 @@ module.exports = {
     };
   },
   /**
-         * @async
-         * @summary Basket read function.
-         * @description  Reads an existing basket based on data in the reqObj.queryStringObject
-         * @param reqObj.queryStringObject - basket id
-         * @param headers.token - must have a valid session token to process the read function
-         * @returns basket object on success or promise error on failure
-         * @throws promise error
-    */
+       * @async
+       * @summary Basket read function.
+       * @description  Reads an existing basket based on data in the reqObj.queryStringObject
+       * @param reqObj.queryStringObject - basket id
+       * @param headers.token - must have a valid session token to process the read function
+       * @returns basket object on success or promise error on failure
+       * @throws promise error
+  */
   read: async function (reqObj) {
 
     // validate the token passed in on the headers
@@ -94,14 +94,14 @@ module.exports = {
     };
   },
   /**
-         * @async
-         * @summary Basket update function.
-         * @description  Updates the # of order items in a basket. Can either add or delete order items.
-         * @param reqObj.payload - passes in basket id and and array of order items
-         * @param headers.token - must have a valid session token to process the update function
-         * @returns success msg or promise error on failure
-         * @throws promise error
-    */
+       * @async
+       * @summary Basket update function.
+       * @description  Updates the # of order items in a basket. Can either add or delete order items.
+       * @param reqObj.payload - passes in basket id and and array of order items
+       * @param headers.token - must have a valid session token to process the update function
+       * @returns success msg or promise error on failure
+       * @throws promise error
+  */
   update: async function (reqObj) {
 
     // validate the token passed in on the headers
@@ -161,14 +161,14 @@ module.exports = {
     };
   },
   /**
-         * @async
-         * @summary Basket delete function.
-         * @description  Deletes a basket with the basket id passed in the querystring
-         * @param reqObj.queryStringObject - used to retrieve the basket id.
-        * @param headers.token - must have a valid session token to process the delete function
-         * @returns success msg or promise error on failure
-         * @throws promise error
-    */
+       * @async
+       * @summary Basket delete function.
+       * @description  Deletes a basket with the basket id passed in the querystring
+       * @param reqObj.queryStringObject - used to retrieve the basket id.
+      * @param headers.token - must have a valid session token to process the delete function
+       * @returns success msg or promise error on failure
+       * @throws promise error
+  */
   delete: async function (reqObj) {
 
     // validate the token passed in on the headers
@@ -202,14 +202,14 @@ module.exports = {
     };
   },
   /**
-         * @async
-         * @summary menu function
-         * @description  no validation. allows anyone to read the menu
-         * @returns the restaurant's menu
-    */
+       * @async
+       * @summary menu function
+       * @description  no validation. allows anyone to read the menu
+       * @returns the restaurant's menu
+  */
   menu: async function () {
 
-    const app = require('./../index');
+    const app = require('../index');
     const menu = app.menu;
 
     return {
@@ -220,14 +220,14 @@ module.exports = {
   },
 
   /**
-         * @async
-         * @summary checkOut function
-         * @description  validates the basket, totals it and sends it to stripe for payment processing. at the end it sends an email to the customer with a status message
-         * @param reqObj.payload.id - used to retrieve the basket id.
-        * @param headers.token - must have a valid session token to process the checkOut function
-         * @returns success msg or promise error on failure
-         * @throws promise error
-    */
+       * @async
+       * @summary checkOut function
+       * @description  validates the basket, totals it and sends it to stripe for payment processing. at the end it sends an email to the customer with a status message
+       * @param reqObj.payload.id - used to retrieve the basket id.
+      * @param headers.token - must have a valid session token to process the checkOut function
+       * @returns success msg or promise error on failure
+       * @throws promise error
+  */
   // post - basket id is in the body
   checkOut: async function (reqObj) {
 

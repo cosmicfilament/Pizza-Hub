@@ -7,7 +7,7 @@
   *	@exports helpers
 */
 
-const config = require('./../lib/config');
+const { envCfg } = require('./../lib/config');
 
 // Container for all the helpers
 const helpers = {};
@@ -49,14 +49,16 @@ helpers.validateBool = (value = false) => { //boolean
 // equ: boolean if true len = str.len else str greater than or equal to len
 // returns false if validation fails
 /**
-  * @summary validateString
-  * @description validates is a string and is empty and within length criteria
-  * @param str, len and comparator
-  * @returns string or false on fail
+* @summary validateString
+* @description validates if is a string and is empty and within length criteria
+* @param str
+* @param len
+* @param comparator
+* @returns string or false on fail
 */
-helpers.validateString = (str = '', len = 20, comparator = '<=') => {
+helpers.validateString = (str = '', len = 0, comparator = '>') => {
 
-  // if it isn't a string why waste time
+  // if it isn't a valid string why waste time
   if (typeof (str) !== 'string' || str.length === 0) {
     return false;
   }
@@ -103,10 +105,10 @@ helpers.validateArray = (obj = '') => { // array object or false
 };
 // check if object is in fact an  object and that it is not empty
 /**
-  * @summary validateObject
-  * @description validates is an object and has properties
-  * @param object
-  * @returns object or false
+* @summary validateObject
+* @description validates is an object and has properties
+* @param object
+* @returns object or false
 */
 helpers.validateObject = (obj = '') => { //object or false
   if (typeof (obj) === 'object' && obj !== null && Object.keys(obj).length > 0) {
@@ -157,7 +159,7 @@ helpers.promiseError = (statusCode, message) => {
 */
 helpers.log = (color, msg) => {
 
-  if (config.debug === true) {
+  if (envCfg.debug === true) {
     switch (color) {
       case 'red':
         color = '\x1b[31m%s';

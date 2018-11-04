@@ -10,7 +10,7 @@
 const https = require('https');
 const queryString = require('querystring');
 const helpers = require('./helpers');
-const config = require('../lib/config');
+const { envCfg } = require('../lib/config');
 const logs = require('./logs');
 
 // pretty much just copied the twilio stuff and changed a few lines.
@@ -20,16 +20,15 @@ const logs = require('./logs');
 // https://curl.haxx.se/docs/httpscripting.html#POST
 // https://github.com/acudev-longnguyen/homework-assignment2.git
 
-
 module.exports = {
   /**
-  * @async
-  * @summary process
-  * @description processes payment via stripe.com
-  * @param total in dollars
-  * @param basket id
-  * @returns success or fail
-  * @throws promise reject
+* @async
+* @summary process
+* @description processes payment via stripe.com
+* @param total in dollars
+* @param basket id
+* @returns success or fail
+* @throws promise reject
 */
   process: async function (total, id) {
     return new Promise((resolve, reject) => {
@@ -48,7 +47,7 @@ module.exports = {
         'method': 'POST',
         'path': '/v1/charges',
         'headers': {
-          'authorization': `Bearer ${config.stripeAuth}`,
+          'authorization': `Bearer ${envCfg.stripeAuth}`,
           'Content-Type': 'application/x-www-form-urlencoded',
           'Content-Length': Buffer.byteLength(strPayload)
         }

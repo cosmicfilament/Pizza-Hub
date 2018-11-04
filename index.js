@@ -7,39 +7,43 @@
 * @description entry point for the node server app
 */
 
+// provides easy access to the base directory for creating
+// paths either from app.getBaseDir or from the config file
+const baseDir = require('./lib/config').baseDirCfg = __dirname;
 const server = require('./lib/server');
 const workers = require('./lib/workers');
-const logs = require('./utils/logs');
-const config = require('./lib/config');
-const helpers = require('./utils/helpers');
-const fs = require('fs');
+const factory = require('./lib/templates/templateFactory');
 
 // Declare the app
 const app = {};
 
-// the one menu to rule them all. Read from a file on startup
-app.menu = [];
+// orderly shutdown if during startup have critical failure
+app.continueStartup = true;
+app.shutdown = (code) => {
+    app.continueStartup = false;
+
+    setInterval(() => {
+        process.exit(code);
+    }, 1000 * 1);
+};
+
+app.getBaseDir = () => {
+    return baseDir;
+};
 
 // Init function
 app.init = () => {
-  // read in the menu and if it fails no use starting up the server
-  const leBuffier = fs.readFileSync(`${__dirname}/.db/menu/${config.menuFile}`);
 
-  if (!helpers.validateObject(leBuffier)) {
-    logs.log('Aborting server start. Could not parse the menu.');
-    return helpers.log('red', 'Aborting server start. Could not parse the menu.');
-  }
-  app.menu = JSON.parse(leBuffier);
+    // populate the templates with the menu config data and the template config data
+    app.continueStartup && factory.init(app);
 
-  // Start the server
-  server.init();
+    // Start the server
+    app.continueStartup && server.init();
 
-  // Workers are going to handle all of the checks
-  // Start the workers
-  workers.init();
+    // Start the workers
+    app.continueStartup && workers.init();
 };
 
-// Self executing
 app.init();
 
 // Export the app

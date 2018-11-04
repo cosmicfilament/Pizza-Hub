@@ -1,17 +1,15 @@
 'use strict';
 
 /**
-* @file file logging functions
+* @file functions for logging and compressing and uncompressing log files
 * @module logs.js
-* @description functions for loggin and compressing and uncompressing log files
 * @exports logs
 */
 
-const path = require('path');
 const zlib = require('zlib');
 const { promisify } = require('util');
 const { open, close, readFile, writeFile, readdir, appendFile, unlink } = require('fs');
-const config = require('./../lib/config');
+const { baseDirCfg, envCfg } = require('./../lib/config');
 
 // fs functions converted from node callback to promises
 const openFileP = promisify(open);
@@ -22,56 +20,13 @@ const writeFileP = promisify(writeFile);
 const readDirP = promisify(readdir);
 const appendFileP = promisify(appendFile);
 
-/**
-* @summary gzipP function
-* @description promisified gzip function for zipping log files
-* @param file and data
-* @returns gzipped buffer
-* @throws promise reject
-*/
-const gzipP = function (file, data) {
-  return new Promise((resolve, reject) => {
-    zlib.gzip(data, (err, buffer) => {
-      if (!buffer) {
-        reject(`Error: Nothing to compress in file: ${file}.`);
-      }
-      if (err) {
-        reject(`Error zipping file: ${file}. ${err}`);
-      }
-      if (buffer) {
-        resolve(buffer);
-      }
-    });
-  });
-};
-/**
-* @summary unzipP
-* @description promisified unzip function for unzipping logs
-* @param zipped data
-* @returns uzipped data in a buffer
-* @throws promise reject
-*/
-const unzipP = function (sourceData) {
-  return new Promise((resolve, reject) => {
-    const inBuffer = Buffer.from(sourceData, 'base64');
-    zlib.unzip(inBuffer, (err, outBuffer) => {
-      if (!outBuffer) {
-        reject('Error: Nothing to decompress in zipped file.');
-      }
-      if (err) {
-        reject(`Error unzippin file. ${err}`);
-      }
-      if (outBuffer) {
-        resolve(outBuffer.toString());
-      }
-    });
-  });
-};
+const gzipP = promisify(zlib.gzip);
+const unzipP = promisify(zlib.unzip);
 
 const logs = {};
 
 // log directory
-const baseDir = path.join(__dirname, `../${config.logFileDir}`);
+const baseDir = `${baseDirCfg}/${envCfg.logFileDir}`;
 
 // file in current or target directory
 const makeFName = (fName, logFile = true) => {
@@ -81,6 +36,79 @@ const makeFName = (fName, logFile = true) => {
   else {
     return `${baseDir}/${fName}.gz.b64`;
   }
+};
+
+/**
+* @summary gzipP function
+* @description promisified gzip function for zipping log files
+* @param file and data
+* @returns gzipped buffer
+* @throws promise reject
+*/
+// logs.gzipP = function (file, data) {
+//   return new Promise((resolve, reject) => {
+//     zlib.gzip(data, (err, buffer) => {
+//       if (!buffer) {
+//         reject(`Error: Nothing to compress in file: ${file}.`);
+//       }
+//       if (err) {
+//         reject(`Error zipping file: ${file}. ${err}`);
+//       }
+//       if (buffer) {
+//         resolve(buffer);
+//       }
+//     });
+//   });
+// };
+
+logs.gzip = async function (file, data) {
+
+  const Buffer = await gzipP(data).catch((err) => {
+    reject(`Error zipping file ${file}. Reason: ${err}`);
+  });
+
+  if (!buffer) {
+    reject(`Error: Nothing to compress in file: ${file}.`);
+  }
+  resolve(buffer);
+};
+
+/**
+* @summary unzipP
+* @description promisified unzip function for unzipping logs
+* @param zipped data
+* @returns uzipped data in a buffer
+* @throws promise reject
+*/
+// logs.unzipP = function (sourceData) {
+//   return new Promise((resolve, reject) => {
+//     const inBuffer = Buffer.from(sourceData, 'base64');
+//     zlib.unzip(inBuffer, (err, outBuffer) => {
+//       if (!outBuffer) {
+//         reject('Error: Nothing to decompress in zipped file.');
+//       }
+//       if (err) {
+//         reject(`Error unzippin file. ${err}`);
+//       }
+//       if (outBuffer) {
+//         resolve(outBuffer.toString());
+//       }
+//     });
+//   });
+// };
+
+logs.unzip = async function (sourceData) {
+
+  const inBuffer = Buffer.from(sourceData, 'base64');
+  const outBuffer = await unzipP(inBuffer).catch((err) => {
+    reject(`Error unzipping file. Reason: ${err}`);
+  });
+
+  if (!outBuffer) {
+    reject('Error: Nothing to decompress in zipped file.');
+  }
+  resolve(outBuffer.toString());
+
 };
 
 /**
