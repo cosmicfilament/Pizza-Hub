@@ -1,6 +1,6 @@
 ./handlers/basketHandler.js
 ./handlers/customerHandler.js
-./handlers/defaultHandler.js
+./handlers/htmlHandler.js
 ./handlers/tokenHandler.js
 ./index.js
 ./lib/config.js

@@ -1,0 +1,34 @@
+<h1>New Customer Signup</h1>
+
+<div class="formWrapper">
+    <form id="customerCreateFrm" action="/customer/create" method="POST">
+        <div class="formError"></div>
+        <div class="inputWrapper">
+            <div class="inputLabel">First Name</div>
+            <input type="text" name="firstName" placeholder="John" />
+        </div>
+        <div class="inputWrapper">
+            <div class="inputLabel">Last Name</div>
+            <input type="text" name="lastName" placeholder="Smith" />
+        </div>
+        <div class="inputWrapper">
+            <div class="inputLabel">Address</div>
+            <input type="text" name="address" placeholder="Street Address, City, State 12345" />
+        </div>
+        <div class="inputWrapper">
+            <div class="inputLabel">Phone Number</div>
+            <input type="text" name="phone" placeholder="(415) 123-4567" />
+        </div>
+        <div class="inputWrapper">
+            <div class="inputLabel">Email Address:</div>
+            <input type="email" name="email" placeholder="john.smith@gmail.com" />
+        </div>
+        <div class="inputWrapper">
+            <div class="inputLabel">Choose a Password:</div>
+            <input type="password" name="password" value="Minimum of 8 characters.">
+        </div>
+        <div class="inputWrapper ctaWrapper">
+            <button type="submit" class="cta green">Get Started</button>
+        </div>
+    </form>
+</div>

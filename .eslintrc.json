@@ -11,10 +11,10 @@
     },
     "rules": {
         "indent": [
-            "error",
-            2,
+            "warn",
+            4,
             {
-                "switchCase": 0
+                "SwitchCase": 1
             }
         ],
         "linebreak-style": [
@@ -22,12 +22,15 @@
             "windows"
         ],
         "quotes": [
-            "error",
+            "warn",
             "single"
         ],
         "semi": [
             "error",
             "always"
+        ],
+        "no-console": [
+            "warn"
         ]
     }
 }

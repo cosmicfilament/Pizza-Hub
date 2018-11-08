@@ -7,7 +7,7 @@
 <dt><a href="#customerHandler.module_js">js</a></dt>
 <dd><p>customer CRUD module</p>
 </dd>
-<dt><a href="#defaultHandler.module_js">js</a></dt>
+<dt><a href="#htmlHandler.module_js">js</a></dt>
 <dd><p>error handler functions</p>
 </dd>
 <dt><a href="#tokenHandler.module_js">js</a></dt>
@@ -81,9 +81,9 @@ basket or cart crud functions. also handles menu request and payment
 ### js.create() ⇒
 Creates a new basket based on data in the reqObj.payload.
 
-**Kind**: static method of [<code>js</code>](#basketHandler.module_js)  
-**Summary**: Basket create function.  
-**Returns**: success msg or promise error on failure  
+**Kind**: static method of [<code>js</code>](#basketHandler.module_js)
+**Summary**: Basket create function.
+**Returns**: success msg or promise error on failure
 **Throws**:
 
 - promise error
@@ -109,9 +109,9 @@ Creates a new basket based on data in the reqObj.payload.
 ### js.read() ⇒
 Reads an existing basket based on data in the reqObj.queryStringObject
 
-**Kind**: static method of [<code>js</code>](#basketHandler.module_js)  
-**Summary**: Basket read function.  
-**Returns**: basket object on success or promise error on failure  
+**Kind**: static method of [<code>js</code>](#basketHandler.module_js)
+**Summary**: Basket read function.
+**Returns**: basket object on success or promise error on failure
 **Throws**:
 
 - promise error
@@ -137,9 +137,9 @@ Reads an existing basket based on data in the reqObj.queryStringObject
 ### js.update() ⇒
 Updates the # of order items in a basket. Can either add or delete order items.
 
-**Kind**: static method of [<code>js</code>](#basketHandler.module_js)  
-**Summary**: Basket update function.  
-**Returns**: success msg or promise error on failure  
+**Kind**: static method of [<code>js</code>](#basketHandler.module_js)
+**Summary**: Basket update function.
+**Returns**: success msg or promise error on failure
 **Throws**:
 
 - promise error
@@ -165,9 +165,9 @@ Updates the # of order items in a basket. Can either add or delete order items.
 ### js.delete() ⇒
 Deletes a basket with the basket id passed in the querystring
 
-**Kind**: static method of [<code>js</code>](#basketHandler.module_js)  
-**Summary**: Basket delete function.  
-**Returns**: success msg or promise error on failure  
+**Kind**: static method of [<code>js</code>](#basketHandler.module_js)
+**Summary**: Basket delete function.
+**Returns**: success msg or promise error on failure
 **Throws**:
 
 - promise error
@@ -193,17 +193,17 @@ Deletes a basket with the basket id passed in the querystring
 ### js.menu() ⇒
 no validation. allows anyone to read the menu
 
-**Kind**: static method of [<code>js</code>](#basketHandler.module_js)  
-**Summary**: menu function  
-**Returns**: the restaurant's menu  
+**Kind**: static method of [<code>js</code>](#basketHandler.module_js)
+**Summary**: menu function
+**Returns**: the restaurant's menu
 <a name="basketHandler.module_js.checkOut"></a>
 
 ### js.checkOut() ⇒
 validates the basket, totals it and sends it to stripe for payment processing. at the end it sends an email to the customer with a status message
 
-**Kind**: static method of [<code>js</code>](#basketHandler.module_js)  
-**Summary**: checkOut function  
-**Returns**: success msg or promise error on failure  
+**Kind**: static method of [<code>js</code>](#basketHandler.module_js)
+**Summary**: checkOut function
+**Returns**: success msg or promise error on failure
 **Throws**:
 
 - promise error
@@ -241,9 +241,9 @@ customer CRUD module
 ### js.create(reqObj) ⇒
 Creates a new customer based on data in the reqObj.payload. The phone number passed in is the key(file name) on the record.
 
-**Kind**: static method of [<code>js</code>](#customerHandler.module_js)  
-**Summary**: Customer create function.  
-**Returns**: JSON string with success msg or promise error on failure  
+**Kind**: static method of [<code>js</code>](#customerHandler.module_js)
+**Summary**: Customer create function.
+**Returns**: JSON string with success msg or promise error on failure
 **Throws**:
 
 - promise error
@@ -266,9 +266,9 @@ Creates a new customer based on data in the reqObj.payload. The phone number pas
 ### js.read(reqObj) ⇒
 Reads a customer record from the file db and returns it to the caller
 
-**Kind**: static method of [<code>js</code>](#customerHandler.module_js)  
-**Summary**: Customer read function  
-**Returns**: the customer record as a JSON string or promise error on failure  
+**Kind**: static method of [<code>js</code>](#customerHandler.module_js)
+**Summary**: Customer read function
+**Returns**: the customer record as a JSON string or promise error on failure
 **Throws**:
 
 - promise error
@@ -294,9 +294,9 @@ Reads a customer record from the file db and returns it to the caller
 ### js.update(reqObj) ⇒
 Allows the caller to update firstName, LastName, address, password and email on existing customer
 
-**Kind**: static method of [<code>js</code>](#customerHandler.module_js)  
-**Summary**: Customer update function.  
-**Returns**: success message or promise error on failure  
+**Kind**: static method of [<code>js</code>](#customerHandler.module_js)
+**Summary**: Customer update function.
+**Returns**: success message or promise error on failure
 **Throws**:
 
 - promise error
@@ -322,9 +322,9 @@ Allows the caller to update firstName, LastName, address, password and email on 
 ### js.delete(reqObj) ⇒
 Allows the caller to delete an existing customer record(file)
 
-**Kind**: static method of [<code>js</code>](#customerHandler.module_js)  
-**Summary**: Customer delete function.  
-**Returns**: success message or promise error on failure  
+**Kind**: static method of [<code>js</code>](#customerHandler.module_js)
+**Summary**: Customer delete function.
+**Returns**: success message or promise error on failure
 **Throws**:
 
 - promise error
@@ -345,30 +345,30 @@ Allows the caller to delete an existing customer record(file)
     </tr>  </tbody>
 </table>
 
-<a name="defaultHandler.module_js"></a>
+<a name="htmlHandler.module_js"></a>
 
 ## js
 error handler functions
 
 
-* [js](#defaultHandler.module_js)
-    * [.notAllowed()](#defaultHandler.module_js.notAllowed)
-    * [.notFound()](#defaultHandler.module_js.notFound)
+* [js](#htmlHandler.module_js)
+    * [.notAllowed()](#htmlHandler.module_js.notAllowed)
+    * [.notFound()](#htmlHandler.module_js.notFound)
 
-<a name="defaultHandler.module_js.notAllowed"></a>
+<a name="htmlHandler.module_js.notAllowed"></a>
 
 ### js.notAllowed()
 responds with 405 status code
 
-**Kind**: static method of [<code>js</code>](#defaultHandler.module_js)  
-**Summary**: notAllowed  
-<a name="defaultHandler.module_js.notFound"></a>
+**Kind**: static method of [<code>js</code>](#htmlHandler.module_js)
+**Summary**: notAllowed
+<a name="htmlHandler.module_js.notFound"></a>
 
 ### js.notFound()
 responds with 404 status code
 
-**Kind**: static method of [<code>js</code>](#defaultHandler.module_js)  
-**Summary**: notFound function  
+**Kind**: static method of [<code>js</code>](#htmlHandler.module_js)
+**Summary**: notFound function
 <a name="tokenHandler.module_js"></a>
 
 ## js
@@ -386,9 +386,9 @@ session token CRUD functions
 ### js.create(reqObj) ⇒
 Creates a new token based on data in the reqObj.payload.
 
-**Kind**: static method of [<code>js</code>](#tokenHandler.module_js)  
-**Summary**: Token create function.  
-**Returns**: JSON string with newToken ojbect on success or promise error on failure  
+**Kind**: static method of [<code>js</code>](#tokenHandler.module_js)
+**Summary**: Token create function.
+**Returns**: JSON string with newToken ojbect on success or promise error on failure
 **Throws**:
 
 - promise error
@@ -411,9 +411,9 @@ Creates a new token based on data in the reqObj.payload.
 ### js.read(reqObj) ⇒
 Reads an existing token based on the token id passed in the reqObj querystring
 
-**Kind**: static method of [<code>js</code>](#tokenHandler.module_js)  
-**Summary**: Token read function.  
-**Returns**: stringified token object on success or promise error on failure  
+**Kind**: static method of [<code>js</code>](#tokenHandler.module_js)
+**Summary**: Token read function.
+**Returns**: stringified token object on success or promise error on failure
 **Throws**:
 
 - promise error
@@ -436,9 +436,9 @@ Reads an existing token based on the token id passed in the reqObj querystring
 ### js.update(reqObj) ⇒
 Extends the token validity for another 30 minutes or conversely immediately invalidates the token
 
-**Kind**: static method of [<code>js</code>](#tokenHandler.module_js)  
-**Summary**: Token update function.  
-**Returns**: JSON string with success msg or promise error on failure  
+**Kind**: static method of [<code>js</code>](#tokenHandler.module_js)
+**Summary**: Token update function.
+**Returns**: JSON string with success msg or promise error on failure
 **Throws**:
 
 - promise error
@@ -461,9 +461,9 @@ Extends the token validity for another 30 minutes or conversely immediately inva
 ### js.delete(reqObj) ⇒
 Deletes a token with the token id passed in the querystring
 
-**Kind**: static method of [<code>js</code>](#tokenHandler.module_js)  
-**Summary**: Token delete function.  
-**Returns**: JSON string with success msg or promise error on failure  
+**Kind**: static method of [<code>js</code>](#tokenHandler.module_js)
+**Summary**: Token delete function.
+**Returns**: JSON string with success msg or promise error on failure
 **Throws**:
 
 - promise error
@@ -506,9 +506,9 @@ process the path in the request object and passes back a handle to the request h
 ### js~Router(the) ⇒
 Routes requests messages to the specific handler requested in the path
 
-**Kind**: inner method of [<code>js</code>](#router.module_js)  
-**Summary**: Message router object  
-**Returns**: a handle to a function that will handle the request  
+**Kind**: inner method of [<code>js</code>](#router.module_js)
+**Summary**: Message router object
+**Returns**: a handle to a function that will handle the request
 <table>
   <thead>
     <tr>
@@ -558,8 +558,8 @@ encapsulates the functionality of a basket or cart
 <a name="module_Basket class and enumerations..Basket"></a>
 
 ### Basket class and enumerations~Basket
-**Kind**: inner class of [<code>Basket class and enumerations</code>](#module_Basket class and enumerations)  
-**Summary**: Basket class  
+**Kind**: inner class of [<code>Basket class and enumerations</code>](#module_Basket class and enumerations)
+**Summary**: Basket class
 
 * [~Basket](#module_Basket class and enumerations..Basket)
     * [new Basket()](#new_module_Basket class and enumerations..Basket_new)
@@ -587,22 +587,22 @@ Encapsulates a single cart or basket
 #### basket.total
 iterates thru the selection and choices summing up the total price
 
-**Kind**: instance property of [<code>Basket</code>](#module_Basket class and enumerations..Basket)  
-**Summary**: getter total method  
+**Kind**: instance property of [<code>Basket</code>](#module_Basket class and enumerations..Basket)
+**Summary**: getter total method
 <a name="module_Basket class and enumerations..Basket+init"></a>
 
 #### basket.init()
 Basket init method
 
-**Kind**: instance method of [<code>Basket</code>](#module_Basket class and enumerations..Basket)  
-**Summary**: init  
+**Kind**: instance method of [<code>Basket</code>](#module_Basket class and enumerations..Basket)
+**Summary**: init
 <a name="module_Basket class and enumerations..Basket+parseOrderSelections"></a>
 
 #### basket.parseOrderSelections(orderSelections)
 parses the chain of json arrays and objects in the menu.json file
 
-**Kind**: instance method of [<code>Basket</code>](#module_Basket class and enumerations..Basket)  
-**Summary**: parseOrderSelections  
+**Kind**: instance method of [<code>Basket</code>](#module_Basket class and enumerations..Basket)
+**Summary**: parseOrderSelections
 <table>
   <thead>
     <tr>
@@ -621,9 +621,9 @@ parses the chain of json arrays and objects in the menu.json file
 #### basket.createId() ⇒
 creates a random string comprised of the customer phone number and a random 10 digit number
 
-**Kind**: instance method of [<code>Basket</code>](#module_Basket class and enumerations..Basket)  
-**Summary**: createId method  
-**Returns**: new basket id  
+**Kind**: instance method of [<code>Basket</code>](#module_Basket class and enumerations..Basket)
+**Summary**: createId method
+**Returns**: new basket id
 **Throws**:
 
 - nothing
@@ -633,37 +633,37 @@ creates a random string comprised of the customer phone number and a random 10 d
 #### basket.validateId()
 Basket validateId method
 
-**Kind**: instance method of [<code>Basket</code>](#module_Basket class and enumerations..Basket)  
-**Summary**: validateId method  
+**Kind**: instance method of [<code>Basket</code>](#module_Basket class and enumerations..Basket)
+**Summary**: validateId method
 <a name="module_Basket class and enumerations..Basket+validatePhone"></a>
 
 #### basket.validatePhone()
 Basket validatePhone method
 
-**Kind**: instance method of [<code>Basket</code>](#module_Basket class and enumerations..Basket)  
-**Summary**: validatePhone method  
+**Kind**: instance method of [<code>Basket</code>](#module_Basket class and enumerations..Basket)
+**Summary**: validatePhone method
 <a name="module_Basket class and enumerations..Basket+validateorderSelections"></a>
 
 #### basket.validateorderSelections()
 just makes sure that the array is not empty
 
-**Kind**: instance method of [<code>Basket</code>](#module_Basket class and enumerations..Basket)  
-**Summary**: validateorderSelections method  
+**Kind**: instance method of [<code>Basket</code>](#module_Basket class and enumerations..Basket)
+**Summary**: validateorderSelections method
 <a name="module_Basket class and enumerations..Basket+validateTimeStamp"></a>
 
 #### basket.validateTimeStamp()
 Basket validateTimeStamp method
 
-**Kind**: instance method of [<code>Basket</code>](#module_Basket class and enumerations..Basket)  
-**Summary**: validateTimeStamp method  
+**Kind**: instance method of [<code>Basket</code>](#module_Basket class and enumerations..Basket)
+**Summary**: validateTimeStamp method
 <a name="module_Basket class and enumerations..Basket+validateBasket"></a>
 
 #### basket.validateBasket(skipId) ⇒
 validates the basket object properties optionally skipping the id property, when not created yet.
 
-**Kind**: instance method of [<code>Basket</code>](#module_Basket class and enumerations..Basket)  
-**Summary**: validateBasket method  
-**Returns**: true if successfull or the name of the first property to fail on error  
+**Kind**: instance method of [<code>Basket</code>](#module_Basket class and enumerations..Basket)
+**Summary**: validateBasket method
+**Returns**: true if successfull or the name of the first property to fail on error
 **Throws**:
 
 - nothing
@@ -686,16 +686,16 @@ validates the basket object properties optionally skipping the id property, when
 #### Basket.timeStamp()
 Basket timeStamp method
 
-**Kind**: static method of [<code>Basket</code>](#module_Basket class and enumerations..Basket)  
-**Summary**: timeStamp  
+**Kind**: static method of [<code>Basket</code>](#module_Basket class and enumerations..Basket)
+**Summary**: timeStamp
 <a name="module_Basket class and enumerations..Basket.clone"></a>
 
 #### Basket.clone(any) ⇒
 Creates a new basket based on the properties passed into it.
 
-**Kind**: static method of [<code>Basket</code>](#module_Basket class and enumerations..Basket)  
-**Summary**: Basket clone method  
-**Returns**: a new basket object  
+**Kind**: static method of [<code>Basket</code>](#module_Basket class and enumerations..Basket)
+**Summary**: Basket clone method
+**Returns**: a new basket object
 **Throws**:
 
 - nothing
@@ -738,8 +738,8 @@ encapsulates customer functionality
 <a name="module_Customer class and enumerations..Customer"></a>
 
 ### Customer class and enumerations~Customer
-**Kind**: inner class of [<code>Customer class and enumerations</code>](#module_Customer class and enumerations)  
-**Summary**: Customer class  
+**Kind**: inner class of [<code>Customer class and enumerations</code>](#module_Customer class and enumerations)
+**Summary**: Customer class
 
 * [~Customer](#module_Customer class and enumerations..Customer)
     * [new Customer()](#new_module_Customer class and enumerations..Customer_new)
@@ -764,30 +764,30 @@ Encapsulates what it is to be a customer
 <a name="module_Customer class and enumerations..Customer+init"></a>
 
 #### customer.init()
-**Kind**: instance method of [<code>Customer</code>](#module_Customer class and enumerations..Customer)  
-**Summary**: Customer init method  
+**Kind**: instance method of [<code>Customer</code>](#module_Customer class and enumerations..Customer)
+**Summary**: Customer init method
 <a name="module_Customer class and enumerations..Customer+validateFirstName"></a>
 
 #### customer.validateFirstName()
 Customer validateFirstName method
 
-**Kind**: instance method of [<code>Customer</code>](#module_Customer class and enumerations..Customer)  
-**Summary**: validateFirstName  
+**Kind**: instance method of [<code>Customer</code>](#module_Customer class and enumerations..Customer)
+**Summary**: validateFirstName
 <a name="module_Customer class and enumerations..Customer+validateLastName"></a>
 
 #### customer.validateLastName()
 Customer validateLastName method
 
-**Kind**: instance method of [<code>Customer</code>](#module_Customer class and enumerations..Customer)  
-**Summary**: validateLastName  
+**Kind**: instance method of [<code>Customer</code>](#module_Customer class and enumerations..Customer)
+**Summary**: validateLastName
 <a name="module_Customer class and enumerations..Customer+validateEmail"></a>
 
 #### customer.validateEmail() ⇒
 method to validate the email address passed in
 
-**Kind**: instance method of [<code>Customer</code>](#module_Customer class and enumerations..Customer)  
-**Summary**: validateEmail  
-**Returns**: true on success or an error string if failed.  
+**Kind**: instance method of [<code>Customer</code>](#module_Customer class and enumerations..Customer)
+**Summary**: validateEmail
+**Returns**: true on success or an error string if failed.
 **Throws**:
 
 - nothing
@@ -797,15 +797,15 @@ method to validate the email address passed in
 #### customer.validatePhone()
 Customer validatePhone method
 
-**Kind**: instance method of [<code>Customer</code>](#module_Customer class and enumerations..Customer)  
-**Summary**: validatePhone  
+**Kind**: instance method of [<code>Customer</code>](#module_Customer class and enumerations..Customer)
+**Summary**: validatePhone
 <a name="module_Customer class and enumerations..Customer+validatePassword"></a>
 
 #### customer.validatePassword()
 validates the password min length only. works on the hashed or clear text password
 
-**Kind**: instance method of [<code>Customer</code>](#module_Customer class and enumerations..Customer)  
-**Summary**: validatePassword  
+**Kind**: instance method of [<code>Customer</code>](#module_Customer class and enumerations..Customer)
+**Summary**: validatePassword
 **Todo**
 
 - rewrite this so that if the pwd i clear text we can do better validation
@@ -815,16 +815,16 @@ validates the password min length only. works on the hashed or clear text passwo
 #### customer.validateAddress()
 Customer validateAddress method
 
-**Kind**: instance method of [<code>Customer</code>](#module_Customer class and enumerations..Customer)  
-**Summary**: validateAddress method  
+**Kind**: instance method of [<code>Customer</code>](#module_Customer class and enumerations..Customer)
+**Summary**: validateAddress method
 <a name="module_Customer class and enumerations..Customer+validateCustomer"></a>
 
 #### customer.validateCustomer() ⇒
 method to validate the complete customer object using the above helper methods
 
-**Kind**: instance method of [<code>Customer</code>](#module_Customer class and enumerations..Customer)  
-**Summary**: validateCustomer  
-**Returns**: true if successfull or the name of the first property to fail on error  
+**Kind**: instance method of [<code>Customer</code>](#module_Customer class and enumerations..Customer)
+**Summary**: validateCustomer
+**Returns**: true if successfull or the name of the first property to fail on error
 **Throws**:
 
 - nothing
@@ -834,9 +834,9 @@ method to validate the complete customer object using the above helper methods
 #### Customer.clone(clones) ⇒
 clones a Customer from customer a customer like object
 
-**Kind**: static method of [<code>Customer</code>](#module_Customer class and enumerations..Customer)  
-**Summary**: clone  
-**Returns**: a new customer object  
+**Kind**: static method of [<code>Customer</code>](#module_Customer class and enumerations..Customer)
+**Summary**: clone
+**Returns**: a new customer object
 **Throws**:
 
 - nothing
@@ -859,8 +859,8 @@ clones a Customer from customer a customer like object
 #### Customer.createPasswordHash(clear)
 Customer createPasswordHash method that creates a hash on the value passed in
 
-**Kind**: static method of [<code>Customer</code>](#module_Customer class and enumerations..Customer)  
-**Summary**: createPasswordHash  
+**Kind**: static method of [<code>Customer</code>](#module_Customer class and enumerations..Customer)
+**Summary**: createPasswordHash
 <table>
   <thead>
     <tr>
@@ -895,8 +895,8 @@ classes that map the menu items from the menu.json file. Used by the basketModul
 <a name="module_orderItem module..MenuTitle"></a>
 
 ### orderItem module~MenuTitle
-**Kind**: inner class of [<code>orderItem module</code>](#module_orderItem module)  
-**Summary**: MenuTitle class  
+**Kind**: inner class of [<code>orderItem module</code>](#module_orderItem module)
+**Summary**: MenuTitle class
 
 * [~MenuTitle](#module_orderItem module..MenuTitle)
     * [new MenuTitle()](#new_module_orderItem module..MenuTitle_new)
@@ -910,9 +910,9 @@ restaurant name in the menu.json file
 <a name="module_orderItem module..MenuTitle.menuTitle"></a>
 
 #### MenuTitle.menuTitle ⇒
-**Kind**: static property of [<code>MenuTitle</code>](#module_orderItem module..MenuTitle)  
-**Summary**: getter menuTitle  
-**Returns**: title  
+**Kind**: static property of [<code>MenuTitle</code>](#module_orderItem module..MenuTitle)
+**Summary**: getter menuTitle
+**Returns**: title
 **Throws**:
 
 - nothing
@@ -920,8 +920,8 @@ restaurant name in the menu.json file
 <a name="module_orderItem module..OrderSelection"></a>
 
 ### orderItem module~OrderSelection
-**Kind**: inner class of [<code>orderItem module</code>](#module_orderItem module)  
-**Summary**: OrderSelection class  
+**Kind**: inner class of [<code>orderItem module</code>](#module_orderItem module)
+**Summary**: OrderSelection class
 
 * [~OrderSelection](#module_orderItem module..OrderSelection)
     * [new OrderSelection()](#new_module_orderItem module..OrderSelection_new)
@@ -939,8 +939,8 @@ wraps the selection portion of the menu.json file
 #### orderSelection.total
 totals all of the prices for each choice in a selection
 
-**Kind**: instance property of [<code>OrderSelection</code>](#module_orderItem module..OrderSelection)  
-**Summary**: getter total  
+**Kind**: instance property of [<code>OrderSelection</code>](#module_orderItem module..OrderSelection)
+**Summary**: getter total
 **Throws**:
 
 - nothing
@@ -950,8 +950,8 @@ totals all of the prices for each choice in a selection
 #### orderSelection.init()
 creates a selection and delegates down to the choice for its creation
 
-**Kind**: instance method of [<code>OrderSelection</code>](#module_orderItem module..OrderSelection)  
-**Summary**: init  
+**Kind**: instance method of [<code>OrderSelection</code>](#module_orderItem module..OrderSelection)
+**Summary**: init
 **Throws**:
 
 - nothing
@@ -961,8 +961,8 @@ creates a selection and delegates down to the choice for its creation
 #### orderSelection.parseChoices()
 parses the choices from the menu.json file
 
-**Kind**: instance method of [<code>OrderSelection</code>](#module_orderItem module..OrderSelection)  
-**Summary**: parseChoices  
+**Kind**: instance method of [<code>OrderSelection</code>](#module_orderItem module..OrderSelection)
+**Summary**: parseChoices
 **Throws**:
 
 - nothing
@@ -970,8 +970,8 @@ parses the choices from the menu.json file
 <a name="module_orderItem module..Choice"></a>
 
 ### orderItem module~Choice
-**Kind**: inner class of [<code>orderItem module</code>](#module_orderItem module)  
-**Summary**: Choice class  
+**Kind**: inner class of [<code>orderItem module</code>](#module_orderItem module)
+**Summary**: Choice class
 <a name="new_module_orderItem module..Choice_new"></a>
 
 #### new Choice()
@@ -985,7 +985,7 @@ class that wraps a single choice from the menu.json file
 ## Token
 Encapsulates what it is to be a validation Token
 
-**Summary**: Token class  
+**Summary**: Token class
 
 * [Token](#module_Token)
     * _instance_
@@ -1002,16 +1002,16 @@ Encapsulates what it is to be a validation Token
 <a name="module_Token+init"></a>
 
 ### token.init()
-**Kind**: instance method of [<code>Token</code>](#module_Token)  
-**Summary**: Token init method  
+**Kind**: instance method of [<code>Token</code>](#module_Token)
+**Summary**: Token init method
 <a name="module_Token+updateExpiry"></a>
 
 ### token.updateExpiry(extend) ⇒
 Either updates the expiration by 30 minutes or immediately revokes the token
 
-**Kind**: instance method of [<code>Token</code>](#module_Token)  
-**Summary**: Token updateExpiry method  
-**Returns**: a new Date object  
+**Kind**: instance method of [<code>Token</code>](#module_Token)
+**Summary**: Token updateExpiry method
+**Returns**: a new Date object
 **Throws**:
 
 - nothing
@@ -1034,30 +1034,30 @@ Either updates the expiration by 30 minutes or immediately revokes the token
 ### token.validateId()
 token validateId method
 
-**Kind**: instance method of [<code>Token</code>](#module_Token)  
-**Summary**: validateId  
+**Kind**: instance method of [<code>Token</code>](#module_Token)
+**Summary**: validateId
 <a name="module_Token+validatePhone"></a>
 
 ### token.validatePhone()
 token validatePhone method
 
-**Kind**: instance method of [<code>Token</code>](#module_Token)  
-**Summary**: validatePhone  
+**Kind**: instance method of [<code>Token</code>](#module_Token)
+**Summary**: validatePhone
 <a name="module_Token+validateTokenExpiration"></a>
 
 ### token.validateTokenExpiration()
 token validateExpiration method
 
-**Kind**: instance method of [<code>Token</code>](#module_Token)  
-**Summary**: validateTokenExpiration  
+**Kind**: instance method of [<code>Token</code>](#module_Token)
+**Summary**: validateTokenExpiration
 <a name="module_Token+validateToken"></a>
 
 ### token.validateToken() ⇒
 validates the complete token object
 
-**Kind**: instance method of [<code>Token</code>](#module_Token)  
-**Summary**: validateToken  
-**Returns**: true on success or the string name of the failed property on failure  
+**Kind**: instance method of [<code>Token</code>](#module_Token)
+**Summary**: validateToken
+**Returns**: true on success or the string name of the failed property on failure
 **Throws**:
 
 - nothing
@@ -1067,9 +1067,9 @@ validates the complete token object
 ### Token.clone(an) ⇒
 Creates a new Token based on the properties passed into it. Can end up with less or more properties than the canonical Token.
 
-**Kind**: static method of [<code>Token</code>](#module_Token)  
-**Summary**: Token clone method  
-**Returns**: a new token object  
+**Kind**: static method of [<code>Token</code>](#module_Token)
+**Summary**: Token clone method
+**Returns**: a new token object
 **Throws**:
 
 - nothing
@@ -1092,9 +1092,9 @@ Creates a new Token based on the properties passed into it. Can end up with less
 ### Token.createTokenString() ⇒
 Creates a new token id
 
-**Kind**: static method of [<code>Token</code>](#module_Token)  
-**Summary**: Token CreateTokenString method  
-**Returns**: a new token object  
+**Kind**: static method of [<code>Token</code>](#module_Token)
+**Summary**: Token CreateTokenString method
+**Returns**: a new token object
 **Throws**:
 
 - nothing
@@ -1124,9 +1124,9 @@ functions for loggin and compressing and uncompressing log files
 ### js module~gzipP(file) ⇒
 promisified gzip function for zipping log files
 
-**Kind**: inner method of [<code>js module</code>](#logs.module_js module)  
-**Summary**: gzipP function  
-**Returns**: gzipped buffer  
+**Kind**: inner method of [<code>js module</code>](#logs.module_js module)
+**Summary**: gzipP function
+**Returns**: gzipped buffer
 **Throws**:
 
 - promise reject
@@ -1149,9 +1149,9 @@ promisified gzip function for zipping log files
 ### js module~unzipP(zipped) ⇒
 promisified unzip function for unzipping logs
 
-**Kind**: inner method of [<code>js module</code>](#logs.module_js module)  
-**Summary**: unzipP  
-**Returns**: uzipped data in a buffer  
+**Kind**: inner method of [<code>js module</code>](#logs.module_js module)
+**Summary**: unzipP
+**Returns**: uzipped data in a buffer
 **Throws**:
 
 - promise reject
@@ -1179,9 +1179,9 @@ send email thru mailGun infrastructure
 ### .module.exports ⇒ ⏏
 sends email status to customers
 
-**Kind**: static property of [<code>js</code>](#mailGun.module_js)  
-**Summary**: mailGun.js  
-**Returns**: status  
+**Kind**: static property of [<code>js</code>](#mailGun.module_js)
+**Summary**: mailGun.js
+**Returns**: status
 **Throws**:
 
 - promise reject
@@ -1214,9 +1214,9 @@ stripe payments module
 ### .module.exports ⇒ ⏏
 processes payment via stripe.com
 
-**Kind**: static property of [<code>js</code>](#stripe.module_js)  
-**Summary**: stripe.js  
-**Returns**: success or fail  
+**Kind**: static property of [<code>js</code>](#stripe.module_js)
+**Summary**: stripe.js
+**Returns**: success or fail
 **Throws**:
 
 - promise reject
@@ -1236,4 +1236,3 @@ processes payment via stripe.com
 </td>
     </tr>  </tbody>
 </table>
-

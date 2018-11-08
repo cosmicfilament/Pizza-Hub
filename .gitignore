@@ -2,9 +2,9 @@
 **/*.log
 **/*.gz.b64
 # database
-db/basket/**
-db/customer/**
-db/token/**
+**/db/basket/**
+**/db/customer/**
+**/db/token/**
 # Dependency directories
 node_modules/
 # Optional npm cache directory
