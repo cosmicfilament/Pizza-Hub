@@ -9,7 +9,7 @@
 
 const fDb = require('./../lib/fileDb');
 const helpers = require('./../utils/helpers');
-const utils = require('./../utils/handlerUtils');
+const { validateCustomerToken, ResponseObj } = require('./../utils/handlerUtils');
 const { Customer } = require('./../Models/customerModel');
 
 module.exports = {
@@ -43,11 +43,9 @@ module.exports = {
         catch (error) {
             throw (helpers.promiseError(409, `Could not create new customer record ${cust.phone}. Reason: ${error.message}`));
         }
-        return {
-            'content_type': 'application/json',
-            'statusCode': '200',
-            'payload': JSON.stringify(`Succeeded in creating file record for customer:  ${cust.phone}.`)
-        };
+        const payload = JSON.stringify(`Succeeded in creating file record for customer:  ${cust.phone}.`);
+
+        return new ResponseObj(payload, 'customer/create');
     },
     /**
     * @async
@@ -70,7 +68,7 @@ module.exports = {
         }
 
         // validate the token passed in on the headers
-        result = await utils.validateCustomerToken(reqObj.headers.token);
+        result = await validateCustomerToken(reqObj.headers.token);
         if (result !== true) {
             throw (helpers.promiseError(400, result));
         }
@@ -88,11 +86,8 @@ module.exports = {
         // don't transmit the pasword even if it is a hash
         result.password = '';
 
-        return {
-            'content_type': 'application/json',
-            'statusCode': '200',
-            'payload': JSON.stringify(result)
-        };
+        const payload = JSON.stringify(result);
+        return new ResponseObj(payload, 'customer/read');
     },
     /**
     * @async
@@ -113,7 +108,7 @@ module.exports = {
         }
 
         // validate the token passed in on the headers
-        result = await utils.validateCustomerToken(reqObj.headers.token);
+        result = await validateCustomerToken(reqObj.headers.token);
         if (result !== true) {
             throw (helpers.promiseError(400, result));
         }
@@ -197,11 +192,9 @@ module.exports = {
             throw (helpers.promiseError(500, `Error updating the file record for the customer: ${custToUpdate.phone}. ${error.message}`));
         }
 
-        return {
-            'content_type': 'application/json',
-            'statusCode': '200',
-            'payload': JSON.stringify(`Successfully update the customer: ${custToUpdate.phone}.`)
-        };
+        const payload = JSON.stringify(`Successfully update the customer: ${custToUpdate.phone}.`);
+
+        return new ResponseObj(payload, 'customer/update');
     },
     /**
     * @async
@@ -222,7 +215,7 @@ module.exports = {
         }
 
         // validate the token passed in on the headers
-        result = await utils.validateCustomerToken(reqObj.headers.token);
+        result = await validateCustomerToken(reqObj.headers.token);
         if (result !== true) {
             throw (helpers.promiseError(400, result));
         }
@@ -237,10 +230,7 @@ module.exports = {
             throw (helpers.promiseError(409, `Error deleting the file record for the customer: ${cust.phone}. Reason: ${error.message}`));
         }
 
-        return {
-            'content_type': 'application/json',
-            'statusCode': '200',
-            'payload': JSON.stringify(`Successfully deleted the customer: ${cust.phone}.`)
-        };
+        const payload = JSON.stringify(`Successfully deleted the customer: ${cust.phone}.`);
+        return new ResponseObj(payload, 'customer/delete');
     },
 };

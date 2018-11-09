@@ -9,7 +9,8 @@
 const app = {};
 
 app.config = {
-    'sessionToken': false
+    'sessionToken': false,
+    'firstName': ''
 };
 
 app.RequestObj = function () {
@@ -110,12 +111,14 @@ app.xhrRequest = (reqObj) => {
             }
             else {
                 reject(new app.ResponseObj(
-                    xhr.status, xhr.statusText)
+                    xhr.status, xhr.statusText,
+                    JSON.parse(xhr.responseText))
                 );
             }
         };
         xhr.onerror = () => reject(new app.ResponseObj(
-            xhr.status, xhr.statusText)
+            xhr.status, xhr.statusText,
+            JSON.parse(xhr.responseText))
         );
         const payloadStr = JSON.stringify(reqObj.getPayload());
         xhr.send(payloadStr);
@@ -157,7 +160,7 @@ app.bindForms = () => {
                 .then(
                     (resObj) => { //fullfilled
                         console.log(`Request successful: ${JSON.stringify(resObj)}`);
-                        app.formResponseProcessor(formId, reqObj);
+                        app.formResponseProcessor(formId, reqObj, resObj);
                     },
                     (resObj) => { // rejected
                         if (resObj.status === 403) {
@@ -167,7 +170,7 @@ app.bindForms = () => {
                         else { // rejected due to error
                             console.log(`Request rejected: ${JSON.stringify(resObj)}`);
                             // Set the formError field with the error text and then unhide it
-                            document.querySelector("#" + formId + " .formError").innerHTML = resObj.responseText;
+                            document.querySelector("#" + formId + " .formError").innerHTML = resObj.getResponsePayload();
                             document.querySelector("#" + formId + " .formError").style.display = 'block';
                         }
                     })
@@ -181,25 +184,24 @@ app.bindForms = () => {
 };
 
 // called on successful completion of xhr request
-app.formResponseProcessor = (formId, reqObj) => {
+app.formResponseProcessor = (formId, previousReqObj, resObj) => {
 
     /**********   Customer Create Response   **********/
-
     if (formId === 'customerCreateFrm') {
-        // automatically log him in using the data from the reqObj
-        const ccReqObj = new app.RequestObj();
-        ccReqObj.setPath('token/create')
+        // automatically log him in using the data from the previousReqObj
+        const reqObj = new app.RequestObj();
+        reqObj.setPath('token/create')
             .setMethod('POST')
-            .addToPayload('phone', reqObj.getFromPayload('phone'))
-            .addToPayload('password', reqObj.getFromPayload('password'));
+            .addToPayload('phone', previousReqObj.getFromPayload('phone'))
+            .addToPayload('password', previousReqObj.getFromPayload('password'));
         // send the message to the server
-        app.xhrRequest(ccReqObj)
+        app.xhrRequest(reqObj)
             .then(
                 (ccResObj) => { //fullfilled
                     console.log(`Response successful: ${JSON.stringify(ccResObj)}`);
                     // should be a new token sending complete token object from the
                     // server in case we want to do something with it later
-                    app.setSessionToken(ccResObj.getResponsePayload().id);
+                    app.setSessionToken(ccResObj.getResponsePayload().id, ccResObj.getResponsePayload().firstName);
                     window.location = 'home';
                 })
             .catch((error) => {
@@ -212,17 +214,16 @@ app.formResponseProcessor = (formId, reqObj) => {
                 document.querySelector("#" + formId + " .formError").style.display = 'block';
             });
     }
-
     /**********   End Customer Create Response  **********/
 
-
-
-
-    // case 'sessionCreateFrm':
-    // case 'customerEditFrm_1':
-    // case 'customerEditFrm_2':
-    // case 'customerEditFrm_3':
+    /**********   Session Create Response   **********/
+    if (formId === 'sessionCreateFrm') {
+        app.setSessionToken(resObj.getResponsePayload().id, resObj.getResponsePayload().firstName);
+        window.location = 'home';
+    }
+    /**********   End Session Create Response  **********/
 };
+
 // Renew the token
 app.renewToken = () => {
 
@@ -238,7 +239,7 @@ app.renewToken = () => {
         return app.xhrRequest(reqObj)
             .then(
                 (resObj) => { //fullfilled
-                    app.setSessionToken(resObj.getResponsePayload().id);
+                    app.setSessionToken(resObj.getResponsePayload().id, resObj.getResponsePayload().firstName);
                 })
             .catch((error) => { console.log(`Token renewal error: ${error}`); });
     }
@@ -286,9 +287,13 @@ app.logOutCustomer = function (redirectCustomer = true) {
 app.getSessionToken = function () {
 
     const tokenString = localStorage.getItem('token');
+    const firstName = localStorage.getItem('firstName');
+
     if (typeof (tokenString) == 'string') {
         try {
+
             app.config.sessionToken = JSON.parse(tokenString);
+            app.config.firstName = JSON.parse(firstName);
 
             if (app.config.sessionToken === false) {
                 app.setLoggedInClass(false);
@@ -306,24 +311,33 @@ app.getSessionToken = function () {
 
 // Set (or remove) the loggedIn class from the body
 app.setLoggedInClass = function (add) {
+
     const target = document.querySelector("body");
+    const greeting = document.querySelector(".greeting");
+    const firstName = app.config.firstName;
+
     if (add) {
         target.classList.add('loggedIn');
+        greeting.innerHTML = `Hello ${firstName}. Welcome Back!`;
     }
     else {
         target.classList.remove('loggedIn');
+        greeting.innerHTML = '';
     }
 };
 
 // Set the session token in the app.config object as well as localstorage
-app.setSessionToken = (token) => {
+app.setSessionToken = (token, firstName = '') => {
 
     console.log(`Session Token set to: ${JSON.stringify(token)}`);
 
     // save the session token here
     app.config.sessionToken = token;
+    app.config.firstName = firstName;
+
     // and in localStorage
     localStorage.setItem('token', JSON.stringify(token));
+    localStorage.setItem('firstName', JSON.stringify(firstName));
     // update the body (view)
     app.setLoggedInClass((token === false) ? false : true);
 };

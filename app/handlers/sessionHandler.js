@@ -11,6 +11,7 @@ const readFileP = require('util').promisify(require('fs').readFile);
 const helpers = require('../utils/helpers');
 const logs = require('../utils/logs');
 const { BASE_DIR } = require('../lib/config');
+const { ResponseObj } = require('./../utils/handlerUtils');
 
 // file in current or target directory
 const makeFName = (relativePath) => {
@@ -32,21 +33,13 @@ module.exports = {
         const body = factory.getTemplate('menu');
         const payloadStr = factory.addBodyToLayout('menu', body);
 
-        const resObj = {
-            'content_type': 'text/html',
-            'statusCode': '200',
-            'payload': payloadStr
-        };
-        return Promise.resolve(resObj);
+        return new ResponseObj(payloadStr, 'session/home', 'text/html');
     },
 
     public: async function (reqObj) {
 
-        const resObj = {
-            'content_type': '',
-            'statusCode': '200',
-            'payload': ''
-        };
+        const resObj = new ResponseObj();
+        resObj.setSender('session/public');
 
         // what the request wants is a file (fileName) in a subdirectory (subDir).
         let strToFind = new RegExp(/^public\/(img|js|css)\/(.+)/);
@@ -55,117 +48,88 @@ module.exports = {
 
         switch (fileType) {
             case 'css':
-                resObj.content_type = 'text/css';
+                resObj.setSender('session/public/css');
+                resObj.setContentType('text/css');
                 break;
             case 'js':
-                resObj.content_type = 'text/javascript';
+                resObj.setSender('session/public/js');
+                resObj.setContentType('text/javascript');
                 break;
             case 'jpg':
             case 'jpeg':
-                resObj.content_type = 'image/jpeg';
+                resObj.setSender('session/public/jpg');
+                resObj.setContentType('image/jpeg');
                 break;
             case 'png':
-                resObj.content_type = 'image/png';
+                resObj.setSender('session/public/png');
+                resObj.setContentType('image/png');
                 break;
             case 'gif':
-                resObj.content_type = 'image/gif';
+                resObj.setSender('session/public/gif');
+                resObj.setContentType('image/gif');
                 break;
             case 'ico':
-                resObj.content_type = 'image/x-icon';
+                resObj.setSender('session/public/ico');
+                resObj.setContentType('image/x-icon');
                 break;
-            // case 'html':
-            //   resObj.content_type = 'text/html';
-            //   break;
             default:
                 throw (helpers.promiseError(500, `Could not decode file type: ${fileType} for file: ${fileName}.`));
         }
         strFile = makeFName(relativePath);
-        resObj.payload = await readFileP(strFile).catch((error) => {
+        const payload = await readFileP(strFile).catch((error) => {
             throw (helpers.promiseError(500, `Could not read file: ${fileName}. Reason: ${error.message}`));
         });
-        return Promise.resolve(resObj);
+
+        return resObj.setPayload(payload);
     },
-    login: () => {
+    login: async function () {
         const body = factory.getTemplate('sessionCreateFrm');
         const payloadStr = factory.addBodyToLayout('sessionCreateFrm', body);
 
-        const resObj = {
-            'content_type': 'text/html',
-            'statusCode': '200',
-            'payload': payloadStr
-        };
-        return Promise.resolve(resObj);
+        return new ResponseObj(payloadStr, 'session/login', 'text/html');
     },
-    logout: () => {
+    logout: async function () {
         const body = factory.getTemplate('sessionDeleted');
         const payloadStr = factory.addBodyToLayout('sessionDeleted', body);
 
-        const resObj = {
-            'content_type': 'text/html',
-            'statusCode': '200',
-            'payload': payloadStr
-        };
-        return Promise.resolve(resObj);
+        return new ResponseObj(payloadStr, 'session/logout', 'text/html');
     },
-    customerCreate: () => {
+    customerCreate: async function () {
 
         const body = factory.getTemplate('customerCreateFrm');
         const payloadStr = factory.addBodyToLayout('customerCreateFrm', body);
 
-        const resObj = {
-            'content_type': 'text/html',
-            'statusCode': '200',
-            'payload': payloadStr
-        };
-        return Promise.resolve(resObj);
+        return new ResponseObj(payloadStr, 'session/customerCreate', 'text/html');
     },
-    customerEdit: () => {
+    customerEdit: async function () {
 
         const body = factory.getTemplate('customerEditFrm');
         const payloadStr = factory.addBodyToLayout('customerEditFrm', body);
 
-        const resObj = {
-            'content_type': 'text/html',
-            'statusCode': '200',
-            'payload': payloadStr
-        };
-        return Promise.resolve(resObj);
+        return new ResponseObj(payloadStr, 'session/customerEdit', 'text/html');
     },
-    customerDeleted: () => {
+    customerDeleted: async function () {
 
         const body = factory.getTemplate('customerDeleted');
         const payloadStr = factory.addBodyToLayout('customerDeleted', body);
 
-        const resObj = {
-            'content_type': 'text/html',
-            'statusCode': '200',
-            'payload': payloadStr
-        };
-        return Promise.resolve(resObj);
+        return new ResponseObj(payloadStr, 'session/customerDeleted', 'text/html');
     },
     /**
          * @summary notAllowed
          * @description  responds with 405 status code
     */
-    notAllowed: () => {
-        const resObj = {
-            'content_type': 'application/json',
-            'statusCode': '405',
-            'payload': JSON.stringify({ 'name': '405 - Not Allowed.' })
-        };
-        return Promise.resolve(resObj);
+    notAllowed: async function () {
+        const payloadStr = JSON.stringify({ 'name': '405 - Not Allowed.' });
+        return new ResponseObj(payloadStr, 'session/notAllowed', 'application/json', '405');
     },
 
     /**
          * @summary notFound function
          * @description  responds with 404 status code
     */
-    notFound: () => {
-        const resObj = {
-            'content_type': 'application/json',
-            'statusCode': '404',
-            'payload': JSON.stringify({ 'name': '404 - Not Found.' })
-        };
-        return Promise.resolve(resObj);
+    notFound: async function () {
+        const payloadStr = JSON.stringify({ 'name': '404 - Not Allowed.' });
+        return new ResponseObj(payloadStr, 'session/notFound', 'application/json', '404');
     }
 };

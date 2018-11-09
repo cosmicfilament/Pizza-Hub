@@ -96,6 +96,12 @@ h5{
   font-size: 11px;
 }
 
+.header ul li.greeting{
+  font-weight: 600 !important;
+  font-size: 18px;
+  color: #ff8040;
+}
+
 .header ul li.loggedIn{
   display: none;
 }

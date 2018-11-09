@@ -95,10 +95,11 @@ const _server = (req, res) => {
             // On success: process the request and return a message or data response
             handler(requestObj, res)
                 .then((responseObj) => {
-                    logs.log(`Response sent ${responseObj.statusCode}`, 'c', 'green');
-                    res.setHeader('Content-Type', responseObj.content_type);
-                    res.writeHead(responseObj.statusCode);
-                    res.end(responseObj.payload);
+                    logs.log(`Sender: ${responseObj.getSender()} ** StatusCode: ${responseObj.getStatusCode()}`, 'b', 'green');
+
+                    res.setHeader('Content-Type', responseObj.getContentType());
+                    res.writeHead(responseObj.getStatusCode());
+                    res.end(responseObj.getPayload());
                 })
                 // On error: thrown by the promise objects usually as a result of
                 // operator error or data validation errors then return helpful error response
@@ -113,7 +114,7 @@ const _server = (req, res) => {
                         msg = errObj;
                         status = 400;
                     }
-                    logs.log(`Promise catch handler caught error in server.handler - statusCode: ${status}, Message: ${msg}`, 'b', 'red');
+                    logs.log(`statusCode: ${status}, Message: ${msg}`, 'b', 'red');
                     res.setHeader('Content-Type', 'application/json');
                     res.writeHead(status);
                     res.end(JSON.stringify(`Error: ${msg}.`));

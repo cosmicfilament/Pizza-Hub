@@ -83,8 +83,8 @@ logs.append = async function (file, str) {
 logs.list = async function (includeCompressedLogs) {
 
     //read the directory contents
-    let logData = await readDirP(baseDir).catch((err) => {
-        return new LogError(error.stack, `Error reading list of log files. ${err}`, module.parent).debug();
+    let logData = await readDirP(baseDir).catch((error) => {
+        return new LogError(error.stack, `Error reading list of log files. ${error}`, module.parent).debug();
     });
 
     let trimmedFileNames = [];
@@ -178,10 +178,10 @@ logs.log = async function (logData, option = 'f', color = 'red') {
     const logFileName = `${timeNow.getFullYear()}${timeNow.getMonth() + 1}${timeNow.getDate()}`;
 
     // pop this new entry onto the current log file.
-    let result = await logs.append(logFileName, logString).catch(() => result = false);
-    if (!result) {
-        return new LogError(error.stack, `Logging to ${logFileName} failed with error code: ${err}`, module.parent).debug();
-    }
+    return await logs.append(logFileName, logString).catch((error) => {
+        return new LogError(error.stack, `Logging to ${logFileName} failed with error code: ${error}`,
+            module.parent).debug();
+    });
 };
 
 /**

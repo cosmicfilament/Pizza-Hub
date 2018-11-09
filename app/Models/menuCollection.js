@@ -11,14 +11,14 @@
 */
 
 class MenuCollection extends Array {
-  constructor(ary) {
-    super();
-    ary.forEach(item => this._push(item));
-  }
+    constructor(ary) {
+        super();
+        ary.forEach(item => this._push(item));
+    }
 
-  _push(item) {
-    this.push(new MenuItem(item));
-  }
+    _push(item) {
+        this.push(new MenuItem(item));
+    }
 }
 
 /**
@@ -27,43 +27,43 @@ class MenuCollection extends Array {
 * @classdesc wraps the selection portion of the menu.json file
 */
 class MenuItem {
-  constructor(item) {
-    this.init(item);
-  }
-  /**
-  * @summary init
-  * @description creates a selection and delegates down to the choice for its creation
-  * @throws nothing
-  */
-  init(item) {
-    this.item = item.item;
-    this.parent = item.parent;
-    this.choices = this.parseChoices(item.choices);
-  }
-  /**
-  * @summary parseChoices
-  * @description parses the choices from the menu.json file
-  * @throws nothing
-  */
-  parseChoices(choices) {
-    let ary = [];
-    for (let choice of choices) {
-      ary.push(new Choice(choice));
+    constructor(item) {
+        this.init(item);
     }
-    return ary;
-  }
-  /**
-   * @summary getter total
-   * @description totals all of the prices for each choice in a selection
-   * @throws nothing
-   */
-  get total() {
-    let total = 0.00;
-    for (let choiceTotal of this.choices) {
-      total += choiceTotal.price;
+    /**
+    * @summary init
+    * @description creates a selection and delegates down to the choice for its creation
+    * @throws nothing
+    */
+    init(item) {
+        this.item = item.item;
+        this.parent = item.parent;
+        this.choices = this.parseChoices(item.choices);
     }
-    return total;
-  }
+    /**
+    * @summary parseChoices
+    * @description parses the choices from the menu.json file
+    * @throws nothing
+    */
+    parseChoices(choices) {
+        let ary = [];
+        for (let choice of choices) {
+            ary.push(new Choice(choice));
+        }
+        return ary;
+    }
+    /**
+     * @summary getter total
+     * @description totals all of the prices for each choice in a selection
+     * @throws nothing
+     */
+    get total() {
+        let total = 0.00;
+        for (let choiceTotal of this.choices) {
+            total += choiceTotal.price;
+        }
+        return total;
+    }
 }
 
 /**
@@ -72,14 +72,14 @@ class MenuItem {
  * @classdesc class that wraps a single choice from the menu.json file
  */
 class Choice {
-  constructor(choice) {
-    this.desc = choice.desc;
-    this.price = choice.price;
-  }
+    constructor(choice) {
+        this.desc = choice.desc;
+        this.price = choice.price;
+    }
 }
 
 module.exports = {
-  MenuCollection,
-  MenuItem,
-  Choice
+    MenuCollection,
+    MenuItem,
+    Choice
 };

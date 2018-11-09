@@ -10,7 +10,7 @@
 const fDb = require('./../lib/fileDb');
 const { Basket } = require('./../Models/basketModel');
 const helpers = require('./../utils/helpers');
-const utils = require('./../utils/handlerUtils');
+const { validateCustomerToken, ResponseObj, readBasket } = require('./../utils/handlerUtils');
 const email = require('../vendor/mailGun');
 const payment = require('../vendor/stripe');
 
@@ -47,7 +47,7 @@ module.exports = {
             throw (helpers.promiseError(500, `Error validating basket. Could not read customer record ${newBasket.phone}. Reason: ${error.message}`));
         }
         // validate the token passed in on the headers
-        result = await utils.validateCustomerToken(reqObj.headers.token);
+        result = await validateCustomerToken(reqObj.headers.token);
         if (result !== true) {
             throw (helpers.promiseError(400, result));
         }
@@ -62,11 +62,8 @@ module.exports = {
         catch (error) {
             throw (helpers.promiseError(400, `Could not create new basket. ${newBasket.id} for customer with phone number:  ${newBasket.phone}. Reason: ${error.message}`));
         }
-        return {
-            'content_type': 'application/json',
-            'statusCode': '200',
-            'payload': JSON.stringify(`Succeeded in creating basket ${newBasket.id} for customer with phone number: ${newBasket.phone}.`)
-        };
+        const payload = JSON.stringify(`Succeeded in creating basket ${newBasket.id} for customer with phone number: ${newBasket.phone}.`);
+        return new ResponseObj(payload, 'basket/create');
     },
     /**
      * @async
@@ -80,18 +77,14 @@ module.exports = {
     read: async function (reqObj) {
 
         // validate the token passed in on the headers
-        let result = await utils.validateCustomerToken(reqObj.headers.token);
+        let result = await validateCustomerToken(reqObj.headers.token);
         if (result !== true) {
             throw (helpers.promiseError(400, result));
         }
 
-        const basket = await utils.readBasket(reqObj.queryStringObject.id);
-
-        return {
-            'content_type': 'application/json',
-            'statusCode': '200',
-            'payload': JSON.stringify(basket)
-        };
+        const basket = await readBasket(reqObj.queryStringObject.id);
+        const payload = JSON.stringify(basket);
+        return new ResponseObj(payload, 'basket/read');
     },
     /**
     * @async
@@ -105,7 +98,7 @@ module.exports = {
     update: async function (reqObj) {
 
         // validate the token passed in on the headers
-        let result = await utils.validateCustomerToken(reqObj.headers.token);
+        let result = await validateCustomerToken(reqObj.headers.token);
         if (result !== true) {
             throw (helpers.promiseError(400, result));
         }
@@ -156,11 +149,8 @@ module.exports = {
             throw (helpers.promiseError(500, `Error updating the file record for the basket: ${basketToUpdate.id}. Reason: ${error.message}`));
         }
 
-        return {
-            'content_type': 'application/json',
-            'statusCode': '200',
-            'payload': JSON.stringify(`Successfully update the basket: ${basketToUpdate.id}.`)
-        };
+        const payload = JSON.stringify(`Successfully update the basket: ${basketToUpdate.id}.`);
+        return new ResponseObj(payload, 'basket/update');
     },
     /**
     * @async
@@ -174,7 +164,7 @@ module.exports = {
     delete: async function (reqObj) {
 
         // validate the token passed in on the headers
-        let result = await utils.validateCustomerToken(reqObj.headers.token);
+        let result = await validateCustomerToken(reqObj.headers.token);
         if (result !== true) {
             throw (helpers.promiseError(400, result));
         }
@@ -197,11 +187,8 @@ module.exports = {
             throw (helpers.promiseError(400, `Error deleting the file record for the basket: ${deleteBasket.id}. Reason: ${error.message}`));
         }
 
-        return {
-            'content_type': 'application/json',
-            'statusCode': '200',
-            'payload': JSON.stringify(`Successfully deleted the  basket: ${deleteBasket.id}.`)
-        };
+        const payload = JSON.stringify(`Successfully deleted the  basket: ${deleteBasket.id}.`);
+        return new ResponseObj(payload, 'basket/delete');
     },
     /**
     * @async
@@ -214,11 +201,8 @@ module.exports = {
         const app = require('../index');
         const menu = app.menu;
 
-        return {
-            'content_type': 'application/json',
-            'statusCode': '200',
-            'payload': JSON.stringify(menu)
-        };
+        const payload = JSON.stringify(menu);
+        return new ResponseObj(payload, 'basket/menu');
     },
 
     /**
@@ -234,13 +218,13 @@ module.exports = {
     checkOut: async function (reqObj) {
 
         // validate the token passed in on the headers
-        let result = await utils.validateCustomerToken(reqObj.headers.token);
+        let result = await validateCustomerToken(reqObj.headers.token);
         if (result !== true) {
             throw (helpers.promiseError(400, result));
         }
 
         // get the basket associated with this token and basket id
-        const basket = await utils.readBasket(reqObj.payload.id);
+        const basket = await readBasket(reqObj.payload.id);
         const total = basket.total;
         let emailMessage = `Successfully processed your charge for an order from the Pizza-Hub for ${total}.`;
 
@@ -254,10 +238,7 @@ module.exports = {
             throw (helpers.promiseError('500', msg));
         });
 
-        return {
-            'content_type': 'application/json',
-            'statusCode': '200',
-            'payload': JSON.stringify(`Charge successful for basket id: ${basket.id}.`)
-        };
+        const payload = JSON.stringify(`Charge successful for basket id: ${basket.id}.`);
+        return new ResponseObj(payload, 'basket/checkOut');
     }
 };

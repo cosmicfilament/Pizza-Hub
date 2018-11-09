@@ -25,24 +25,26 @@ const TOKEN_ENUMS = {
  * @exports Token
 */
 class Token {
-    constructor(id = '', phone = '') {
+    constructor(id = '', phone = '', firstName = '') {
         // allow creation of an incomplete token, but set expiry to now
         if (id === '' || phone === '') {
             this.id = id;
             this.phone = phone;
+            this.firstName = firstName;
             this.expires = Date.now();
         }
         else {
-            this.init(id, phone);
+            this.init(id, phone, firstName);
         }
     }
     /**
     * @summary Token init method
     * @description initializes the Token object properties
     */
-    init(id, phone) {
+    init(id, phone, firstName) {
         this.id = id;
         this.phone = phone;
+        this.firstName = firstName;
         this.expires = Date.now() + TOKEN_ENUMS.TOKEN_EXPIRY;
     }
     /**
@@ -107,6 +109,7 @@ class Token {
         return JSON.stringify({
             'id': this.id,
             'phone': this.phone,
+            'firstName': this.firstName,
             'expires': this.expires
         });
     }
@@ -131,6 +134,7 @@ class Token {
         }
         return true;
     }
+
     /**
     * @summary validateTokenExpiration
     * @description token validateExpiration method
