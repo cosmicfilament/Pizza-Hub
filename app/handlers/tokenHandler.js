@@ -11,7 +11,7 @@ const helpers = require('./../utils/helpers');
 
 const { Customer } = require('./../Models/customerModel');
 const { Token } = require('./../Models/tokenModel');
-const { ResponseObj } = require('./../utils/handlerUtils');
+const { ResponseObj, PromiseError } = require('./../utils/handlerUtils');
 
 module.exports = {
     /**
@@ -30,18 +30,18 @@ module.exports = {
         // validate the phone number which is the key on the customer
         let result = custFromReqObj.validatePhone();
         if (result !== true) {
-            throw (helpers.promiseError(400, `Validation failed on customer field: ${result}.`));
+            throw (new PromiseError(400, `Validation failed on customer field: ${result}.`));
         }
 
         // validate the password
         result = custFromReqObj.validatePassword();
         if (result !== true) {
-            throw (helpers.promiseError(400, `Validation failed on customer field: ${result}.`));
+            throw (new PromiseError(400, `Validation failed on customer field: ${result}.`));
         }
         // hash the pwd so we can compare it to db password
         const hashedPwdToValidate = Customer.createPasswordHash(custFromReqObj.password);
         if (!hashedPwdToValidate) {
-            throw (helpers.promiseError(500, 'Error trying to validate the customer\'s password.'));
+            throw (new PromiseError(500, 'Error trying to validate the customer\'s password.'));
         }
 
         let custInDb = {};
@@ -49,28 +49,28 @@ module.exports = {
             // get the saved customer associated with this token and validate against the hashed password
             custInDb = await fDb.read('customer', custFromReqObj.phone);
             if (!helpers.validateObject(custInDb)) {
-                throw (helpers.promiseError(409, `Error retrieving the customer: ${custFromReqObj.phone}. Or the customer does not exist in our records.`));
+                throw (new PromiseError(400, `Error retrieving the customer: ${custFromReqObj.phone}. Or the customer does not exist in our records.`));
             }
         }
         catch (error) {
-            throw (helpers.promiseError(409, `Could not read customer record ${custFromReqObj.phone}. Reason: ${error.message} `));
+            throw (new PromiseError(400, `Could not read customer record ${custFromReqObj.phone}.`, error));
         }
 
         if (hashedPwdToValidate !== custInDb.password) {
-            throw (helpers.promiseError(400, 'Password did not match the customer\'s stored password.'));
+            throw (new PromiseError(400, 'Password did not match the customer\'s stored password.'));
         }
         // we made it this far so, let's create a token object
         const newToken = new Token(Token.createTokenString(), custInDb.phone, custInDb.firstName);
         //not sure how this could happen
         if (newToken.validateToken() !== true) {
-            throw (helpers.promiseError(500, `Server error creating a session token for customer with phone number: ${custInDb.phone}.`));
+            throw (new PromiseError(500, `Server error creating a session token for customer with phone number: ${custInDb.phone}.`));
         }
         // save it to the file
         try {
             await fDb.create('token', newToken.id, newToken);
         }
         catch (error) {
-            throw (helpers.promiseError(409, `Could not create new session token for customer with phone number: ${custInDb.phone}. Reason: ${error.message}`));
+            throw (new PromiseError(500, `Could not create new session token for customer with phone number: ${custInDb.phone}`, error));
         }
         return new ResponseObj(newToken.stringify(), 'token/create');
     },
@@ -87,18 +87,18 @@ module.exports = {
         const tkn = new Token(reqObj.queryStringObject.id);
         let result = tkn.validateId();
         if (result !== true) {
-            throw (helpers.promiseError(400, 'Validation failed reading the session token.'));
+            throw (new PromiseError(400, 'Validation failed reading the session token.'));
         }
 
         try {
             // read the customer record
             result = await fDb.read('token', tkn.id);
             if (!helpers.validateObject(result)) {
-                throw (helpers.promiseError(409, 'Error reading the file record for the session token. The token might not exist.'));
+                throw (new PromiseError(400, 'Error reading the file record for the session token. The token might not exist.'));
             }
         }
         catch (error) {
-            throw (helpers.promiseError(409, `Could not read session token. Reason: ${error.message}`));
+            throw (new PromiseError(500, 'Could not read session token.', error));
         }
         return new ResponseObj(JSON.stringify(result), 'token/read');
     },
@@ -118,22 +118,22 @@ module.exports = {
 
         let result = fieldsToUpdate.validateId();
         if (result !== true) {
-            throw (helpers.promiseError(400, 'Validation failed on session token.'));
+            throw (new PromiseError(400, 'Validation failed on session token.'));
         }
         result = helpers.validateBool(fieldsToUpdate.extend);
         if (result !== true) {
-            throw (helpers.promiseError(400, 'Validation failed on session token.'));
+            throw (new PromiseError(400, 'Validation failed on session token.'));
         }
         let tknToUpdate = {};
         try {
             // read the existing token record and use it to build the update
             tknToUpdate = await fDb.read('token', fieldsToUpdate.id);
             if (!helpers.validateObject(tknToUpdate)) {
-                throw (helpers.promiseError(409, 'Error reading the file record for the session token. Or that token does not exist.'));
+                throw (new PromiseError(400, 'Error reading the file record for the session token. Or that token does not exist.'));
             }
         }
         catch (error) {
-            throw (helpers.promiseError(409, 'Error reading the file record for the session token. Or that token does not exist.'));
+            throw (new PromiseError(500, 'Error reading the file record for the session token. Or that token does not exist.', error));
         }
         // if caller wants to extend the time on the token
         if (fieldsToUpdate.extend === true) {
@@ -142,14 +142,15 @@ module.exports = {
             try {
                 result = await fDb.update('token', tknToUpdate.id, tknToUpdate);
                 if (!result) {
-                    throw (helpers.promiseError(500, 'Error updating the file record for the session token.'));
+                    throw (new PromiseError(500, 'Error updating the file record for the session token.'));
                 }
                 result = 'Successfully extended the token expiry on the session token.';
             }
             catch (error) {
-                throw (helpers.promiseError(500, 'Error updating the record for the customer.'));
+                throw (new PromiseError(500, 'Error updating the record for the customer.', error));
             }
         }
+        tknToUpdate = Token.clone(tknToUpdate);
         return new ResponseObj(tknToUpdate.stringify(), 'token/update');
     },
     /**
@@ -165,16 +166,16 @@ module.exports = {
         const tkn = new Token(reqObj.queryStringObject.id);
         let result = tkn.validateId();
         if (result !== true) {
-            throw (helpers.promiseError(400, `Validation failed on session token field: ${result}.`));
+            throw (new PromiseError(400, `Validation failed on session token field: ${result}.`));
         }
         try {
             result = await fDb.delete('token', tkn.id);
             if (!result) {
-                throw (helpers.promiseError(500, 'Could not delete the session token'));
+                throw (new PromiseError(500, 'Could not delete the session token'));
             }
         }
         catch (error) {
-            throw (helpers.promiseError(409, `Error deleting the file record for the session token. Reason: ${error.message}`));
+            throw (new PromiseError(500, 'Error deleting the file record for the session token.', error));
         }
         const payload = JSON.stringify('Successfully deleted the session token:');
         return new ResponseObj(payload, 'token/delete');

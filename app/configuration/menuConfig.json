@@ -1,56 +1,134 @@
 {
     "menuCollection": [
         {
-            "item": "Pizza",
-            "parent": true,
-            "choices": [
+            "menuGroup": [
                 {
-                    "desc": "8 Inch",
-                    "price": "$8.00"
+                    "item": "Pizza",
+                    "choices": [
+                        {
+                            "desc": "6 Inch",
+                            "price": "$7.00"
+                        },
+                        {
+                            "desc": "12 Inch",
+                            "price": "$10.00"
+                        },
+                        {
+                            "desc": "14 Inch",
+                            "price": "$14.00"
+                        },
+                        {
+                            "desc": "20 Inch",
+                            "price": "$20.00"
+                        }
+                    ]
                 },
                 {
-                    "desc": "12 Inch",
-                    "price": "$10.00"
+                    "item": "Toppings",
+                    "choices": [
+                        {
+                            "desc": "Pepperoni",
+                            "price": "$1.00"
+                        },
+                        {
+                            "desc": "Sausage",
+                            "price": "$1.00"
+                        },
+                        {
+                            "desc": "Meatballs",
+                            "price": "$1.00"
+                        },
+                        {
+                            "desc": "Ham",
+                            "price": "$1.00"
+                        },
+                        {
+                            "desc": "Peppers",
+                            "price": "$1.00"
+                        },
+                        {
+                            "desc": "Onions",
+                            "price": "$1.00"
+                        },
+                        {
+                            "desc": "Mushrooms",
+                            "price": "$1.00"
+                        },
+                        {
+                            "desc": "Anchovies",
+                            "price": "$1.00"
+                        },
+                        {
+                            "desc": "Pineapple",
+                            "price": "$1.00"
+                        }
+                    ]
                 }
             ]
         },
         {
-            "item": "Toppings",
-            "parent": false,
-            "choices": [
+            "menuGroup": [
                 {
-                    "desc": "sausage",
-                    "price": "$1.50"
-                },
-                {
-                    "desc": "pepperoni",
-                    "price": "$1.50"
-                },
-                {
-                    "desc": "peppers",
-                    "price": "$1.00"
-                },
-                {
-                    "desc": "onions",
-                    "price": "$1.00"
-                },
-                {
-                    "desc": "anchovies",
-                    "price": "$1.00"
+                    "item": "Calzone",
+                    "choices": [
+                        {
+                            "desc": "Meatball",
+                            "price": "$8.00"
+                        },
+                        {
+                            "desc": "Sausage",
+                            "price": "$8.00"
+                        },
+                        {
+                            "desc": "Ham",
+                            "price": "$8.00"
+                        },
+                        {
+                            "desc": "Veggie",
+                            "price": "$8.00"
+                        },
+                        {
+                            "desc": "Four Cheeses",
+                            "price": "$8.00"
+                        },
+                        {
+                            "desc": "Chocolate Mousse",
+                            "price": "$8.00"
+                        }
+                    ]
                 }
             ]
         },
         {
-            "item": "Calzone",
-            "parent": true,
-            "choices": [
+            "menuGroup": [
                 {
-                    "desc": "Meat Ball",
-                    "price": "$8.00"
-                },
-                {
-                    "desc": "Ham",
-                    "price": "$9.00"
+                    "item": "Pasta",
+                    "choices": [
+                        {
+                            "desc": "Meatball",
+                            "price": "$12.00"
+                        },
+                        {
+                            "desc": "Penne Ala Vodka",
+                            "price": "$12.00"
+                        },
+                        {
+                            "desc": "Linguine Clam Sauce",
+                            "price": "$12.00"
+                        },
+                        {
+                            "desc": "Veggie",
+                            "price": "$10.00"
+                        },
+                        {
+                            "desc": "Secret Sauce",
+                            "price": "$8.00"
+                        },
+                        {
+                            "desc": "Olive Oil and Romano Cheese",
+                            "price": "$8.00"
+                        }
+                    ]
                 }
             ]
         }

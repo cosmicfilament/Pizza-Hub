@@ -1,0 +1,115 @@
+/* Layout is in a grid of 5 columns and 4 rows */
+.grid-container{
+    display: grid;
+    /* max-width: 900px; */
+    /* width: 800px; */
+    margin: 0 auto;
+  }
+
+  .wrapper{
+    grid-column: 1 /span 5;
+  }
+  .orderFrm{
+    margin: 5px 350px 5px 350px;
+  }
+/* Top bar (1 row) -- logo(1 col) - navigation(4 col) */
+
+  /* logo */
+  .header .logo{
+    grid-column: 1;
+    grid-row: 1;
+    text-align: left;
+    padding: 0 0 0 10px;
+    float: left;
+  }
+
+  .header .logo img{
+      width: 140px;
+      height: 90px;
+      padding: 5px 0 0 0;
+  }
+
+  /* navigation */
+   .header .nav{
+    grid-column: 2 / span 4;
+    grid-row: 1;
+    padding: 0 0 0 40px;
+    float: right;
+  }
+
+  /* nav menu list */
+  .header ul{
+    list-style-type: none;
+    text-align: right;
+    padding: 0 10px;
+  }
+
+  .header ul li{
+    display: inline-block;
+    padding: 50px 5px 0 5px;
+  }
+
+  .header ul li a{
+    text-transform: uppercase;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    font-size: 1rem;
+  }
+
+  .header ul li.loggedIn{
+    display: none;
+  }
+
+  body.loggedIn .header ul li.loggedIn{
+    display: inline-block;
+  }
+
+  body.loggedIn .header ul li.loggedOut{
+    display: none;
+  }
+
+  /* Title at beginning of each page */
+  /* (1 row) and (5 columns) */
+  div.sectionTitle{
+    grid-column: 1 / span 5;
+    grid-row: 2 ;
+  }
+  /* Company Name on Home Page */
+  div.sectionTitle .CompanyName{
+    font-family: 'Alfa Slab One', cursive;
+    font-size: 5rem;
+    text-shadow: 4px 4px 4px rgba(225, 180, 112, 1);
+    /* display: inline-block; */
+  }
+
+  /* Company Name below title on Home page */
+  div.sectionTitle .CompanyMotto{
+    font-size: 2rem;
+    margin-bottom: 25px;
+    /* display: inline-block; */
+  }
+  /* Body markup that changes for each page */
+  /* (1 row) and (5 columns) */
+  .sectionBody{
+    grid-column: 1 / span 5;
+    grid-row: 3;
+  }
+
+/*  footer  */
+/* (1 row) and (5 columns) */
+.footer{
+  grid-column: 1 / span 5;
+  grid-row: 4;
+  background-color: rgba(26, 26, 26, 1);
+  padding: 25px 0px;
+  text-align: center;
+  border-width: 1px 0 0 0;
+  border-color: rgba(255, 255, 255, 1);
+  border-style: solid;
+  border-radius: 10px;
+}
+
+.footer .copyright{
+  color: rgba(255, 255, 255, 1);
+  font-size: 10px;
+}

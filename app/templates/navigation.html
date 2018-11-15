@@ -1,0 +1,41 @@
+<div class="header">
+    <!-- Logo -->
+    <a class="logo" href="/">
+        <img src="./public/img/pizza-logo.png" alt="Logo" />
+    </a>
+    <!-- Navigation -->
+    <ul class="nav">
+        <li>
+            <!--* Displays the menu and some B.S. *-->
+            <a href="/">Home</a>
+        </li>
+        <li class="loggedOut">
+            <a href="/customerCreateFrm">Signup</a>
+        </li>
+        <li class="loggedOut">
+            <!--* creates a session basically an empty basket *-->
+            <a href="/sessionCreateFrm">Login</a>
+        </li>
+        <li class="loggedIn">
+            <!--* Bring up menu with ability to make selections, order and checkout *-->
+            <a href="/basketCreateFrm">Order</a>
+        </li>
+        <li class="loggedIn basketFull">
+            <!--* Bring up menu with ability to make selections, order and checkout *-->
+            <a href="/basketEditFrm">Modify Order</a>
+        </li>
+        <li class="loggedIn basketFull">
+            <!--* checkout *-->
+            <a href="/basketCheckOutFrm">Check Out</a>
+        </li>
+        <li class="loggedIn">
+            <!--* Can edit and delete a customer within this section *-->
+            <a href="/customerEditFrm">Profile</a>
+        </li>
+        <li class="loggedIn">
+            <a href="#" id="logoutButton">Logout</a>
+        </li>
+    </ul>
+    <!-- end navigation -->
+    <div class="clear"></div>
+</div>

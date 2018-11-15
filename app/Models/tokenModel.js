@@ -101,9 +101,12 @@ class Token {
     */
     updateExpiry(extend = true) {
         if (extend) {
-            return Date.now() + TOKEN_ENUMS.TOKEN_EXPIRY;
+            this.expires = Date.now() + TOKEN_ENUMS.TOKEN_EXPIRY;
         }
-        return Date.now();
+        else {
+            this.expires = Date.now();
+        }
+        return this.expires;
     }
     stringify() {
         return JSON.stringify({

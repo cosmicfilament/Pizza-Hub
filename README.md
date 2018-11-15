@@ -1,7 +1,9 @@
 # Pizza-Hub
-Nodejs Master Course Homework Assignment # 2
+~~Nodejs Master Course Homework Assignment # 2~~</br>
+Nodejs Master Course Homework Assignment #3 (WIP)
 
-Assignment: Build a back end nodejs api for a pizza delivery company's online ordering website. The primary requirement is that it not use any npm modules and only relies on node's rich array of builtin functionality such as fs, http, https, crypt, util, path and url just to name a few.
+Assignment: Build a back end nodejs api for a pizza delivery company's online ordering website. The primary requirement is that it not use any npm modules and only relies on node's rich array of builtin functionality such as fs, http, https, crypt, util, path and url just to name a few.</br>
+In homework assignment #3 I have added the front end code to the pizza delivery app. Once again this is vanilla js without any packages or imports etc....
 
 ## Description of key modules:
 

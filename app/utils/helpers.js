@@ -140,18 +140,6 @@ helpers.validateIntegerRange = (num = 0, start = 0, len = 0) => { // number or f
     return false;
 };
 /**
-* @summary promiseError
-* @description creates a json string for returning errors to the request handler in server.js
-* @param statusCode and message
-* @returns object as JSON string
-*/
-helpers.promiseError = (statusCode, message) => {
-    return {
-        'statusCode': statusCode,
-        'message': message
-    };
-};
-/**
 * @summary log
 * @description writes in color to the console in staqing mode only
 * @param statusCode and message

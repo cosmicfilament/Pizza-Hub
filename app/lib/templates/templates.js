@@ -5,7 +5,6 @@
 *	 @exports templates
 */
 
-const fs = require('fs');
 const helpers = require('./../../utils/helpers');
 const logs = require('./../../utils/logs');
 const files = require('./../../utils/files');
@@ -65,8 +64,7 @@ templates.load = async function (templateFactory) {
             // set the layout to the file data
             templates.layout = layoutData;
         }
-    };
-    //
+    }
     return true;
 };
 
@@ -78,7 +76,7 @@ templates.setTemplate = (key, value) => {
     templates.templateMap.set(key, value);
 };
 
-templates.getLayOut = () => {
+templates.getLayout = () => {
     return templates.layout;
 };
 

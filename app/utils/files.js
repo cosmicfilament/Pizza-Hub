@@ -9,6 +9,8 @@
 
 const { promisify } = require('util');
 const { open, close, ftruncate, readFile, writeFile, unlink, readdir, access, stat } = require('fs');
+const { F_OK, R_OK, W_OK } = require('constants');
+
 const { BASE_DIR } = require('./../lib/config');
 const debug = require('util').debuglog('files');
 
@@ -45,7 +47,7 @@ files.makeDir = (dir) => {
 
 // builds an absolute path to a file
 files.makeFName = (dir, fName) => {
-    return `${makeDir(dir)}/${fName}`;
+    return `${files.makeDir(dir)}/${fName}`;
 };
 
 /**
@@ -180,7 +182,7 @@ files.readDirectory = async function (absoluteDirectoryPath) {
 */
 files.isAccessible = async function (absolutePath) {
 
-    let strArray = await accessP(absolutePath, F_OK | R_OK | W_OK).catch((error) => {
+    await accessP(absolutePath, F_OK | R_OK | W_OK).catch((error) => {
         return new FilesError(error.stack, `Error accessing the file: ${error.message}`, module.parent).debug();
     });
     return true;

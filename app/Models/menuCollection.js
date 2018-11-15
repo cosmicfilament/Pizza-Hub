@@ -13,11 +13,46 @@
 class MenuCollection extends Array {
     constructor(ary) {
         super();
-        ary.forEach(item => this._push(item));
+
+        for (let x = 0; x < ary.length; x++) {
+            const group = ary[x];
+            this._push(group.menuGroup);
+        }
+    }
+
+    _push(group) {
+        this.push(new MenuGroup(group));
+    }
+
+    get total() {
+        return this.reduce(function (sum, current) {
+            return sum + current.getTotal();
+        });
+    }
+}
+
+class MenuGroup extends Array {
+    constructor(ary) {
+        super();
+
+        for (let x = 0; x < ary.length; x++) {
+            const item = ary[x];
+            this._push(item);
+        }
     }
 
     _push(item) {
         this.push(new MenuItem(item));
+    }
+    /**
+        * @summary getter total
+        * @description totals all of the prices for each choice in a selection
+        * @throws nothing
+        */
+    get total() {
+        return this.reduce(function (sum, current) {
+            return sum + current.getTotal();
+        });
     }
 }
 
@@ -37,7 +72,6 @@ class MenuItem {
     */
     init(item) {
         this.item = item.item;
-        this.parent = item.parent;
         this.choices = this.parseChoices(item.choices);
     }
     /**
@@ -80,6 +114,7 @@ class Choice {
 
 module.exports = {
     MenuCollection,
+    MenuGroup,
     MenuItem,
     Choice
 };

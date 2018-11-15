@@ -10,7 +10,7 @@
 const fDb = require('./../lib/fileDb');
 const { Basket } = require('./../Models/basketModel');
 const helpers = require('./../utils/helpers');
-const { validateCustomerToken, ResponseObj, readBasket } = require('./../utils/handlerUtils');
+const { validateCustomerToken, ResponseObj, readBasket, PromiseError } = require('./../utils/handlerUtils');
 const email = require('../vendor/mailGun');
 const payment = require('../vendor/stripe');
 
@@ -30,7 +30,7 @@ module.exports = {
         // validate basket phone number which is the only value passed in the payload
         let result = newBasket.validatePhone();
         if (result !== true) {
-            throw (helpers.promiseError(400, `Validation failed on basket field: ${result}.`));
+            throw (new PromiseError(400, `Validation failed on basket field: ${result}.`));
         }
 
         // test to see if customer who placed the basket is in the system
@@ -40,17 +40,14 @@ module.exports = {
             // read the customer record
             customer = await fDb.read('customer', newBasket.phone);
             if (!helpers.validateObject(customer)) {
-                throw (helpers.promiseError(400, `Error reading the file record for the customer: ${newBasket.phone}, or that customer does not exist.`));
+                throw (new PromiseError(400, `Error reading the file record for the customer: ${newBasket.phone}, or that customer does not exist.`));
             }
         }
         catch (error) {
-            throw (helpers.promiseError(500, `Error validating basket. Could not read customer record ${newBasket.phone}. Reason: ${error.message}`));
+            throw (new PromiseError(500, `Could not read customer record ${newBasket.phone}.`, error));
         }
         // validate the token passed in on the headers
-        result = await validateCustomerToken(reqObj.headers.token);
-        if (result !== true) {
-            throw (helpers.promiseError(400, result));
-        }
+        await validateCustomerToken(reqObj.headers.token);
 
         newBasket.email = customer.email;
         // create the id on the basket record
@@ -60,7 +57,7 @@ module.exports = {
             await fDb.create('basket', newBasket.id, newBasket);
         }
         catch (error) {
-            throw (helpers.promiseError(400, `Could not create new basket. ${newBasket.id} for customer with phone number:  ${newBasket.phone}. Reason: ${error.message}`));
+            throw (new PromiseError(500, `Could not create new basket. ${newBasket.id} for customer with phone number:  ${newBasket.phone}.`, error));
         }
         const payload = JSON.stringify(`Succeeded in creating basket ${newBasket.id} for customer with phone number: ${newBasket.phone}.`);
         return new ResponseObj(payload, 'basket/create');
@@ -77,10 +74,7 @@ module.exports = {
     read: async function (reqObj) {
 
         // validate the token passed in on the headers
-        let result = await validateCustomerToken(reqObj.headers.token);
-        if (result !== true) {
-            throw (helpers.promiseError(400, result));
-        }
+        await validateCustomerToken(reqObj.headers.token);
 
         const basket = await readBasket(reqObj.queryStringObject.id);
         const payload = JSON.stringify(basket);
@@ -98,28 +92,25 @@ module.exports = {
     update: async function (reqObj) {
 
         // validate the token passed in on the headers
-        let result = await validateCustomerToken(reqObj.headers.token);
-        if (result !== true) {
-            throw (helpers.promiseError(400, result));
-        }
+        await validateCustomerToken(reqObj.headers.token);
 
         // basket id and fields that need to be updated
         const fieldsToUpdate = Basket.clone(reqObj.payload);
 
-        result = fieldsToUpdate.validateId();
+        let result = fieldsToUpdate.validateId();
         if (result !== true) {
-            throw (helpers.promiseError(400, `Validation failed on basket Id field: ${result}.`));
+            throw (new PromiseError(400, `Validation failed on basket Id field: ${result}.`));
         }
         let basketToUpdate = {};
         try {
             // read the existing basket record and use it to build the update
             basketToUpdate = await fDb.read('basket', fieldsToUpdate.id);
             if (!helpers.validateObject(basketToUpdate)) {
-                throw (helpers.promiseError(400, `Error reading the file record for the basket: ${fieldsToUpdate.id}, or that basket does not exist.`));
+                throw (new PromiseError(400, `Error reading the file record for the basket: ${fieldsToUpdate.id}, or that basket does not exist.`));
             }
         }
         catch (error) {
-            throw (helpers.promiseError(400, `Error reading the file record for the basket: ${fieldsToUpdate.id}, or that basket does not exist.  Reason: ${error.message}`));
+            throw (new PromiseError(500, `Error reading the file record for the basket: ${fieldsToUpdate.id}, or that basket does not exist.`, error));
         }
         // make a real basket out of this and build the orderCollection
         basketToUpdate = Basket.clone(basketToUpdate);
@@ -130,7 +121,7 @@ module.exports = {
         if (fieldsToUpdate.size !== '') {
             result = fieldsToUpdate.validateOrderCollection();
             if (result !== true) {
-                throw (helpers.promiseError(400, `Validation failed on basket field: ${result}.`));
+                throw (new PromiseError(400, `Validation failed on basket field: ${result}.`));
             }
             dirtyFlag = true;
             basketToUpdate.deepCopyOrderCollection(fieldsToUpdate.orderCollection);
@@ -138,7 +129,7 @@ module.exports = {
 
         // if no data changed then no update
         if (!dirtyFlag) {
-            throw (helpers.promiseError(400, `Nothing to update. Data did not change for the basket: ${fieldsToUpdate.id}`));
+            throw (new PromiseError(400, `Nothing to update. Data did not change for the basket: ${fieldsToUpdate.id}`));
         }
 
         try {
@@ -146,7 +137,7 @@ module.exports = {
             await fDb.update('basket', basketToUpdate.id, basketToUpdate);
         }
         catch (error) {
-            throw (helpers.promiseError(500, `Error updating the file record for the basket: ${basketToUpdate.id}. Reason: ${error.message}`));
+            throw (new PromiseError(500, `Error updating the file record for the basket: ${basketToUpdate.id}.`, error));
         }
 
         const payload = JSON.stringify(`Successfully update the basket: ${basketToUpdate.id}.`);
@@ -164,27 +155,24 @@ module.exports = {
     delete: async function (reqObj) {
 
         // validate the token passed in on the headers
-        let result = await validateCustomerToken(reqObj.headers.token);
-        if (result !== true) {
-            throw (helpers.promiseError(400, result));
-        }
+        await validateCustomerToken(reqObj.headers.token);
 
         const deleteBasket = new Basket();
         deleteBasket.id = reqObj.queryStringObject.id;
 
-        result = deleteBasket.validateId();
+        let result = deleteBasket.validateId();
         if (result !== true) {
-            throw (helpers.promiseError(400, `Validation failed on basket field: ${result}.`));
+            throw (new PromiseError(400, `Validation failed on basket field: ${result}.`));
         }
 
         try {
             result = await fDb.delete('basket', deleteBasket.id);
             if (!result) {
-                throw (helpers.promiseError(500, `Could not delete the basket: ${deleteBasket.id}`));
+                throw (new PromiseError(400, `Could not delete the basket: ${deleteBasket.id}`));
             }
         }
         catch (error) {
-            throw (helpers.promiseError(400, `Error deleting the file record for the basket: ${deleteBasket.id}. Reason: ${error.message}`));
+            throw (new PromiseError(500, `Error deleting the file record for the basket: ${deleteBasket.id}.`, error));
         }
 
         const payload = JSON.stringify(`Successfully deleted the  basket: ${deleteBasket.id}.`);
@@ -218,10 +206,7 @@ module.exports = {
     checkOut: async function (reqObj) {
 
         // validate the token passed in on the headers
-        let result = await validateCustomerToken(reqObj.headers.token);
-        if (result !== true) {
-            throw (helpers.promiseError(400, result));
-        }
+        await validateCustomerToken(reqObj.headers.token);
 
         // get the basket associated with this token and basket id
         const basket = await readBasket(reqObj.payload.id);
@@ -229,13 +214,13 @@ module.exports = {
         let emailMessage = `Successfully processed your charge for an order from the Pizza-Hub for ${total}.`;
 
         await payment.process(total, basket.id).catch((error) => {
-            const msg = `Error processing the charge for basket: ${basket.id}. Reason: ${error}`;
-            throw (helpers.promiseError('500', msg));
+            const msg = `Error processing the charge for basket: ${basket.id}.`;
+            throw (new PromiseError('500', msg, error));
         });
         // oops gonna get a phone call form an irate customer if this also
         await email.send(basket.id, basket.email, emailMessage).catch((error) => {
-            const msg = `Error sending update email to the client for basket: ${basket.id}. Reason: ${error}`;
-            throw (helpers.promiseError('500', msg));
+            const msg = `Error sending update email to the client for basket: ${basket.id}.`;
+            throw (new PromiseError('500', msg, error));
         });
 
         const payload = JSON.stringify(`Charge successful for basket id: ${basket.id}.`);

@@ -11,7 +11,7 @@ const readFileP = require('util').promisify(require('fs').readFile);
 const helpers = require('../utils/helpers');
 const logs = require('../utils/logs');
 const { BASE_DIR } = require('../lib/config');
-const { ResponseObj } = require('./../utils/handlerUtils');
+const { ResponseObj, PromiseError } = require('./../utils/handlerUtils');
 
 // file in current or target directory
 const makeFName = (relativePath) => {
@@ -21,17 +21,17 @@ const makeFName = (relativePath) => {
 module.exports = {
 
     home: async function (reqObj) {
-        // if queryString == rebuild then rebuild the templates cache
+
+        // if queryString == rebuild=true then rebuild the templates cache
         if (helpers.validateObject(reqObj.queryStringObject)) {
             if (reqObj.queryStringObject['rebuild'] === 'true' && !factory.rebuildTemplates()) {
                 logs.log('Shutting down app in sessionHandler home. Aborting ....', 'b');
                 factory.getTheApp().shutdown(1);
             }
-
         }
-
         const body = factory.getTemplate('menu');
-        const payloadStr = factory.addBodyToLayout('menu', body);
+        // sectionBody, bodyClass, navigation, sectionTitle,  footer
+        const payloadStr = factory.buildWebPage(body, 'menu');
 
         return new ResponseObj(payloadStr, 'session/home', 'text/html');
     },
@@ -73,45 +73,47 @@ module.exports = {
                 resObj.setContentType('image/x-icon');
                 break;
             default:
-                throw (helpers.promiseError(500, `Could not decode file type: ${fileType} for file: ${fileName}.`));
+                throw (new PromiseError(500, `Could not decode file type: ${fileType} for file: ${fileName}.`));
         }
         strFile = makeFName(relativePath);
         const payload = await readFileP(strFile).catch((error) => {
-            throw (helpers.promiseError(500, `Could not read file: ${fileName}. Reason: ${error.message}`));
+            throw (new PromiseError(500, `Could not read file: ${fileName}.`, error));
         });
 
         return resObj.setPayload(payload);
     },
     login: async function () {
+
         const body = factory.getTemplate('sessionCreateFrm');
-        const payloadStr = factory.addBodyToLayout('sessionCreateFrm', body);
+        const payloadStr = factory.buildWebPage(body, 'sessionCreateFrm');
 
         return new ResponseObj(payloadStr, 'session/login', 'text/html');
     },
     logout: async function () {
+
         const body = factory.getTemplate('sessionDeleted');
-        const payloadStr = factory.addBodyToLayout('sessionDeleted', body);
+        const payloadStr = factory.buildWebPage(body, 'sessionDeleted');
 
         return new ResponseObj(payloadStr, 'session/logout', 'text/html');
     },
     customerCreate: async function () {
 
         const body = factory.getTemplate('customerCreateFrm');
-        const payloadStr = factory.addBodyToLayout('customerCreateFrm', body);
+        const payloadStr = factory.buildWebPage(body, 'customerCreateFrm');
 
         return new ResponseObj(payloadStr, 'session/customerCreate', 'text/html');
     },
     customerEdit: async function () {
 
         const body = factory.getTemplate('customerEditFrm');
-        const payloadStr = factory.addBodyToLayout('customerEditFrm', body);
+        const payloadStr = factory.buildWebPage(body, 'customerEditFrm');
 
         return new ResponseObj(payloadStr, 'session/customerEdit', 'text/html');
     },
     customerDeleted: async function () {
 
         const body = factory.getTemplate('customerDeleted');
-        const payloadStr = factory.addBodyToLayout('customerDeleted', body);
+        const payloadStr = factory.buildWebPage(body, 'customerDeleted');
 
         return new ResponseObj(payloadStr, 'session/customerDeleted', 'text/html');
     },
@@ -119,9 +121,22 @@ module.exports = {
          * @summary notAllowed
          * @description  responds with 405 status code
     */
+    basketCreate: async function () {
+
+        const body = factory.getTemplate('basketCreateFrm');
+        const payloadStr = factory.buildWebPage(body, 'basketCreateFrm');
+
+        return new ResponseObj(payloadStr, 'session/basketCreate', 'text/html');
+    },
     notAllowed: async function () {
-        const payloadStr = JSON.stringify({ 'name': '405 - Not Allowed.' });
-        return new ResponseObj(payloadStr, 'session/notAllowed', 'application/json', '405');
+
+        const body = factory.getTemplate('405');
+        const navigation = factory.getTemplate('errorNavigation');
+        const sectionTitle = '';
+        const footer = factory.getTemplate('footer');
+        // sectionBody, bodyClass, navigation, sectionTitle,  footer
+        const payloadStr = factory.buildWebPage(body, '405', navigation, sectionTitle, footer);
+        return new ResponseObj(payloadStr, 'session/notAllowed', 'text/html', '405');
     },
 
     /**
@@ -129,7 +144,13 @@ module.exports = {
          * @description  responds with 404 status code
     */
     notFound: async function () {
-        const payloadStr = JSON.stringify({ 'name': '404 - Not Allowed.' });
-        return new ResponseObj(payloadStr, 'session/notFound', 'application/json', '404');
+
+        const body = factory.getTemplate('404');
+        const navigation = factory.getTemplate('errorNavigation');
+        const sectionTitle = '';
+        const footer = factory.getTemplate('footer');
+        // sectionBody, bodyClass, navigation, sectionTitle,  footer
+        const payloadStr = factory.buildWebPage(body, '404', navigation, sectionTitle, footer);
+        return new ResponseObj(payloadStr, 'session/notFound', 'text/html', '404');
     }
 };

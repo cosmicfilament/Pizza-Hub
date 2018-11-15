@@ -10,7 +10,7 @@
             "name": "Launch Program",
             "program": "${workspaceFolder}/app/index.js",
             "env": {
-                "NODE_DEBUG": "files"
+                "NODE_DEBUG": "files, logs"
             }
         }
     ]

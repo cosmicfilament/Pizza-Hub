@@ -59,6 +59,7 @@ const _server = (req, res) => {
     // path is just the foo part.
     let path = parsedUrl.pathname;
     let trimmedPath = path.replace(/^\/+|\/+$/g, '');
+    // make the router route the root url to 'home'
     trimmedPath = (trimmedPath === '') ? 'home' : trimmedPath;
 
     // get the querystring as an object
@@ -104,20 +105,19 @@ const _server = (req, res) => {
                 // On error: thrown by the promise objects usually as a result of
                 // operator error or data validation errors then return helpful error response
                 .catch((errObj) => {
-                    let msg = '';
-                    let status = '';
+                    let userMsg = 'Sorry something bad happened and we are as confused as you are!';
+                    let logMsg = errObj;
+                    let status = '500';
                     if (errObj.hasOwnProperty('statusCode')) {
-                        msg = errObj.message;
+                        userMsg = errObj.userMsg;
+                        logMsg = errObj.logMsg;
                         status = errObj.statusCode;
                     }
-                    else {
-                        msg = errObj;
-                        status = 400;
-                    }
-                    logs.log(`statusCode: ${status}, Message: ${msg}`, 'b', 'red');
+
+                    logs.log(`statusCode: ${status}, Message: ${logMsg}`, 'b', 'red');
                     res.setHeader('Content-Type', 'application/json');
                     res.writeHead(status);
-                    res.end(JSON.stringify(`Error: ${msg}.`));
+                    res.end(JSON.stringify(userMsg));
                 });
         }
         catch (error) { // catch any error thrown that is not a promise based error. Not good!
@@ -125,7 +125,7 @@ const _server = (req, res) => {
             // try to send a response
             res.setHeader('Content-Type', 'application/json');
             res.writeHead(500);
-            res.end(JSON.stringify(error));
+            res.end(JSON.stringify('An unknown error has occurred. This has never happened before and we are so embarrassed.'));
         }
     });
 };

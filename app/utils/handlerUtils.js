@@ -40,6 +40,20 @@ utils.ResponseObj.prototype.setSender = function (str) {
     return this;
 };
 
+/**
+* @summary PromiseError
+* @description creates a json string for returning errors to the request handler in server.js
+* @param statusCode and message
+* @returns object as JSON string
+*/
+utils.PromiseError = function (statusCode, userMsg, logMsg = '') {
+    return {
+        'statusCode': statusCode,
+        'userMsg': userMsg,
+        'logMsg': (logMsg === '') ? userMsg : userMsg + '\n' + logMsg
+    };
+};
+
 // each crud function must use this function to ensure that the caller is not trying to spoof the real customer by ordering pizzas for him. As I am sure that never happens bwahahahahahahaha
 
 /**
@@ -52,20 +66,20 @@ utils.ResponseObj.prototype.setSender = function (str) {
 utils.validateCustomerToken = async function (token) {
     // get the token for this customer and see if it exists and is valid
     let tknObj = await fDb.read('token', token).catch((error) => {
-        return (`Error when reading the customer session token. ${error.message}`);
+        throw (new utils.PromiseError(400, 'Error reading the customer session token.', error));
     });
 
     if (!helpers.validateObject(tknObj)) {
-        return 'Error when reading the customer session token. Either you are not logged in or the session has expired.';
+        throw (new utils.PromiseError(400, 'Error when reading the customer session token. Either you are not logged in or the session has expired.'));
     }
 
     // make a real Token object out of it.
     tknObj = Token.clone(tknObj);
 
-    if (tknObj.validateTokenExpiration() === true) {
-        return true;
+    if (tknObj.validateTokenExpiration() !== true) {
+        throw (new utils.PromiseError(400, 'The session token has expired.'));
     }
-    return ('The session token has expired.');
+    return true;
 };
 
 /**
@@ -82,16 +96,16 @@ utils.readBasket = async function (basketId) {
 
     let result = newBasket.validateId();
     if (result !== true) {
-        throw (helpers.promiseError(400, `Validation failed on basket id field: ${basketId}.`));
+        throw (new utils.PromiseError(400, `Validation failed on basket id field: ${basketId}.`));
     }
 
     // read the basket record
     result = await fDb.read('basket', newBasket.id).catch((error) => {
-        throw (helpers.promiseError(400, `Could not read the basket record ${newBasket.id}. Reason: ${error.message}`));
+        throw (new utils.PromiseError(400, `Could not read the basket record ${newBasket.id}. The basket might not exist.`, error));
     });
 
     if (!helpers.validateObject(result)) {
-        throw (helpers.promiseError(400, `Error reading the file record for the basket: ${newBasket.id}, or that basket does not exist.`));
+        throw (new utils.PromiseError(400, `Error reading the file record for the basket: ${newBasket.id}, or that basket does not exist.`));
     }
     return newBasket;
 };

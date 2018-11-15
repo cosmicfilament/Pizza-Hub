@@ -1,0 +1,42 @@
+fieldset.orderGroup{
+    font-size: 1.5rem;
+    float: left;
+    border-color: rgba(255, 255, 255, 1);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 10px;
+    padding: 0px 20px 20px 20px;
+    margin: 0px 20px 20px 20px;
+    color: rgba(0, 0, 255, 1);
+    text-align: left;
+}
+
+div.orderChoices div.choice{
+    display: inline-grid;
+}
+div.orderChoices  div.choice div.choiceInput,
+div.orderChoices  div.choice div.choiceDesc,
+div.orderChoices  div.choice div.choicePrice{
+    font-size: 1rem;
+    color: rgba(139, 0, 0, 1);
+    padding: 10px 5px 5px 5px;
+    grid-row: 1;
+}
+
+div.orderChoices  div.choice div.choiceInput{
+    grid-column: 1;
+}
+
+div.orderChoices  div.choice div.choiceDesc{
+    grid-column: 2;
+    padding-top: 15px;
+}
+
+div.orderChoices  div.choice div.choicePrice{
+    grid-column: 3;
+    padding-top: 15px;
+}
+
+div.orderChoices  div.choice div.choiceInput input[type=number]{
+    width: 2rem;
+}

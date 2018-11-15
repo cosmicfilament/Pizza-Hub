@@ -27,28 +27,36 @@ const Router = function () {
         'public': { 'method': 'get', 'route': sessionHandler.public },
         // loads the customerCreate web page from index.html
         'customercreatefrm': { 'method': 'get', 'route': sessionHandler.customerCreate },
+        // loads the customerDeleted web page after the customer deletes his account
+        'customerdeleted': { 'method': 'get', 'route': sessionHandler.customerDeleted },
+        // loads the customerEditFrm web page
+        'customereditfrm': { 'method': 'get', 'route': sessionHandler.customerEdit },
         // loads the sessionCreate web page from index.html
         'sessioncreatefrm': { 'method': 'get', 'route': sessionHandler.login },
         // loads the sessionDeleted web page after the customer logs out
         'sessiondeleted': { 'method': 'get', 'route': sessionHandler.logout },
+        // loads the basketCreateFrm html web page
+        'basketcreatefrm': { 'method': 'get', 'route': sessionHandler.basketCreate },
+        // ajax call to delete the customer record
+        'customer/delete': { 'method': 'delete', 'route': customerHandler.delete },
         // ajax call to delete the token for a customer that is logging out
         'token/delete': { 'method': 'delete', 'route': tokenHandler.delete },
         // ajax call generated from customerCreate web page tells the server to create a new customer
         'customer/create': { 'method': 'post', 'route': customerHandler.create },
         // ajax call generated from customerCreate or sessionCreate (login). creates a session token
         'token/create': { 'method': 'post', 'route': tokenHandler.create },
+        // ajax call generated from the customerEditFrm
+        'customer/update': { 'method': 'put', 'route': customerHandler.update },
+        // ajax call generated from app.js during a customer update
+        'customer/read': { 'method': 'get', 'route': customerHandler.read },
         // 404
         'notFound': { 'method': 'any', 'route': sessionHandler.notFound },
         // 405
         'notAllowed': { 'method': 'any', 'route': sessionHandler.notAllowed },
         //********************************************************************** */
-        'customer/read': { 'method': 'get', 'route': customerHandler.read },
-        'customer/update': { 'method': 'put', 'route': customerHandler.update },
-        'customer/delete': { 'method': 'delete', 'route': customerHandler.delete },
+
         'token/read': { 'method': 'get', 'route': tokenHandler.read },
         'token/update': { 'method': 'put', 'route': tokenHandler.update },
-        'editcustomer': { 'method': 'get', 'route': sessionHandler.editCustomer },
-        'deletecustomer': { 'method': 'get', 'route': sessionHandler.deleteCustomer },
         'basket/menu': { 'method': 'get', 'route': basketHandler.menu },
         'basket/checkout': { 'method': 'post', 'route': basketHandler.checkOut },
         'basket/create': { 'method': 'post', 'route': basketHandler.create },

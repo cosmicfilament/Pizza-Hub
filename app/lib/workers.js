@@ -54,7 +54,7 @@ workers.rotateLogs = async function () {
     const todaysLogs = `${dateNow.getFullYear()}${dateNow.getMonth() + 1}${dateNow.getDate()}`;
 
     const fileList = await logs.list(false).catch(() => { return false; });
-
+    logs.log('Calling rotateLogs.', 'b', 'green');
     if (fileList) {
         for (let fileName of fileList) {
             // only compress previous day's log file
@@ -86,7 +86,8 @@ workers.rotateLogs = async function () {
 workers.cleanupExpiredTokensLoop = () => {
     setInterval(() => {
         workers.cleanupExpiredTokens();
-    }, 1000 * 90 * 1);
+        logs.log('Cleanup expired tokens called.', 'b', 'green');
+    }, 1000 * 60 * 1);
 };
 
 /**
@@ -96,7 +97,6 @@ workers.cleanupExpiredTokensLoop = () => {
 workers.logRotationLoop = () => {
     setInterval(() => {
         return workers.rotateLogs()
-            .then(() => helpers.log('green', `Log rotation succeeded.`))
             .catch((err) => helpers.log('red', `Log rotation failed with error: ${err}`));
 
     }, 1000 * 60 * 1);

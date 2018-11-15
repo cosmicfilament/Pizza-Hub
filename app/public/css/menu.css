@@ -1,0 +1,32 @@
+
+fieldset.menuItem{
+    font-size: 1.5rem;
+    float: left;
+    border-color: rgba(255, 255, 255, 1);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 10px;
+    padding: 0px 10px 10px 10px;
+    margin: 5px 10px 10px 20px;
+    color: rgba(0, 0, 255, 1);
+    text-align: left;
+}
+
+fieldset.menuItem div.choice {
+    display: inline-grid;
+}
+
+fieldset.menuItem div.choice div.choiceDesc,
+fieldset.menuItem div.choice div.choicePrice{
+    font-size: 1rem;
+    color: rgba(139, 0, 0, 1);
+    padding: 20px 5px 10px 5px;
+}
+
+fieldset.menuItem div.choice div.choiceDesc{
+    grid-column: 1;
+}
+
+fieldset.menuItem div.choice div.choicePrice{
+    grid-column: 2;
+}
