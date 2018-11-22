@@ -1,0 +1,75 @@
+.orderSummaryWrapper{
+    display: inline-grid;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+div.orderSummaryWrapper div.orderSummaryInputHeader,
+div.orderSummaryWrapper div.orderSummaryInput,
+div.orderSummaryWrapper div.orderSummaryItem,
+div.orderSummaryWrapper div.orderSummaryDesc,
+div.orderSummaryWrapper div.orderSummaryQuantity,
+div.orderSummaryWrapper div.orderSummaryPrice,
+div.orderSummaryWrapper div.orderSummaryTotal{
+    font-size: 1rem;
+    color: rgba(139, 0, 0, 1);
+    padding: 15px 5px 5px 5px;
+}
+
+div.orderSummaryWrapper div.orderSummaryInputHeader,
+div.orderSummaryWrapper div.orderSummaryInput{
+    grid-column: 1;
+    text-align: center;
+}
+
+div.orderSummaryInput input[type=button]{
+    width: 3rem;
+    padding: 2px 0;
+    margin: 0;
+}
+
+div.orderSummaryWrapper div.orderSummaryItem{
+    grid-column: 2;
+    text-align: left;
+    width: 100px;
+}
+
+div.orderSummaryWrapper div.orderSummaryDesc{
+    grid-column: 3;
+    text-align: left;
+    width: 150px;
+}
+
+div.orderSummaryWrapper div.orderSummaryQuantity{
+    grid-column: 4;
+    text-align: right;
+    width: 75px;
+}
+
+div.orderSummaryWrapper div.orderSummaryPrice{
+    grid-column: 5;
+    text-align: right;
+    width: 75px;
+}
+
+div.orderSummaryWrapper div.orderSummaryTotal{
+    grid-column: 6;
+    text-align: right;
+    width: 75px;
+}
+
+.borderBottom{
+    border-bottom: 1px double rgb(102, 13, 13);
+}
+
+.borderTop{
+    border-top: 1px solid rgb(102, 13, 13);
+}
+
+.marginTop{
+    margin-top: 25px;
+}
+
+.marginBottom{
+    margin-bottom: 50px;
+}

@@ -87,7 +87,7 @@ workers.cleanupExpiredTokensLoop = () => {
     setInterval(() => {
         workers.cleanupExpiredTokens();
         logs.log('Cleanup expired tokens called.', 'b', 'green');
-    }, 1000 * 60 * 1);
+    }, 1000 * 60 * 60);
 };
 
 /**
@@ -99,7 +99,7 @@ workers.logRotationLoop = () => {
         return workers.rotateLogs()
             .catch((err) => helpers.log('red', `Log rotation failed with error: ${err}`));
 
-    }, 1000 * 60 * 1);
+    }, 1000 * 60 * 5);
 };
 /**
 * @summary init

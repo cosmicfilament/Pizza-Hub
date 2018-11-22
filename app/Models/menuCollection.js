@@ -72,6 +72,7 @@ class MenuItem {
     */
     init(item) {
         this.item = item.item;
+        this.select = item.select;
         this.choices = this.parseChoices(item.choices);
     }
     /**

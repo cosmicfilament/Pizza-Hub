@@ -4,6 +4,7 @@
             "menuGroup": [
                 {
                     "item": "Pizza",
+                    "select": "single",
                     "choices": [
                         {
                             "desc": "6 Inch",
@@ -25,7 +26,12 @@
                 },
                 {
                     "item": "Toppings",
+                    "select": "multi",
                     "choices": [
+                        {
+                            "desc": "Plain",
+                            "price": "$1.00"
+                        },
                         {
                             "desc": "Pepperoni",
                             "price": "$1.00"
@@ -70,6 +76,7 @@
             "menuGroup": [
                 {
                     "item": "Calzone",
+                    "select": "multi",
                     "choices": [
                         {
                             "desc": "Meatball",

@@ -1,15 +1,15 @@
 <div class="orderCollection">
   <h3>Create a new Order</h3>
+  <h4 class="orderTotal">Total: $0.00</h4>
+  <h4 class="cartStatus">X items in basket.</h4>
   <hr />
-
-  <form id="basketCreateFrm" action="/basket/create" method="POST">
+  <form id="orderCreateFrm" action="/basket/create" method="POST">
     <div class="formError"></div>
-    <input class="hiddenPhoneNumberInput" type="hidden" name="phone" />
     <!-- Begin menuGroups generated html-->
     @@@orderGroups@@@
     <!-- End menuGroups generated html -->
     <div class="inputWrapper ctaWrapper">
-      <button type="submit" class="cta blue checkOutButton">Check Out</button>
+      <button type="submit" class="cta blue checkOutButton">Cart</button>
     </div>
   </form>
 </div>

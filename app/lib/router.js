@@ -35,8 +35,10 @@ const Router = function () {
         'sessioncreatefrm': { 'method': 'get', 'route': sessionHandler.login },
         // loads the sessionDeleted web page after the customer logs out
         'sessiondeleted': { 'method': 'get', 'route': sessionHandler.logout },
-        // loads the basketCreateFrm html web page
-        'basketcreatefrm': { 'method': 'get', 'route': sessionHandler.basketCreate },
+        // loads the orderCreateFrm html web page
+        'ordercreatefrm': { 'method': 'get', 'route': sessionHandler.orderCreate },
+        // order Summary
+        'ordersummary': { 'method': 'get', 'route': sessionHandler.orderSummary },
         // ajax call to delete the customer record
         'customer/delete': { 'method': 'delete', 'route': customerHandler.delete },
         // ajax call to delete the token for a customer that is logging out

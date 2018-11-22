@@ -13,7 +13,7 @@ const environments = {
     // default staging environment
     staging: {
         'envName': 'staging',
-        'debug': false,
+        'debug': true,
         'httpPort': 3000,
         'httpsPort': 3001,
         'UseHttps': true,

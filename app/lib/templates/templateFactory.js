@@ -1,10 +1,10 @@
 'use strict';
 
 /**
-    * @file populates the templates in the templates directory with the contents of the menuBuilder file and the siteConfig file.
-    * @module templateFactory.js
-    * @exports
-*/
+ * @file populates the templates in the templates directory with the contents of the menuBuilder file and the siteConfig file.
+ * @module templateFactory.js
+ * @exports
+ */
 
 const menuLoader = require('./menuLoader');
 const menuBuilder = require('./menuBuilder');
@@ -12,7 +12,9 @@ const orderBuilder = require('./orderBuilder');
 const templates = require('./templates');
 const helpers = require('./../../utils/helpers');
 const logs = require('./../../utils/logs');
-const { siteConfig } = require('./../config').CONFIG;
+const {
+    siteConfig
+} = require('./../config').CONFIG;
 
 const templateFactory = {};
 
@@ -24,11 +26,11 @@ templateFactory.init = async function (app) {
 
     theApp = app;
 
-    htmlTemplatesDirectory.set('templates', `${app.getBaseDir()}/templates`);
-    htmlTemplatesDirectory.set('layout', `${app.getBaseDir()}/templates/layout`);
+    htmlTemplatesDirectory.set('templates', `${app.getBaseDir()}/htmlTemplates`);
+    htmlTemplatesDirectory.set('layout', `${app.getBaseDir()}/htmlTemplates/layout`);
     htmlTemplatesDirectory.set('menu', `${app.getBaseDir()}/configuration`);
 
-    if (! await templateFactory.rebuildTemplates()) {
+    if (!await templateFactory.rebuildTemplates()) {
         logs.log('Shutting down app in templateFactory rebuildTemplates. Aborting ....', 'b');
         app.shutdown(1);
     }

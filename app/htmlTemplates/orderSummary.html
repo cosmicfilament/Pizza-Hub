@@ -1,0 +1,31 @@
+<h3>Order Summary.</h3>
+<hr />
+<div class="alignLeft orderSummaryData"></div>
+
+<div class="floatLeft borderBottom orderSummaryWrapper">
+    <div class="orderSummaryInputHeader">Delete</div>
+    <div class="orderSummaryItem">Order Item</div>
+    <div class="orderSummaryDesc">Description</div>
+    <div class="orderSummaryQuantity">Order Quantity</div>
+    <div class="orderSummaryPrice">Order Price</div>
+    <div class="orderSummaryTotal">Total Price</div>
+</div>
+
+<div class="floatLeft orderSummaryWrapper">
+    <div class="orderSummaryInput"><input type="button" name="${orderItem.item}_${(orderItem.description).replace(replaceSpaces, '_')}"
+            value="X" class="cta brown"></div>
+    <div class="orderSummaryItem">${orderItem.item}</div>
+    <div class="orderSummaryDesc">${orderItem.description}</div>
+    <div class="orderSummaryQuantity">${orderItem.quantity}</div>
+    <div class="orderSummaryPrice">${orderItem.price}</div>
+    <div class="orderSummaryTotal">$${orderItem.total}.00</div>
+</div>
+
+<div class="floatLeft marginBottom borderTop orderSummaryWrapper">
+    <div class="orderSummaryInput"><input type="button" name="deleteAll" value="All" class="cta brown"></div>
+    <div class="orderSummaryItem">Delete All</div>
+    <div class="orderSummaryDesc"></div>
+    <div class="orderSummaryQuantity">${formattedTotalQuantity}</div>
+    <div class="orderSummaryPrice"></div>
+    <div class="orderSummaryTotal">${formattedTotal}</div>
+</div>

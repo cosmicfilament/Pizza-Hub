@@ -121,12 +121,23 @@ module.exports = {
          * @summary notAllowed
          * @description  responds with 405 status code
     */
-    basketCreate: async function () {
+    orderCreate: async function () {
 
-        const body = factory.getTemplate('basketCreateFrm');
-        const payloadStr = factory.buildWebPage(body, 'basketCreateFrm');
+        const body = factory.getTemplate('orderCreateFrm');
+        const payloadStr = factory.buildWebPage(body, 'orderCreateFrm');
 
-        return new ResponseObj(payloadStr, 'session/basketCreate', 'text/html');
+        return new ResponseObj(payloadStr, 'session/orderCreate', 'text/html');
+    },
+    /**
+        * @summary notAllowed
+        * @description  responds with 405 status code
+   */
+    orderSummary: async function () {
+
+        const body = factory.getTemplate('orderSummary');
+        const payloadStr = factory.buildWebPage(body, 'orderSummary');
+
+        return new ResponseObj(payloadStr, 'session/orderSummary', 'text/html');
     },
     notAllowed: async function () {
 
