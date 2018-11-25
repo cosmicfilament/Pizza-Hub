@@ -1,10 +1,10 @@
 'use strict';
 
 /**
-* @file entry point for the node server app
-* @author John Butler
-* @module index.js
-*/
+ * @file entry point for the node server app
+ * @author John Butler
+ * @module index.js
+ */
 
 // provides easy access to the base directory for creating
 // paths either from app.getBaseDir or from the config file

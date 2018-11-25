@@ -1,4 +1,4 @@
-html{
+html {
     background-color: rgba(246, 228, 196, 1);
 }
 
@@ -17,86 +17,94 @@ body {
     margin: 0 auto;
 }
 
-.clear{
+.clear {
     float: none;
     width: 100%;
     height: 1px;
 }
 
-.alignLeft{
+.alignLeft {
     text-align: left;
 }
 
-.alignCenter{
+.alignCenter {
     text-align: center;
 }
 
-.floatLeft{
+.floatLeft {
     float: left;
 }
 
-.floatRight{
+.floatRight {
     float: right;
 }
 
-.clearFloat{
-    clear:both;
+.clearFloat {
+    clear: both;
 }
 
-.inline{
+.inline {
     display: inline;
 }
 
-h1, h2, h3, h4, h5{
+.inlineBlock {
+    display: inline-block;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
     padding: 0 0 5px 0;
     text-align: center;
 }
 
-h1{
+h1 {
     font-size: 5rem;
     text-transform: uppercase;
     font-weight: bold;
     margin-top: 1rem;
     margin-bottom: 0rem;
-  }
+}
 
-  h2{
-  font-size: 3rem;
-  font-weight: normal;
-  margin-top: 0rem;
-  margin-bottom: 1rem;
-  }
+h2 {
+    font-size: 3rem;
+    font-weight: normal;
+    margin-top: 0rem;
+    margin-bottom: 1rem;
+}
 
-  h3{
+h3 {
     font-size: 2rem;
     font-weight: bold;
     margin-top: 1rem;
     margin-bottom: 0rem;
-  }
+}
 
-  h4{
+h4 {
     font-size: 1.5rem;
     font-weight: normal;
     margin-top: 0.25rem;
     margin-bottom: 0.25rem;
-  }
+}
 
-  h5{
+h5 {
     font-size: 1rem;
     font-weight: bold;
     margin-top: 0rem;
     margin-bottom: 0.25rem;
-  }
+}
 
 hr {
     margin: 20px auto;
     width: 95%;
-  }
+}
 
-  .content {
+.content {
     box-sizing: border-box;
     text-align: center;
     margin: auto;
     margin-top: 100px;
     margin-bottom: 75px;
-  }
+}

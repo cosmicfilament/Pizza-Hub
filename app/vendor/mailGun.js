@@ -1,27 +1,31 @@
 'use strict';
 
 /**
-* @file MailGun file for sending email updates to custom
-* @module mailGun.js
-* @description send email thru mailGun infrastructure
-* @exports send function
-*/
+ * @file MailGun file for sending email updates to custom
+ * @module mailGun.js
+ * @description send email thru mailGun infrastructure
+ * @exports send function
+ */
 
 const logs = require('./../utils/logs');
-const { PromiseError } = require('./../utils/handlerUtils');
+const {
+    PromiseError
+} = require('./../utils/handlerUtils');
 const https = require('https');
 const queryString = require('querystring');
-const { CONFIG } = require('./../lib/config');
+const {
+    CONFIG
+} = require('../lib/config');
 
 /**
-* @summary send email
-* @description sends email status to customers
-* @param basket id
-* @param email address
-* @param message
-* @returns status
-* @throws promise reject
-*/
+ * @summary send email
+ * @description sends email status to customers
+ * @param basket id
+ * @param email address
+ * @param message
+ * @returns status
+ * @throws promise reject
+ */
 module.exports = {
     send: async function (id, email, msg) {
         return new Promise((resolve, reject) => {
@@ -53,8 +57,7 @@ module.exports = {
                 // Callback successfully if the request went through
                 if (status == 200 || status == 201) {
                     resolve(status);
-                }
-                else {
+                } else {
                     resolve(new PromiseError(500, `Customer email failed on order with basket id: ${id}. Status returned: ${status}`));
                 }
 

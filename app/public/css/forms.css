@@ -1,133 +1,140 @@
+/* Form Styling for Account Creation page and others */
+.formWrapper {
+  padding: 15px;
+}
 
-  /* Form Styling for Account Creation page and others */
-  .formWrapper{
-    padding: 15px;
-  }
+.ctaWrapper {
+  text-align: center;
+}
 
-  .ctaWrapper{
-    text-align: center;
-  }
+.cta,
+a.cta:hover,
+a.cta:active,
+a.cta:visited,
+button.cta:hover,
+button.cta:active,
+button.cta:visited {
+  background-color: rgba(26, 26, 26, 1);
+  color: rgba(255, 255, 255, 1);
+  border-radius: 10px;
+  text-transform: uppercase;
+  font-weight: bold;
+  text-align: center;
+  display: inline-block;
+  padding: 15px;
+  width: 150px;
+  cursor: pointer;
+}
 
-  .cta,a.cta:hover,a.cta:active,a.cta:visited,button.cta:hover,button.cta:active,button.cta:visited{
-    background-color: rgba(26, 26, 26, 1);
-    color: rgba(255, 255, 255, 1);
-    border-radius: 10px;
-    text-transform: uppercase;
-    font-weight: bold;
-    text-align: center;
-    display: inline-block;
-    padding: 15px;
-    width: 150px;
-    cursor: pointer;
-  }
+.cta.blue {
+  background-color: rgba(33, 68, 120, 1) !important;
+}
 
-  .cta.blue{
-    background-color: rgba(33, 68, 120, 1)!important;
-  }
+.cta.green {
+  background-color: rgba(33, 120, 68, 1) !important;
+}
 
-  .cta.green{
-    background-color: rgba(33, 120, 68, 1) !important;
-  }
+.cta.red {
+  background-color: rgb(225, 40, 40) !important;
+}
 
-  .cta.red{
-    background-color:rgb(225, 40, 40) !important;
-  }
+.cta.brown {
+  background-color: rgb(102, 13, 13) !important;
+}
 
-  .cta.brown{
-  background-color:  rgb(102, 13, 13) !important;
-  }
+.warning {
+  font-style: italic;
+  color: rgba(200, 55, 55, 1);
+  font-size: 17px;
+  text-align: center;
+  line-height: 150%;
+  padding: 0 0 20px 0;
+}
 
-  .warning{
-    font-style: italic;
-    color: rgba(200, 55, 55, 1);
-    font-size: 17px;
-    text-align: center;
-    line-height: 150%;
-    padding: 0 0 20px 0 ;
-  }
+.formError {
+  display: none;
+  background-color: rgba(200, 55, 55, 1);
+  font-style: italic;
+  color: rgba(255, 255, 255, 1);
+  padding: 10px 15px;
+  border-radius: 5px;
+  margin: 0 0 15px 0;
+  text-align: center;
+  border-color: rgba(216, 112, 112, 1);
+  border-width: 2px;
+  border-style: solid;
+}
 
-  .formError{
-    display: none;
-    background-color: rgba(200, 55, 55, 1);
-    font-style: italic;
-    color: rgba(255, 255, 255, 1);
-    padding: 10px 15px;
-    border-radius: 5px;
-    margin: 0 0 15px 0;
-    text-align: center;
-    border-color: rgba(216, 112, 112, 1);
-    border-width: 2px;
-    border-style: solid;
-  }
+.formSuccess {
+  display: none;
+  background-color: rgba(33, 120, 68, 1);
+  font-style: italic;
+  color: rgba(255, 255, 255, 1);
+  padding: 10px 15px;
+  border-radius: 5px;
+  margin: 0 0 15px 0;
+  text-align: center;
+  border-color: rgba(53, 192, 109, 1);
+  border-width: 2px;
+  border-style: solid;
+}
 
-  .formSuccess{
-    display: none;
-    background-color: rgba(33, 120, 68, 1);
-    font-style: italic;
-    color: rgba(255, 255, 255, 1);
-    padding: 10px 15px;
-    border-radius: 5px;
-    margin: 0 0 15px 0;
-    text-align: center;
-    border-color: rgba(53, 192, 109, 1);
-    border-width: 2px;
-    border-style: solid;
-  }
+input,
+select,
+option {
+  border-width: 1px;
+  border-radius: 2px;
+  padding: 7px 1%;
+  width: 150px;
+}
 
-  input,select,option {
-    border-width: 1px;
-    border-radius: 2px;
-    padding: 7px 1%;
-    width: 150px;
-  }
+input.address {
+  width: 400px;
+}
 
-  input.address{
-    width: 400px;
-  }
+input.name {
+  width: 100px;
+}
 
-  input.name{
-    width: 100px;
-  }
+.checkboxGroup input {
+  display: inline-block;
+  width: initial;
+  margin: 20px;
+}
 
-  .checkboxGroup input{
-    display: inline-block;
-    width: initial;
-    margin: 20px;
-  }
+input.disabled {
+  background-color: rgba(239, 239, 239, 1);
+}
 
-  input.disabled{
-    background-color: rgba(239, 239, 239, 1);
-  }
+.inputWrapper {
+  padding: 0 0 20px 0;
+}
 
-  .inputWrapper{
-    padding: 0 0 20px 0;
-  }
+.inputLabel {
+  padding: 0 0 5px 0;
+  color: rgba(128, 128, 128, 1);
+}
 
-  .inputLabel{
-    padding: 0 0 5px 0;
-    color: rgba(128, 128, 128, 1);
-  }
+button {
+  font-weight: normal !important;
+  text-align: center;
+  width: auto;
+}
 
-  button{
-    font-weight: normal !important;
-    text-align: center;
-    width: auto;
-  }
+.backButton {
+  text-transform: uppercase;
+  font-weight: bold !important;
+  display: inline-block !important;
+  width: 100px;
+  padding: 7px !important;
+  color: rgba(255, 255, 255, 1) !important;
+  background-color: rgba(26, 26, 26, 1);
+  text-align: center;
+  border-radius: 5px;
+  cursor: pointer;
+}
 
-  .backButton{
-    text-transform: uppercase;
-    font-weight: bold !important;
-    display: inline-block !important;
-    width: 100px;
-    padding: 7px !important;
-    color: rgba(255, 255, 255, 1) !important;
-    background-color: rgba(26, 26, 26, 1);
-    text-align: center;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-
-.orderButton{
+.orderButton {
   font-size: .75rem;
   float: left;
   margin-top: 10px;
@@ -136,11 +143,12 @@
   white-space: normal;
 }
 
-.checkOutButton{
+.checkOutButton {
   font-size: 1rem;
   padding: 10px !important;
 }
-.statusErrorImage img{
+
+.statusErrorImage img {
   width: auto;
   height: 200px;
   margin-top: 50px;

@@ -1,13 +1,15 @@
 'use strict';
 
 /**
-* @file Token class module which generates a session token
-* @module Token class and enumerations
-* @exports Token, TOKEN_ENUMS
-*/
+ * @file Token class module which generates a session token
+ * @module Token class and enumerations
+ * @exports Token, TOKEN_ENUMS
+ */
 
-const helpers = require('./../utils/helpers');
-const { CUST_ENUMS } = require('./customerModel');
+const helpers = require('./../public/js/common/helpers');
+const {
+    CUST_ENUMS
+} = require('./customerModel');
 
 const TOKEN_ENUMS = {
     CHARS: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
@@ -23,7 +25,7 @@ const TOKEN_ENUMS = {
  * @class
  * @classdesc Encapsulates what it is to be a validation Token
  * @exports Token
-*/
+ */
 class Token {
     constructor(id = '', phone = '', firstName = '') {
         // allow creation of an incomplete token, but set expiry to now
@@ -32,15 +34,14 @@ class Token {
             this.phone = phone;
             this.firstName = firstName;
             this.expires = Date.now();
-        }
-        else {
+        } else {
             this.init(id, phone, firstName);
         }
     }
     /**
-    * @summary Token init method
-    * @description initializes the Token object properties
-    */
+     * @summary Token init method
+     * @description initializes the Token object properties
+     */
     init(id, phone, firstName) {
         this.id = id;
         this.phone = phone;
@@ -48,13 +49,13 @@ class Token {
         this.expires = Date.now() + TOKEN_ENUMS.TOKEN_EXPIRY;
     }
     /**
-    * @static
-    * @summary Token clone method
-    * @description Creates a new Token based on the properties passed into it. Can end up with less or more properties than the canonical Token.
-    * @param an object that can be coerced into a Token
-    * @returns a new token object
-    * @throws nothing
-    */
+     * @static
+     * @summary Token clone method
+     * @description Creates a new Token based on the properties passed into it. Can end up with less or more properties than the canonical Token.
+     * @param an object that can be coerced into a Token
+     * @returns a new token object
+     * @throws nothing
+     */
     static clone(obj) {
 
         if (null === obj || obj === 'undefined') {
@@ -71,12 +72,12 @@ class Token {
         return newToken;
     }
     /**
-    * @static
-    * @summary Token CreateTokenString method
-    * @description Creates a new token id
-    * @returns a new token object
-    * @throws nothing
-    */
+     * @static
+     * @summary Token CreateTokenString method
+     * @description Creates a new token id
+     * @returns a new token object
+     * @throws nothing
+     */
     static createTokenString() {
 
         // Define all the possible characters that could go into a string
@@ -93,17 +94,16 @@ class Token {
         return token;
     }
     /**
-    * @summary Token updateExpiry method
-    * @description Extends the expiration by 60 minutes
-    * @param extend - boolean that if true extends the token and if false does nothing
-    * @returns a new Date object
-    * @throws nothing
-    */
+     * @summary Token updateExpiry method
+     * @description Extends the expiration by 60 minutes
+     * @param extend - boolean that if true extends the token and if false does nothing
+     * @returns a new Date object
+     * @throws nothing
+     */
     updateExpiry(extend = true) {
         if (extend) {
             this.expires = Date.now() + TOKEN_ENUMS.TOKEN_EXPIRY;
-        }
-        else {
+        } else {
             this.expires = Date.now();
         }
         return this.expires;
@@ -117,9 +117,9 @@ class Token {
         });
     }
     /**
-    * @summary validateId
-    * @description token validateId method
-    */
+     * @summary validateId
+     * @description token validateId method
+     */
     validateId() {
         if (!helpers.validateString(this.id, false, TOKEN_ENUMS.TOKEN_STRING_LENGTH, '=')) {
             return 'token id';
@@ -127,9 +127,9 @@ class Token {
         return true;
     }
     /**
-    * @summary validatePhone
-    * @description token validatePhone method
-    */
+     * @summary validatePhone
+     * @description token validatePhone method
+     */
 
     validatePhone() {
         if (!helpers.validateString(this.phone, false, CUST_ENUMS.PHONE_NUMBER_LENGTH, '=')) {
@@ -139,9 +139,9 @@ class Token {
     }
 
     /**
-    * @summary validateTokenExpiration
-    * @description token validateExpiration method
-    */
+     * @summary validateTokenExpiration
+     * @description token validateExpiration method
+     */
 
     validateTokenExpiration() {
         if (!helpers.validateIntegerRange(this.expires, 1, TOKEN_ENUMS.MAX_INT)) {
@@ -153,11 +153,11 @@ class Token {
         return true;
     }
     /**
-    * @summary validateToken
-    * @description validates the complete token object
-    * @returns true on success or the string name of the failed property on failure
-    * @throws nothing
-    */
+     * @summary validateToken
+     * @description validates the complete token object
+     * @returns true on success or the string name of the failed property on failure
+     * @throws nothing
+     */
     validateToken() {
         let result = this.validateId();
         if (result !== true) {

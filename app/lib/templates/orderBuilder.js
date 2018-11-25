@@ -1,15 +1,15 @@
 'use strict';
 
 /**
-    * @file loads a customizable list of order items
-    * @module orderBuilder.js
-    * @exports orderBuilder
-    * @todo wrap in try/catch
-*/
+ * @file loads a customizable list of order items
+ * @module orderBuilder.js
+ * @exports orderBuilder
+ * @todo wrap in try/catch
+ */
 
-const helpers = require('../../utils/helpers');
+const helpers = require('./../../public/js/common/helpers');
 const logs = require('../../utils/logs');
-const { MenuCollection } = require('../../Models/menuCollection');
+const { smartCollection } = require('../../public/js/common/smartCollection')._mc;
 
 const orderBuilder = {};
 
@@ -45,7 +45,7 @@ const buildOrderTemplate = function (templateFactory) {
     let replaceSpaces = new RegExp(' ', 'g');
 
     // builds a collection object from the menuConfig json file
-    const orderGroupCollection = new MenuCollection(templateFactory.getMenuFile());
+    const orderGroupCollection = new smartCollection(templateFactory.getMenuFile());
 
     // this will end up being the fully constructed html order form
     let completedOrderForm = '';
@@ -85,8 +85,7 @@ const buildOrderTemplate = function (templateFactory) {
                     if (select === 'single') {
                         htmlOrderItemTemplate = htmlOrderItemTemplate.replace('hidden', numberInputType);
                         htmlOrderItemTemplate = htmlOrderItemTemplate.replace('@@labelWhenRadioButtonSelectEnabled@@', ' Order Quantity');
-                    }
-                    else {
+                    } else {
                         // probably not needed but looks cleaner if we hide the name of the
                         // input as well as the type if we are not using radio buttons
                         htmlOrderItemTemplate = htmlOrderItemTemplate.replace('@@parentOrderItem@@', 'hidden');
@@ -109,8 +108,7 @@ const buildOrderTemplate = function (templateFactory) {
                                 // make the id the choice description
                                 htmlChoiceTemplate = htmlChoiceTemplate.replace('@@id@@', choice.desc.replace(replaceSpaces, '_'));
 
-                            }
-                            else {
+                            } else {
                                 // set the input control type to number if is multi select
                                 htmlChoiceTemplate = htmlChoiceTemplate.replace('@@inputType@@', numberInputType);
                                 // in this case we want a unique name for each number input

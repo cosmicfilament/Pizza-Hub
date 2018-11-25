@@ -1,17 +1,22 @@
 'use strict';
 
 /**
-    * @file sessionHandler file that handles 404 and 405 errors
-    * @module sessionHandler.js
-    * @description  error handler functions
-*/
+ * @file sessionHandler file that handles 404 and 405 errors
+ * @module sessionHandler.js
+ * @description  error handler functions
+ */
 
 const factory = require('../lib/templates/templateFactory');
 const readFileP = require('util').promisify(require('fs').readFile);
-const helpers = require('../utils/helpers');
+const helpers = require('./../public/js/common/helpers');
 const logs = require('../utils/logs');
-const { BASE_DIR } = require('../lib/config');
-const { ResponseObj, PromiseError } = require('./../utils/handlerUtils');
+const {
+    BASE_DIR
+} = require('../lib/config');
+const {
+    ResponseObj,
+    PromiseError
+} = require('./../utils/handlerUtils');
 
 // file in current or target directory
 const makeFName = (relativePath) => {
@@ -118,9 +123,9 @@ module.exports = {
         return new ResponseObj(payloadStr, 'session/customerDeleted', 'text/html');
     },
     /**
-         * @summary notAllowed
-         * @description  responds with 405 status code
-    */
+     * @summary notAllowed
+     * @description  responds with 405 status code
+     */
     orderCreate: async function () {
 
         const body = factory.getTemplate('orderCreateFrm');
@@ -129,9 +134,9 @@ module.exports = {
         return new ResponseObj(payloadStr, 'session/orderCreate', 'text/html');
     },
     /**
-        * @summary notAllowed
-        * @description  responds with 405 status code
-   */
+     * @summary notAllowed
+     * @description  responds with 405 status code
+     */
     orderSummary: async function () {
 
         const body = factory.getTemplate('orderSummary');
@@ -151,9 +156,9 @@ module.exports = {
     },
 
     /**
-         * @summary notFound function
-         * @description  responds with 404 status code
-    */
+     * @summary notFound function
+     * @description  responds with 404 status code
+     */
     notFound: async function () {
 
         const body = factory.getTemplate('404');

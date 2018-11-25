@@ -1,11 +1,11 @@
 'use strict';
 
 /**
-    * @module templates.js
-*	 @exports templates
-*/
+ * @module templates.js
+ *	 @exports templates
+ */
 
-const helpers = require('./../../utils/helpers');
+const helpers = require('./../../public/js/common/helpers');
 const logs = require('./../../utils/logs');
 const files = require('./../../utils/files');
 
@@ -44,8 +44,7 @@ templates.load = async function (templateFactory) {
             templateFileName = templateFileName.replace('.html', '');
             // add templateName and template data to the map.
             templates.templateMap.set(templateFileName, templateData);
-        }
-        else {
+        } else {
 
             let layoutFileName = await files.readDirectory(templateFactory.getHtmlTemplatesDirectory('layout'));
 

@@ -1,15 +1,19 @@
 'use strict';
 
 /**
-* @file helper functions for the handler modules
-* @module handlerUtils.js
-* @description functions shared across the handlers
-*/
+ * @file helper functions for the handler modules
+ * @module handlerUtils.js
+ * @description functions shared across the handlers
+ */
 
-const { Basket } = require('../Models/basketModel');
-const { Token } = require('../models/tokenModel');
+const {
+    Basket
+} = require('../Models/basketModel');
+const {
+    Token
+} = require('../models/tokenModel');
 const fDb = require('../lib/fileDb');
-const helpers = require('./helpers');
+const helpers = require('./../public/js/common/helpers');
 
 const utils = {};
 
@@ -19,33 +23,41 @@ utils.ResponseObj = function (payload = {}, sender = '', content_type = 'applica
     this._payload = payload;
     this._sender = sender;
 };
-utils.ResponseObj.prototype.getContentType = function () { return this._content_type; };
+utils.ResponseObj.prototype.getContentType = function () {
+    return this._content_type;
+};
 utils.ResponseObj.prototype.setContentType = function (str) {
     this._content_type = str;
     return this;
 };
-utils.ResponseObj.prototype.getStatusCode = function () { return this._statusCode; };
+utils.ResponseObj.prototype.getStatusCode = function () {
+    return this._statusCode;
+};
 utils.ResponseObj.prototype.setStatusCode = function (str) {
     this._statusCode = str;
     return this;
 };
-utils.ResponseObj.prototype.getPayload = function () { return this._payload; };
+utils.ResponseObj.prototype.getPayload = function () {
+    return this._payload;
+};
 utils.ResponseObj.prototype.setPayload = function (str) {
     this._payload = str;
     return this;
 };
-utils.ResponseObj.prototype.getSender = function () { return this._sender; };
+utils.ResponseObj.prototype.getSender = function () {
+    return this._sender;
+};
 utils.ResponseObj.prototype.setSender = function (str) {
     this._sender = str;
     return this;
 };
 
 /**
-* @summary PromiseError
-* @description creates a json string for returning errors to the request handler in server.js
-* @param statusCode and message
-* @returns object as JSON string
-*/
+ * @summary PromiseError
+ * @description creates a json string for returning errors to the request handler in server.js
+ * @param statusCode and message
+ * @returns object as JSON string
+ */
 utils.PromiseError = function (statusCode, userMsg, logMsg = '') {
     return {
         'statusCode': statusCode,
@@ -57,12 +69,12 @@ utils.PromiseError = function (statusCode, userMsg, logMsg = '') {
 // each crud function must use this function to ensure that the caller is not trying to spoof the real customer by ordering pizzas for him. As I am sure that never happens bwahahahahahahaha
 
 /**
-* @summary validateCustomerToken
-* @description validates the session token for each crud function
-* @param token id
-* @returns status or error message
-* @throws nothing
-*/
+ * @summary validateCustomerToken
+ * @description validates the session token for each crud function
+ * @param token id
+ * @returns status or error message
+ * @throws nothing
+ */
 utils.validateCustomerToken = async function (token) {
     // get the token for this customer and see if it exists and is valid
     let tknObj = await fDb.read('token', token).catch((error) => {
@@ -83,12 +95,12 @@ utils.validateCustomerToken = async function (token) {
 };
 
 /**
-* @summary readBasket
-* @description validates the params and reads the contents of a basket
-* @param basket id
-* @returns basket or error
-* @throws error
-*/
+ * @summary readBasket
+ * @description validates the params and reads the contents of a basket
+ * @param basket id
+ * @returns basket or error
+ * @throws error
+ */
 utils.readBasket = async function (basketId) {
 
     const newBasket = new Basket();

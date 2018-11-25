@@ -3,18 +3,19 @@
 /* eslint no-console: off */
 
 /**
-    * @file front end logic
-*/
+ * @file front end logic
+ */
 
 import { RequestObj, xhrRequest } from './ajax.js';
 import { SessionObj } from './session.js';
-import { updateOrderCreateFrm, bindAddToBasketButtons } from './orders.js';
-import { displayOrderSummary } from './orderSummary.js';
+import { BasketObj } from './basket.js';
 
 const app = {};
 
 // keep the session object private
 app.session = new SessionObj();
+// keep the basket object private, too
+app.basket = new BasketObj();
 
 // bind the forms to the xhrRequest method via the eventlistener
 app.bindForms = function () {
@@ -31,18 +32,20 @@ app.bindForms = function () {
             e.preventDefault();
 
             const formId = this.id;
-            if (formId.startsWith('orderCreate')) {
 
-                const basketTotalQty = app.session.getBasketTotalQuantity();
-                if (basketTotalQty === 0) {
+            let newBasket = [];
+            if (formId === 'orderCreateFrm') {
+                newBasket = app.basket.getNewBasketFromFrm(app);
+                if (newBasket === false) {
                     return;
                 }
             }
+
             // hide the error message and/or success message if shown
             let frmError = document.querySelector("#" + formId + " .formError");
             let frmSuccess = document.querySelector("#" + formId + " .formSuccess");
 
-            if (frmError) frmError.style.display = 'none';
+            if (frmError) frmError.style.display = 'none'; ``;
             if (frmSuccess) frmSuccess.style.display = 'none';
 
             // create a request object and populate it from the form data
@@ -51,12 +54,11 @@ app.bindForms = function () {
             reqObj.setPath(this.action)
                 .setMethod(this.method.toUpperCase());
 
-            if (formId.startsWith("order")) {
-                reqObj.addToPayload('basket', app.session.getBasket());
+            if (formId === "orderCreateFrm") {
+                reqObj.addToPayload('collection', newBasket);
                 reqObj.addToPayload('phone', app.session.getPhone());
-                reqObj.addToPayload('basketTotal', app.session.getFormattedBasketTotal());
-            }
-            else {
+                //reqObj.setStringify(false);
+            } else {
                 // add the form input elements to the payload
                 for (let element of this.elements) {
                     if (element.type === "submit") {
@@ -90,8 +92,7 @@ app.bindForms = function () {
                         if (resObj.status === 403) {
                             console.log(`Request rejected due to 403 error: ${JSON.stringify(resObj)}`);
                             app.logOutCustomer();
-                        }
-                        else { // rejected due to error
+                        } else { // rejected due to error
                             console.log(`Request rejected: ${JSON.stringify(resObj)}`);
                             // Set the formError field with the error text and then unhide it
                             document.querySelector("#" + formId + " .formError").innerHTML = resObj.getResponsePayload();
@@ -166,10 +167,9 @@ app.formResponseProcessor = function (formId, previousReqObj, resObj) {
     }
 
     /**********    Basket(Order) Create Response   **********/
-    if (formId.startsWith('orderCreate')) {
-        app.session.clearSessionBasket();
-        updateOrderCreateFrm(app, true);
-        window.location = "orderSummary";
+    if (formId === 'orderCreateFrm') {
+        app.basket.updateOrderCreateFrm(app, true);
+        document.querySelector("#" + formId + " .formSuccess").style.display = 'block';
     }
 
 };
@@ -186,15 +186,15 @@ app.loadSavedDataOnLoggedInPages = function () {
         app.loadCustomerEditFrmPage();
     }
 
-    // Logic for orderCreateFrom settings
+    //Logic for orderCreateFrm settings
     if (primaryClass === 'orderCreateFrm') {
-        updateOrderCreateFrm(app);
+        app.basket.updateOrderCreateFrm(app);
     }
-    if (primaryClass === 'orderSummary') {
-        if (app.session.getPreviousOrder().prevTotalQuantity > 0) {
-            displayOrderSummary(app);
-        }
-    }
+    // if (primaryClass === 'orderSummary') {
+    //     if (app.session.getPreviousOrder().prevTotalQuantity > 0) {
+    //         displayOrderSummary(app);
+    //     }
+    // }
 };
 
 app.loadCustomerEditFrmPage = function () {
@@ -234,8 +234,7 @@ app.loadCustomerEditFrmPage = function () {
                 // If the request comes back as something other than 200, log the user our (on the assumption that the api is temporarily down or the users token is bad)
                 app.logOutCustomer();
             });
-    }
-    else {
+    } else {
         console.log(`customer logged out phone invalid: ${phone}`);
         app.logOutCustomer();
     }
@@ -278,37 +277,11 @@ app.bindOrderSummaryButton = function () {
                         console.log(error);
                         return false;
                     });
-            }
-            else {
+            } else {
                 window.location = "orderSummary";
             }
         }
     });
-};
-
-app.sendOrderToServer = function () {
-
-    // create a request object and populate it
-    const reqObj = new RequestObj();
-    // add the request method
-    reqObj.setPath('./basket/create')
-        .setMethod('POST')
-        .addToPayload('basket', app.session.getBasket())
-        .addToPayload('phone', app.session.getPhone())
-        .addToPayload('basketTotal', app.session.getFormattedBasketTotal())
-        .addToHeaders('token', app.session.getToken());
-
-    // send the message to the server
-    return xhrRequest(reqObj)
-        .then(
-            (resObj) => { //fullfilled
-                console.log(`Request successful: ${JSON.stringify(resObj)}`);
-                return true;
-            })
-        .catch((error) => {
-            console.log(error);
-            return false;
-        });
 };
 
 // Log the customer out then redirect them to the deleted page if true
@@ -332,7 +305,9 @@ app.logOutCustomer = function (redirectCustomer = '/sessionDeleted') {
                 console.log(`Logout successful: ${JSON.stringify(resObj)}`);
                 window.location = redirectCustomer;
             })
-        .catch((error) => { console.log(`Logout error: ${error}`); });
+        .catch((error) => {
+            console.log(`Logout error: ${error}`);
+        });
 };
 
 // Set (or remove) the loggedIn class from the body
@@ -343,8 +318,7 @@ app.setLoggedInClass = function (add) {
 
     if (add) {
         target.classList.add('loggedIn');
-    }
-    else {
+    } else {
         target.classList.remove('loggedIn');
     }
 };
@@ -358,9 +332,7 @@ app.init = () => {
     // Bind menu buttons button
     app.bindLogoutButton();
 
-    bindAddToBasketButtons(app);
-
-    app.bindOrderSummaryButton();
+    //app.bindOrderSummaryButton();
 
     app.setLoggedInClass(app.session.initSessionFromLocalStorage());
 

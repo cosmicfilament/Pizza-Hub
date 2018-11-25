@@ -1,20 +1,25 @@
 'use strict';
 
 /**
-* @file server file. starts the http and https server, listens for requests and sends responses
-* @module server.js
-* @description server file. starts the http and https server, listens for requests and sends responses
-*/
+ * @file server file. starts the http and https server, listens for requests and sends responses
+ * @module server.js
+ * @description server file. starts the http and https server, listens for requests and sends responses
+ */
 
 const http = require('http');
 const https = require('https');
 const fs = require('fs');
 const url = require('url');
-const { StringDecoder } = require('string_decoder');
+const {
+    StringDecoder
+} = require('string_decoder');
 const router = require('./router');
-const helpers = require('./../utils/helpers');
+const helpers = require('./../public/js/common/helpers');
 const logs = require('./../utils/logs');
-const { BASE_DIR, CONFIG } = require('./config');
+const {
+    BASE_DIR,
+    CONFIG
+} = require('./config');
 
 const server = {};
 
@@ -119,8 +124,7 @@ const _server = (req, res) => {
                     res.writeHead(status);
                     res.end(JSON.stringify(userMsg));
                 });
-        }
-        catch (error) { // catch any error thrown that is not a promise based error. Not good!
+        } catch (error) { // catch any error thrown that is not a promise based error. Not good!
             logs.log(`Try/Catch error thrown in server.handler: ${error}`, 'b', 'red');
             // try to send a response
             res.setHeader('Content-Type', 'application/json');

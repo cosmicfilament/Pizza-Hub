@@ -2,22 +2,24 @@
 /*eslint no-useless-escape: "off"*/
 
 /**
-* @file customer class module basic user or customer object
-* @module Customer class and enumerations
-* @description encapsulates customer functionality
-* @exports Customer, CUST_ENUMS
-*/
+ * @file customer class module basic user or customer object
+ * @module Customer class and enumerations
+ * @description encapsulates customer functionality
+ * @exports Customer, CUST_ENUMS
+ */
 
-const helpers = require('./../utils/helpers');
-const { CONFIG } = require('./../lib/config');
+const helpers = require('./../public/js/common/helpers');
+const {
+    CONFIG
+} = require('../lib/config');
 const crypto = require('crypto');
 
 const CUST_ENUMS = {
-    MAX_NAME_STRING: 20,        //max length of first or last name
+    MAX_NAME_STRING: 20, //max length of first or last name
     PHONE_NUMBER_LENGTH: 10,
     MINIMUM_PASSWORD_LENGTH: 8,
-    MAX_ADDRESS_LENGTH: 250,    //if address is longer than this move
-    MAX_EMAIL_LENGTH: 254       //not sure of the validity of this cribbed from same source as email validation code
+    MAX_ADDRESS_LENGTH: 250, //if address is longer than this move
+    MAX_EMAIL_LENGTH: 254 //not sure of the validity of this cribbed from same source as email validation code
 };
 
 /**
@@ -31,9 +33,9 @@ class Customer {
     }
 
     /**
-    * @summary Customer init method
-    * @description init method
-    */
+     * @summary Customer init method
+     * @description init method
+     */
     init(firstName, lastName, email, password, phone, address) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -64,18 +66,18 @@ class Customer {
         return newCust;
     }
     /**
-    * @static
-    * @summary createPasswordHash
-    * @description Customer createPasswordHash method that creates a hash on the value passed in
-    * @param clear text password
-    */
+     * @static
+     * @summary createPasswordHash
+     * @description Customer createPasswordHash method that creates a hash on the value passed in
+     * @param clear text password
+     */
     static createPasswordHash(pwd) {
         return crypto.createHmac('sha256', CONFIG.hashingSecret).update(pwd).digest('hex');
     }
     /**
-    * @summary validateFirstName
-    * @description Customer validateFirstName method
-    */
+     * @summary validateFirstName
+     * @description Customer validateFirstName method
+     */
     validateFirstName() {
         if (!helpers.validateString(this.firstName, false, CUST_ENUMS.MAX_NAME_STRING, '<=')) {
             return 'firstName';
@@ -83,9 +85,9 @@ class Customer {
         return true;
     }
     /**
-    * @summary validateLastName
-    * @description Customer validateLastName method
-    */
+     * @summary validateLastName
+     * @description Customer validateLastName method
+     */
     validateLastName() {
         if (!helpers.validateString(this.lastName, false, CUST_ENUMS.MAX_NAME_STRING, '<=')) {
             return 'lastName';
@@ -93,11 +95,11 @@ class Customer {
         return true;
     }
     /**
-    * @summary validateEmail
-    * @description method to validate the email address passed in
-    * @returns true on success or an error string if failed.
-    * @throws nothing
-    */
+     * @summary validateEmail
+     * @description method to validate the email address passed in
+     * @returns true on success or an error string if failed.
+     * @throws nothing
+     */
     validateEmail() {
 
         const err = 'email validation failed';
@@ -123,16 +125,18 @@ class Customer {
             return err;
         }
         const domainParts = parts[1].split('.');
-        const yuSoLong = domainParts.some((part) => { return part.length > 63; });
+        const yuSoLong = domainParts.some((part) => {
+            return part.length > 63;
+        });
         if (yuSoLong) {
             return err;
         }
         return true;
     }
     /**
-    * @summary validatePhone
-    * @description Customer validatePhone method
-    */
+     * @summary validatePhone
+     * @description Customer validatePhone method
+     */
     validatePhone() {
         if (!helpers.validateString(this.phone, false, CUST_ENUMS.PHONE_NUMBER_LENGTH, '=')) {
             return 'phone';
@@ -140,10 +144,10 @@ class Customer {
         return true;
     }
     /**
-    * @summary validatePassword
-    * @description validates the password min length only. works on the hashed or clear text password
-    * @todo rewrite this so that if the pwd i clear text we can do better validation
-    */
+     * @summary validatePassword
+     * @description validates the password min length only. works on the hashed or clear text password
+     * @todo rewrite this so that if the pwd i clear text we can do better validation
+     */
     validatePassword() {
         if (!helpers.validateString(this.password, false, CUST_ENUMS.MINIMUM_PASSWORD_LENGTH, '>=')) {
             return 'password';
@@ -151,9 +155,9 @@ class Customer {
         return true;
     }
     /**
-    * @summary validateAddress method
-    * @description Customer validateAddress method
-    */
+     * @summary validateAddress method
+     * @description Customer validateAddress method
+     */
     validateAddress() {
         if (!helpers.validateString(this.address, false, CUST_ENUMS.MAX_ADDRESS_LENGTH, '<=')) {
             return 'address';
@@ -161,11 +165,11 @@ class Customer {
         return true;
     }
     /**
-    * @summary validateCustomer
-    * @description method to validate the complete customer object using the above helper methods
-    * @returns true if successfull or the name of the first property to fail on error
-    * @throws nothing
-    */
+     * @summary validateCustomer
+     * @description method to validate the complete customer object using the above helper methods
+     * @returns true if successfull or the name of the first property to fail on error
+     * @throws nothing
+     */
     validateCustomer() {
 
         let result = this.validateFirstName();

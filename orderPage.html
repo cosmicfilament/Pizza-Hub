@@ -1,0 +1,233 @@
+<div class="sectionBody">
+    <div class="orderCollection">
+        <h3>Create a new Order</h3>
+        <h4 class="orderTotal">Total: $0.00</h4>
+        <h4 class="cartStatus">X items in basket.</h4>
+        <hr />
+        <form id="orderCreateFrm" action="/basket/create" method="POST">
+            <div class="formError"></div>
+            <!-- Begin menuGroups generated html-->
+            <!-- fieldset or a single orderGroup Pizza -->
+            <fieldset class="orderGroup Pizza_Group">
+                <legend>Pizza</legend>
+                <!-- orderItemCollection -->
+                <div class="orderItemCollection">
+                    <div class="QtyWhenRadioButtonSelectEnabled"><input type="number" min="0" max="10" value="0"
+                            placeholder="10" name="Pizza"></div>
+                    <span class="labelWhenRadioButtonSelectEnabled"> Order Quantity</span>
+                    <!-- orderChoicesCollection -->
+                    <div class="orderChoicesCollection">
+                        <div class="choiceWrapper">
+                            <div class="choiceInput"><input type="radio" name="Pizza" id="6_Inch"></div>
+                            <div class="choiceDesc">6 Inch</div>
+                            <div class="choicePrice">$7.00</div>
+                        </div>
+                        <div class="choiceWrapper">
+                            <div class="choiceInput"><input type="radio" name="Pizza" id="12_Inch"></div>
+                            <div class="choiceDesc">12 Inch</div>
+                            <div class="choicePrice">$10.00</div>
+                        </div>
+                        <div class="choiceWrapper">
+                            <div class="choiceInput"><input type="radio" name="Pizza" id="14_Inch"></div>
+                            <div class="choiceDesc">14 Inch</div>
+                            <div class="choicePrice">$14.00</div>
+                        </div>
+                        <div class="choiceWrapper">
+                            <div class="choiceInput"><input type="radio" name="Pizza" id="20_Inch"></div>
+                            <div class="choiceDesc">20 Inch</div>
+                            <div class="choicePrice">$20.00</div>
+                        </div>
+                    </div>
+                    <!-- End orderChoicesCollection -->
+                </div>
+                <!-- End orderItemCollection -->
+                <!-- orderItemCollection -->
+                <div class="orderItemCollection">
+                    <div class="QtyWhenRadioButtonSelectEnabled"><input type="hidden" name="hidden"></div>
+                    <span class="labelWhenRadioButtonSelectEnabled"></span>
+                    <!-- orderChoicesCollection -->
+                    <div class="orderChoicesCollection">
+                        <div class="choiceWrapper">
+                            <div class="choiceInput"><input type="number" min="0" max="10" value="0" placeholder="10"
+                                    name="Plain" id="Plain"></div>
+                            <div class="choiceDesc">Plain</div>
+                            <div class="choicePrice">$1.00</div>
+                        </div>
+                        <div class="choiceWrapper">
+                            <div class="choiceInput"><input type="number" min="0" max="10" value="0" placeholder="10"
+                                    name="Pepperoni" id="Pepperoni"></div>
+                            <div class="choiceDesc">Pepperoni</div>
+                            <div class="choicePrice">$1.00</div>
+                        </div>
+                        <div class="choiceWrapper">
+                            <div class="choiceInput"><input type="number" min="0" max="10" value="0" placeholder="10"
+                                    name="Sausage" id="Sausage"></div>
+                            <div class="choiceDesc">Sausage</div>
+                            <div class="choicePrice">$1.00</div>
+                        </div>
+                        <div class="choiceWrapper">
+                            <div class="choiceInput"><input type="number" min="0" max="10" value="0" placeholder="10"
+                                    name="Meatballs" id="Meatballs"></div>
+                            <div class="choiceDesc">Meatballs</div>
+                            <div class="choicePrice">$1.00</div>
+                        </div>
+                        <div class="choiceWrapper">
+                            <div class="choiceInput"><input type="number" min="0" max="10" value="0" placeholder="10"
+                                    name="Ham" id="Ham"></div>
+                            <div class="choiceDesc">Ham</div>
+                            <div class="choicePrice">$1.00</div>
+                        </div>
+                        <div class="choiceWrapper">
+                            <div class="choiceInput"><input type="number" min="0" max="10" value="0" placeholder="10"
+                                    name="Peppers" id="Peppers"></div>
+                            <div class="choiceDesc">Peppers</div>
+                            <div class="choicePrice">$1.00</div>
+                        </div>
+                        <div class="choiceWrapper">
+                            <div class="choiceInput"><input type="number" min="0" max="10" value="0" placeholder="10"
+                                    name="Onions" id="Onions"></div>
+                            <div class="choiceDesc">Onions</div>
+                            <div class="choicePrice">$1.00</div>
+                        </div>
+                        <div class="choiceWrapper">
+                            <div class="choiceInput"><input type="number" min="0" max="10" value="0" placeholder="10"
+                                    name="Mushrooms" id="Mushrooms"></div>
+                            <div class="choiceDesc">Mushrooms</div>
+                            <div class="choicePrice">$1.00</div>
+                        </div>
+                        <div class="choiceWrapper">
+                            <div class="choiceInput"><input type="number" min="0" max="10" value="0" placeholder="10"
+                                    name="Anchovies" id="Anchovies"></div>
+                            <div class="choiceDesc">Anchovies</div>
+                            <div class="choicePrice">$1.00</div>
+                        </div>
+                        <div class="choiceWrapper">
+                            <div class="choiceInput"><input type="number" min="0" max="10" value="0" placeholder="10"
+                                    name="Pineapple" id="Pineapple"></div>
+                            <div class="choiceDesc">Pineapple</div>
+                            <div class="choicePrice">$1.00</div>
+                        </div>
+                    </div>
+                    <!-- End orderChoicesCollection -->
+                </div>
+                <!-- End orderItemCollection -->
+
+                <input type="submit" name="Pizza_Group" class="addToBasket cta brown" value="Add to Basket">
+            </fieldset>
+            <!-- End fieldset or a single OrderGroup Pizza -->
+            <!-- fieldset or a single orderGroup Calzone -->
+            <fieldset class="orderGroup Calzone_Group">
+                <legend>Calzone</legend>
+                <!-- orderItemCollection -->
+                <div class="orderItemCollection">
+                    <div class="QtyWhenRadioButtonSelectEnabled"><input type="hidden" name="hidden"></div>
+                    <span class="labelWhenRadioButtonSelectEnabled"></span>
+                    <!-- orderChoicesCollection -->
+                    <div class="orderChoicesCollection">
+                        <div class="choiceWrapper">
+                            <div class="choiceInput"><input type="number" min="0" max="10" value="0" placeholder="10"
+                                    name="Meatball" id="Meatball"></div>
+                            <div class="choiceDesc">Meatball</div>
+                            <div class="choicePrice">$8.00</div>
+                        </div>
+                        <div class="choiceWrapper">
+                            <div class="choiceInput"><input type="number" min="0" max="10" value="0" placeholder="10"
+                                    name="Sausage" id="Sausage"></div>
+                            <div class="choiceDesc">Sausage</div>
+                            <div class="choicePrice">$8.00</div>
+                        </div>
+                        <div class="choiceWrapper">
+                            <div class="choiceInput"><input type="number" min="0" max="10" value="0" placeholder="10"
+                                    name="Ham" id="Ham"></div>
+                            <div class="choiceDesc">Ham</div>
+                            <div class="choicePrice">$8.00</div>
+                        </div>
+                        <div class="choiceWrapper">
+                            <div class="choiceInput"><input type="number" min="0" max="10" value="0" placeholder="10"
+                                    name="Veggie" id="Veggie"></div>
+                            <div class="choiceDesc">Veggie</div>
+                            <div class="choicePrice">$8.00</div>
+                        </div>
+                        <div class="choiceWrapper">
+                            <div class="choiceInput"><input type="number" min="0" max="10" value="0" placeholder="10"
+                                    name="Four_Cheeses" id="Four_Cheeses"></div>
+                            <div class="choiceDesc">Four Cheeses</div>
+                            <div class="choicePrice">$8.00</div>
+                        </div>
+                        <div class="choiceWrapper">
+                            <div class="choiceInput"><input type="number" min="0" max="10" value="0" placeholder="10"
+                                    name="Chocolate_Mousse" id="Chocolate_Mousse"></div>
+                            <div class="choiceDesc">Chocolate Mousse</div>
+                            <div class="choicePrice">$8.00</div>
+                        </div>
+                    </div>
+                    <!-- End orderChoicesCollection -->
+                </div>
+                <!-- End orderItemCollection -->
+
+                <input type="submit" name="Calzone_Group" class="addToBasket cta brown" value="Add to Basket">
+            </fieldset>
+            <!-- End fieldset or a single OrderGroup Calzone -->
+            <!-- fieldset or a single orderGroup Pasta -->
+            <fieldset class="orderGroup Pasta_Group">
+                <legend>Pasta</legend>
+                <!-- orderItemCollection -->
+                <div class="orderItemCollection">
+                    <div class="QtyWhenRadioButtonSelectEnabled"><input type="hidden" name="hidden"></div>
+                    <span class="labelWhenRadioButtonSelectEnabled"></span>
+                    <!-- orderChoicesCollection -->
+                    <div class="orderChoicesCollection">
+                        <div class="choiceWrapper">
+                            <div class="choiceInput"><input type="number" min="0" max="10" value="0" placeholder="10"
+                                    name="Meatball" id="Meatball"></div>
+                            <div class="choiceDesc">Meatball</div>
+                            <div class="choicePrice">$12.00</div>
+                        </div>
+                        <div class="choiceWrapper">
+                            <div class="choiceInput"><input type="number" min="0" max="10" value="0" placeholder="10"
+                                    name="Penne_Ala_Vodka" id="Penne_Ala_Vodka"></div>
+                            <div class="choiceDesc">Penne Ala Vodka</div>
+                            <div class="choicePrice">$12.00</div>
+                        </div>
+                        <div class="choiceWrapper">
+                            <div class="choiceInput"><input type="number" min="0" max="10" value="0" placeholder="10"
+                                    name="Linguine_Clam_Sauce" id="Linguine_Clam_Sauce"></div>
+                            <div class="choiceDesc">Linguine Clam Sauce</div>
+                            <div class="choicePrice">$12.00</div>
+                        </div>
+                        <div class="choiceWrapper">
+                            <div class="choiceInput"><input type="number" min="0" max="10" value="0" placeholder="10"
+                                    name="Veggie" id="Veggie"></div>
+                            <div class="choiceDesc">Veggie</div>
+                            <div class="choicePrice">$10.00</div>
+                        </div>
+                        <div class="choiceWrapper">
+                            <div class="choiceInput"><input type="number" min="0" max="10" value="0" placeholder="10"
+                                    name="Secret_Sauce" id="Secret_Sauce"></div>
+                            <div class="choiceDesc">Secret Sauce</div>
+                            <div class="choicePrice">$8.00</div>
+                        </div>
+                        <div class="choiceWrapper">
+                            <div class="choiceInput"><input type="number" min="0" max="10" value="0" placeholder="10"
+                                    name="Olive_Oil_and_Romano_Cheese" id="Olive_Oil_and_Romano_Cheese"></div>
+                            <div class="choiceDesc">Olive Oil and Romano Cheese</div>
+                            <div class="choicePrice">$8.00</div>
+                        </div>
+                    </div>
+                    <!-- End orderChoicesCollection -->
+                </div>
+                <!-- End orderItemCollection -->
+
+                <input type="submit" name="Pasta_Group" class="addToBasket cta brown" value="Add to Basket">
+            </fieldset>
+            <!-- End fieldset or a single OrderGroup Pasta -->
+
+            <!-- End menuGroups generated html -->
+        </form>
+    </div>
+
+</div>
+</div>
+<!-- end content -->
+</div>
+<!-- end wrapper -->

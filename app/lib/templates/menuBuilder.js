@@ -1,15 +1,17 @@
 'use strict';
 
 /**
-    * @file loads a customizable list of menu items
-    * @module menuBuilder.js
-    * @exports menuBuilder
-    * @todo wrap in try/catch
-*/
+ * @file loads a customizable list of menu items
+ * @module menuBuilder.js
+ * @exports menuBuilder
+ * @todo wrap in try/catch
+ */
 
-const helpers = require('../../utils/helpers');
+const helpers = require('./../../public/js/common/helpers');
 const logs = require('../../utils/logs');
-const { MenuCollection } = require('./../../Models/menuCollection');
+const {
+    smartCollection
+} = require('../../public/js/common/smartCollection')._mc;
 
 const menuBuilder = {};
 
@@ -28,8 +30,7 @@ menuBuilder.buildMenu = function (templateFactory) {
             // resave the menu html template fully populated
             templateFactory.setTemplate('menu', htmlContainer);
             result = true;
-        }
-        else {
+        } else {
             result = false;
         }
     }
@@ -42,7 +43,9 @@ menuBuilder.buildMenu = function (templateFactory) {
 const buildMenuTemplate = function (templateFactory) {
 
     // turn the menuConfig.json file into a collection object
-    const menuCollection = new MenuCollection(templateFactory.getMenuFile());
+    const menuFile = templateFactory.getMenuFile();
+    const menuCollection = smartCollection(menuFile);
+
     let menuTemplate = '';
     // iterates thru the groups populating the menu template with the
     // individual groups that make up the menu.

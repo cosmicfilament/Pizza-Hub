@@ -1,26 +1,32 @@
 'use strict';
 
 /**
-* @file customerHandler module
-* @module customerHandler.js
-* @description  customer CRUD module
-* @exports create, read, update and delete functions
-*/
+ * @file customerHandler module
+ * @module customerHandler.js
+ * @description  customer CRUD module
+ * @exports create, read, update and delete functions
+ */
 
 const fDb = require('./../lib/fileDb');
-const helpers = require('./../utils/helpers');
-const { validateCustomerToken, ResponseObj, PromiseError } = require('./../utils/handlerUtils');
-const { Customer } = require('./../Models/customerModel');
+const helpers = require('./../public/js/common/helpers');
+const {
+    validateCustomerToken,
+    ResponseObj,
+    PromiseError
+} = require('./../utils/handlerUtils');
+const {
+    Customer
+} = require('./../Models/customerModel');
 
 module.exports = {
     /**
-    * @async
-    * @summary Customer create function.
-    * @description  Creates a new customer based on data in the reqObj.payload. The phone number passed in is the key(file name) on the record.
-    * @param reqObj - payload passes in firstName, lastName, email, address, password and phone. See customerModel
-    * @returns JSON string with success msg or promise error on failure
-    * @throws promise error
-    */
+     * @async
+     * @summary Customer create function.
+     * @description  Creates a new customer based on data in the reqObj.payload. The phone number passed in is the key(file name) on the record.
+     * @param reqObj - payload passes in firstName, lastName, email, address, password and phone. See customerModel
+     * @returns JSON string with success msg or promise error on failure
+     * @throws promise error
+     */
     create: async function (reqObj) {
 
         const cust = Customer.clone(reqObj.payload);
@@ -39,8 +45,7 @@ module.exports = {
         try {
             // now save the new customer to the file db.
             await fDb.create('customer', cust.phone, cust);
-        }
-        catch (error) {
+        } catch (error) {
             throw (new PromiseError(500, `Could not create new customer record ${cust.phone}.`, error));
         }
         const payload = JSON.stringify(`Succeeded in creating file record for customer:  ${cust.phone}.`);
@@ -48,14 +53,14 @@ module.exports = {
         return new ResponseObj(payload, 'customer/create');
     },
     /**
-    * @async
-    * @summary Customer read function
-    * @description  Reads a customer record from the file db and returns it to the caller
-    * @param reqObj - the phone number is passed in on the querystring
-    * @param headers.token - must have a valid session token to process the read function
-    * @returns the customer record as a JSON string or promise error on failure
-    * @throws promise error
-    */
+     * @async
+     * @summary Customer read function
+     * @description  Reads a customer record from the file db and returns it to the caller
+     * @param reqObj - the phone number is passed in on the querystring
+     * @param headers.token - must have a valid session token to process the read function
+     * @returns the customer record as a JSON string or promise error on failure
+     * @throws promise error
+     */
 
     read: async function (reqObj) {
 
@@ -76,8 +81,7 @@ module.exports = {
             if (!helpers.validateObject(result)) {
                 throw (new PromiseError(400, `Could not read customer record ${cust.phone}.  Account does not exist.`));
             }
-        }
-        catch (error) {
+        } catch (error) {
             throw (new PromiseError(400, `Could not read customer record ${cust.phone}.  Account does not exist.`, error));
         }
         // don't transmit the pasword even if it is a hash
@@ -87,14 +91,14 @@ module.exports = {
         return new ResponseObj(payload, 'customer/read');
     },
     /**
-    * @async
-    * @summary Customer update function.
-    * @description  Allows the caller to update firstName, LastName, address, password and email on existing customer
-    * @param reqObj - payload passes in firstName, lastName, email, address, password and phone. See customerModel
-    * @param headers.token - must have a valid session token to process the update function
-    * @returns success message or promise error on failure
-    * @throws promise error
-    */
+     * @async
+     * @summary Customer update function.
+     * @description  Allows the caller to update firstName, LastName, address, password and email on existing customer
+     * @param reqObj - payload passes in firstName, lastName, email, address, password and phone. See customerModel
+     * @param headers.token - must have a valid session token to process the update function
+     * @returns success message or promise error on failure
+     * @throws promise error
+     */
     update: async function (reqObj) {
 
         const fieldsToUpdate = Customer.clone(reqObj.payload);
@@ -114,8 +118,7 @@ module.exports = {
             if (!helpers.validateObject(custToUpdate)) {
                 throw (new PromiseError(400, `Error reading the file record for the customer: ${fieldsToUpdate.phone}. Or that customer does not exist.`));
             }
-        }
-        catch (error) {
+        } catch (error) {
             throw (new PromiseError(500, `Error reading the file record for the customer: ${fieldsToUpdate.phone}`, error));
         }
 
@@ -181,8 +184,7 @@ module.exports = {
         try {
             // else update the customer record
             await fDb.update('customer', custToUpdate.phone, custToUpdate);
-        }
-        catch (error) {
+        } catch (error) {
             throw (new PromiseError(500, `Error updating the file record for the customer: ${custToUpdate.phone}.`, error));
         }
 
@@ -191,14 +193,14 @@ module.exports = {
         return new ResponseObj(payload, 'customer/update');
     },
     /**
-    * @async
-    * @summary Customer delete function.
-    * @description  Allows the caller to delete an existing customer record(file)
-    * @param reqObj - phone is passed in on the querystring
-    * @param headers.token - must have a valid session token to process the delete function
-    * @returns success message or promise error on failure
-    * @throws promise error
-    */
+     * @async
+     * @summary Customer delete function.
+     * @description  Allows the caller to delete an existing customer record(file)
+     * @param reqObj - phone is passed in on the querystring
+     * @param headers.token - must have a valid session token to process the delete function
+     * @returns success message or promise error on failure
+     * @throws promise error
+     */
     delete: async function (reqObj) {
         const cust = new Customer();
         cust.phone = reqObj.queryStringObject.phone;
@@ -216,8 +218,7 @@ module.exports = {
             if (!result) {
                 throw (new PromiseError(400, `Could not delete the customer: ${cust.phone}`));
             }
-        }
-        catch (error) {
+        } catch (error) {
             throw (new PromiseError(500, `Error deleting the file record for the customer: ${cust.phone}.`, error));
         }
 

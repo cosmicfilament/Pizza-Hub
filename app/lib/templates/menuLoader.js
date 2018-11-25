@@ -1,13 +1,13 @@
 'use strict';
 
 /**
-    * @file loads a customizable list of menu items
-    * @module menuLoader.js
-    * @exports menuLoader
-    * @todo wrap in try/catch
-*/
+ * @file loads a customizable list of menu items
+ * @module menuLoader.js
+ * @exports menuLoader
+ * @todo wrap in try/catch
+ */
 
-const helpers = require('../../utils/helpers');
+const helpers = require('./../../public/js/common/helpers');
 const logs = require('../../utils/logs');
 const files = require('../../utils/files');
 

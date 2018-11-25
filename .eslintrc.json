@@ -9,6 +9,11 @@
         "ecmaVersion": 2017,
         "sourceType": "module"
     },
+    "globals": {
+        "MenuCollection": false,
+        "helpers": false,
+        "_mc": false
+    },
     "rules": {
         "indent": [
             "warn",

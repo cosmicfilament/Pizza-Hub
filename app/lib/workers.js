@@ -1,21 +1,23 @@
 'use strict';
 
 /**
-* @file workers module that runs a couple of timers that purge stale tokens and rotates the logs once daily
-* @module workers.js
-* @description worker kind of sort of process within the node loop. Fires timers to process intermittent tasks
-*/
+ * @file workers module that runs a couple of timers that purge stale tokens and rotates the logs once daily
+ * @module workers.js
+ * @description worker kind of sort of process within the node loop. Fires timers to process intermittent tasks
+ */
 
-const { Token } = require('./../Models/tokenModel');
+const {
+    Token
+} = require('./../Models/tokenModel');
 const fDb = require('./fileDb');
 const logs = require('./../utils/logs');
-const helpers = require('./../utils/helpers');
+const helpers = require('./../public/js/common/helpers');
 
 const workers = {};
 /**
  * @summary cleanupExpiredTokens function
  * @description Purges the expired tokens every 90 seconds
-*/
+ */
 workers.cleanupExpiredTokens = async function () {
 
     const listOfTokens = await fDb.list('token').catch((error) => {
@@ -45,7 +47,7 @@ workers.cleanupExpiredTokens = async function () {
 /**
  * @summary rotateLogs
  * @description Rotates (compresses) the log files
-*/
+ */
 workers.rotateLogs = async function () {
     // List all the (non compressed) log files
 
@@ -53,7 +55,9 @@ workers.rotateLogs = async function () {
     const dateNow = new Date(Date.now());
     const todaysLogs = `${dateNow.getFullYear()}${dateNow.getMonth() + 1}${dateNow.getDate()}`;
 
-    const fileList = await logs.list(false).catch(() => { return false; });
+    const fileList = await logs.list(false).catch(() => {
+        return false;
+    });
     logs.log('Calling rotateLogs.', 'b', 'green');
     if (fileList) {
         for (let fileName of fileList) {
@@ -62,12 +66,15 @@ workers.rotateLogs = async function () {
                 const logId = fileName.replace('.log', '');
                 const newLogId = fileName.replace('.log', `-${Date.now()}`);
                 // compress the new log
-                let result = await logs.compress(logId, newLogId).catch(() => { return false; });
+                let result = await logs.compress(logId, newLogId).catch(() => {
+                    return false;
+                });
                 // delete the old log file
                 if (result) {
-                    result = await logs.delete(logId).catch(() => { return false; });
-                }
-                else {
+                    result = await logs.delete(logId).catch(() => {
+                        return false;
+                    });
+                } else {
                     helpers.log('red', `Rotating logs failed for file: ${fileName}`);
                 }
                 if (result) {
@@ -80,9 +87,9 @@ workers.rotateLogs = async function () {
 };
 
 /**
-* @summary cleanupExpiredTokensLoop
-* @description Currently just purges the expired tokens every 10 minutes
-*/
+ * @summary cleanupExpiredTokensLoop
+ * @description Currently just purges the expired tokens every 10 minutes
+ */
 workers.cleanupExpiredTokensLoop = () => {
     setInterval(() => {
         workers.cleanupExpiredTokens();
@@ -91,9 +98,9 @@ workers.cleanupExpiredTokensLoop = () => {
 };
 
 /**
-* @summary logRotationLoop
-* @description Timer to execute the log-rotation process once per day. Runs every 5 minutes and checks the time. Hey what do you want?
-*/
+ * @summary logRotationLoop
+ * @description Timer to execute the log-rotation process once per day. Runs every 5 minutes and checks the time. Hey what do you want?
+ */
 workers.logRotationLoop = () => {
     setInterval(() => {
         return workers.rotateLogs()
@@ -102,9 +109,9 @@ workers.logRotationLoop = () => {
     }, 1000 * 60 * 5);
 };
 /**
-* @summary init
-* @description starts the worker loops
-*/
+ * @summary init
+ * @description starts the worker loops
+ */
 workers.init = () => {
 
     logs.log('Background workers have started', 'b', 'blue');

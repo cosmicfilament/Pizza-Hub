@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <!-- meta tags -->
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+        <meta name="description" content="Nodejs Master Course Homework Assignment Three">
+        <meta name="author" content="John P. Butler aka Zuben El Genubi">
+
+        <!--favicon icon-->
+        <link rel="icon" type="image/png" href="./public/img/favicon.png">
+
+        <!-- style sheets -->
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Alfa+Slab+One" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="./public/css/rollup.css" />
+
+        <!-- title -->
+        <title>Pizza-Hub</title>
+    </head>
+
+    <body class="menu">
+        <!-- grid-container -->
+        <div class="grid-container">
+            <!-- Wrapper -->
+            <div class="wrapper">
+                <!-- Header -->
+                <div class="header">
+                    <!-- Logo -->
+                    <a class="logo" href="/">
+                        <img src="./public/img/pizza-logo.png" alt="Logo" />
+                    </a>
+                    <!-- Navigation -->
+                    <ul class="nav">
+                        <li>
+                            <!--* Displays the menu and some B.S. *-->
+                            <a href="/">Home</a>
+                        </li>
+                        <li class="loggedOut">
+                            <a href="/customerCreateFrm">Signup</a>
+                        </li>
+                        <li class="loggedOut">
+                            <!--* creates a session basically an empty basket *-->
+                            <a href="/sessionCreateFrm">Login</a>
+                        </li>
+                        <li class="loggedIn">
+                            <!--* Bring up menu with ability to make selections, order and checkout *-->
+                            <a href="/orderCreateFrm">Order</a>
+                        </li>
+                        <li class="loggedIn basketFull">
+                            <!--* Bring up menu with ability to make selections, order and checkout *-->
+                            <a href="#" id="orderSummaryButton">View Cart</a>
+                        </li>
+                        <li class="loggedIn basketFull">
+                            <!--* Bring up menu with ability to make selections, order and checkout *-->
+                            <a href="#" id="/checkOutFrm">Check Out</a>
+                        </li>
+                        <li class="loggedIn">
+                            <!--* Can edit and delete a customer within this section *-->
+                            <a href="/customerEditFrm">Profile</a>
+                        </li>
+                        <li class="loggedIn">
+                            <a href="#" id="logoutButton">Logout</a>
+                        </li>
+                    </ul>
+                    <!-- end navigation -->
+                    <div class="clear"></div>
+                </div>
+
+                <!-- end header -->
+                <!-- Content -->
+                <div class="content">
+                    <div class="sectionTitle alignCenter">
+                        <div class="CompanyName">Pizza-Hub</div>
+                        <div class="CompanyMotto">There's a little bit of Italy in each slice</div>
+
+                    </div>
+                    <div class="sectionBody">
+                        <div class="menuCollection">
+                            <h3>Menu</h3>
+                            <hr />
+                            <!-- Begin menuGroups generated html-->
+                            <!-- Menu Group -->
+                            <div class="menuGroupContainer">
+                                <!-- Menu Item -->
+                                <fieldset class="menuItem">
+                                    <legend>Pizza</legend>
+                                    <div class="choice">
+                                        <div class="choiceDesc">6 Inch</div>
+                                        <div class="choicePrice">$7.00</div>
+                                    </div>
+                                    <div class="choice">
+                                        <div class="choiceDesc">12 Inch</div>
+                                        <div class="choicePrice">$10.00</div>
+                                    </div>
+                                    <div class="choice">
+                                        <div class="choiceDesc">14 Inch</div>
+                                        <div class="choicePrice">$14.00</div>
+                                    </div>
+                                    <div class="choice">
+                                        <div class="choiceDesc">20 Inch</div>
+                                        <div class="choicePrice">$20.00</div>
+                                    </div>
+
+                                </fieldset>
+                                <!-- End Menu Item -->
+                                <!-- Menu Item -->
+                                <fieldset class="menuItem">
+                                    <legend>Toppings</legend>
+                                    <div class="choice">
+                                        <div class="choiceDesc">Plain</div>
+                                        <div class="choicePrice">$1.00</div>
+                                    </div>
+                                    <div class="choice">
+                                        <div class="choiceDesc">Pepperoni</div>
+                                        <div class="choicePrice">$1.00</div>
+                                    </div>
+                                    <div class="choice">
+                                        <div class="choiceDesc">Sausage</div>
+                                        <div class="choicePrice">$1.00</div>
+                                    </div>
+                                    <div class="choice">
+                                        <div class="choiceDesc">Meatballs</div>
+                                        <div class="choicePrice">$1.00</div>
+                                    </div>
+                                    <div class="choice">
+                                        <div class="choiceDesc">Ham</div>
+                                        <div class="choicePrice">$1.00</div>
+                                    </div>
+                                    <div class="choice">
+                                        <div class="choiceDesc">Peppers</div>
+                                        <div class="choicePrice">$1.00</div>
+                                    </div>
+                                    <div class="choice">
+                                        <div class="choiceDesc">Onions</div>
+                                        <div class="choicePrice">$1.00</div>
+                                    </div>
+                                    <div class="choice">
+                                        <div class="choiceDesc">Mushrooms</div>
+                                        <div class="choicePrice">$1.00</div>
+                                    </div>
+                                    <div class="choice">
+                                        <div class="choiceDesc">Anchovies</div>
+                                        <div class="choicePrice">$1.00</div>
+                                    </div>
+                                    <div class="choice">
+                                        <div class="choiceDesc">Pineapple</div>
+                                        <div class="choicePrice">$1.00</div>
+                                    </div>
+
+                                </fieldset>
+                                <!-- End Menu Item -->
+
+                            </div>
+                            <!-- End Menu Group -->
+                            <!-- Menu Group -->
+                            <div class="menuGroupContainer">
+                                <!-- Menu Item -->
+                                <fieldset class="menuItem">
+                                    <legend>Calzone</legend>
+                                    <div class="choice">
+                                        <div class="choiceDesc">Meatball</div>
+                                        <div class="choicePrice">$8.00</div>
+                                    </div>
+                                    <div class="choice">
+                                        <div class="choiceDesc">Sausage</div>
+                                        <div class="choicePrice">$8.00</div>
+                                    </div>
+                                    <div class="choice">
+                                        <div class="choiceDesc">Ham</div>
+                                        <div class="choicePrice">$8.00</div>
+                                    </div>
+                                    <div class="choice">
+                                        <div class="choiceDesc">Veggie</div>
+                                        <div class="choicePrice">$8.00</div>
+                                    </div>
+                                    <div class="choice">
+                                        <div class="choiceDesc">Four Cheeses</div>
+                                        <div class="choicePrice">$8.00</div>
+                                    </div>
+                                    <div class="choice">
+                                        <div class="choiceDesc">Chocolate Mousse</div>
+                                        <div class="choicePrice">$8.00</div>
+                                    </div>
+
+                                </fieldset>
+                                <!-- End Menu Item -->
+
+                            </div>
+                            <!-- End Menu Group -->
+                            <!-- Menu Group -->
+                            <div class="menuGroupContainer">
+                                <!-- Menu Item -->
+                                <fieldset class="menuItem">
+                                    <legend>Pasta</legend>
+                                    <div class="choice">
+                                        <div class="choiceDesc">Meatball</div>
+                                        <div class="choicePrice">$12.00</div>
+                                    </div>
+                                    <div class="choice">
+                                        <div class="choiceDesc">Penne Ala Vodka</div>
+                                        <div class="choicePrice">$12.00</div>
+                                    </div>
+                                    <div class="choice">
+                                        <div class="choiceDesc">Linguine Clam Sauce</div>
+                                        <div class="choicePrice">$12.00</div>
+                                    </div>
+                                    <div class="choice">
+                                        <div class="choiceDesc">Veggie</div>
+                                        <div class="choicePrice">$10.00</div>
+                                    </div>
+                                    <div class="choice">
+                                        <div class="choiceDesc">Secret Sauce</div>
+                                        <div class="choicePrice">$8.00</div>
+                                    </div>
+                                    <div class="choice">
+                                        <div class="choiceDesc">Olive Oil and Romano Cheese</div>
+                                        <div class="choicePrice">$8.00</div>
+                                    </div>
+
+                                </fieldset>
+                                <!-- End Menu Item -->
+
+                            </div>
+                            <!-- End Menu Group -->
+
+                            <!-- End menuGroups generated html -->
+                        </div>
+
+                    </div>
+                </div>
+                <!-- end content -->
+            </div>
+            <!-- end wrapper -->
+            <!-- Footer -->
+            <div class="footer">
+                <div class="copyright">Copyright 2018 Pizza-Hub Inc. | All Rights Reserved</div>
+            </div>
+
+            <!-- end footer -->
+        </div>
+        <!-- End grid-container -->
+        <div>
+            <!-- javascript -->
+            <!-- hack to share between node and browser -->
+            <script src="./public/js/common/helpers.js"></script>
+            <script src="./public/js/common/menuCollection.js"></script>`
+            <!-- main -->
+            <script type="module" src="./public/js/app.js"></script>
+        </div>
+    </body>
+
+</html>

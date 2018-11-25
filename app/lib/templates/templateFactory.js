@@ -10,11 +10,11 @@ const menuLoader = require('./menuLoader');
 const menuBuilder = require('./menuBuilder');
 const orderBuilder = require('./orderBuilder');
 const templates = require('./templates');
-const helpers = require('./../../utils/helpers');
+const helpers = require('./../../public/js/common/helpers');
 const logs = require('./../../utils/logs');
 const {
     siteConfig
-} = require('./../config').CONFIG;
+} = require('../config').CONFIG;
 
 const templateFactory = {};
 

@@ -1,16 +1,20 @@
 'use strict';
 
 /**
-* @file stripe file for processing credit card charges
-* @module stripe.js
-* @description stripe payments module
-* @exports process
-*/
+ * @file stripe file for processing credit card charges
+ * @module stripe.js
+ * @description stripe payments module
+ * @exports process
+ */
 
 const https = require('https');
 const queryString = require('querystring');
-const { PromiseError } = require('./../utils/handlerUtils');
-const { CONFIG } = require('./../lib/config');
+const {
+    PromiseError
+} = require('./../utils/handlerUtils');
+const {
+    CONFIG
+} = require('../lib/config');
 const logs = require('./../utils/logs');
 
 // pretty much just copied the twilio stuff and changed a few lines.
@@ -22,14 +26,14 @@ const logs = require('./../utils/logs');
 
 module.exports = {
     /**
-    * @async
-    * @summary process
-    * @description processes payment via stripe.com
-    * @param total in dollars
-    * @param basket id
-    * @returns success or fail
-    * @throws promise reject
-    */
+     * @async
+     * @summary process
+     * @description processes payment via stripe.com
+     * @param total in dollars
+     * @param basket id
+     * @returns success or fail
+     * @throws promise reject
+     */
     process: async function (total, id) {
         return new Promise((resolve, reject) => {
             // Configure the request payload
@@ -60,8 +64,7 @@ module.exports = {
                 // Callback successfully if the request went through
                 if (status == 200 || status == 201) {
                     resolve(status);
-                }
-                else {
+                } else {
                     resolve(new PromiseError(500, `Payment failed on order with basket id: ${id}. Status returned: ${status}`));
                 }
             });

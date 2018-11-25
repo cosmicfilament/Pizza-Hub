@@ -1,15 +1,15 @@
 'use strict';
 
 /**
-* @file basketHandler module which implements the shoppingcart functionality
-* @module basketHandler.js
-* @description  basket or cart crud functions. also handles menu request and payment
-* @exports create, read, update, menu and checkOut
-*/
+ * @file basketHandler module which implements the shoppingcart functionality
+ * @module basketHandler.js
+ * @description  basket or cart crud functions. also handles menu request and payment
+ * @exports create, read, update, menu and checkOut
+ */
 
 const fDb = require('./../lib/fileDb');
 const { Basket } = require('./../Models/basketModel');
-const helpers = require('./../utils/helpers');
+const helpers = require('./../public/js/common/helpers');
 const { validateCustomerToken, ResponseObj, readBasket, PromiseError } = require('./../utils/handlerUtils');
 const email = require('../vendor/mailGun');
 const payment = require('../vendor/stripe');
@@ -23,7 +23,7 @@ module.exports = {
      * @param headers.token - must have a valid session token to process the create function
      * @returns success msg or promise error on failure
      * @throws promise error
-    */
+     */
     create: async function (reqObj) {
 
         const newBasket = Basket.clone(reqObj.payload);
@@ -42,8 +42,7 @@ module.exports = {
             if (!helpers.validateObject(customer)) {
                 throw (new PromiseError(400, `Error reading the file record for the customer: ${newBasket.phone}, or that customer does not exist.`));
             }
-        }
-        catch (error) {
+        } catch (error) {
             throw (new PromiseError(500, `Could not read customer record ${newBasket.phone}.`, error));
         }
         // validate the token passed in on the headers
@@ -54,9 +53,8 @@ module.exports = {
         newBasket.createId();
         // if we got this far then customer exists and we can slap his frozen pizza in the microwave.
         try {
-            await fDb.create('basket', newBasket.id, newBasket);
-        }
-        catch (error) {
+            await fDb.create('basket', newBasket.id, newBasket.stringify());
+        } catch (error) {
             throw (new PromiseError(500, `Could not create new basket. ${newBasket.id} for customer with phone number:  ${newBasket.phone}.`, error));
         }
         const payload = JSON.stringify(`Succeeded in creating basket ${newBasket.id} for customer with phone number: ${newBasket.phone}.`);
@@ -70,7 +68,7 @@ module.exports = {
      * @param headers.token - must have a valid session token to process the read function
      * @returns basket object on success or promise error on failure
      * @throws promise error
-    */
+     */
     read: async function (reqObj) {
 
         // validate the token passed in on the headers
@@ -81,14 +79,14 @@ module.exports = {
         return new ResponseObj(payload, 'basket/read');
     },
     /**
-    * @async
-    * @summary Basket update function.
-    * @description  Updates the # of order selections in a basket. Can either add or delete order selections.
-    * @param reqObj.payload - passes in basket id and and array of order selections
-    * @param headers.token - must have a valid session token to process the update function
-    * @returns success msg or promise error on failure
-    * @throws promise error
-    */
+     * @async
+     * @summary Basket update function.
+     * @description  Updates the # of order selections in a basket. Can either add or delete order selections.
+     * @param reqObj.payload - passes in basket id and and array of order selections
+     * @param headers.token - must have a valid session token to process the update function
+     * @returns success msg or promise error on failure
+     * @throws promise error
+     */
     update: async function (reqObj) {
 
         // validate the token passed in on the headers
@@ -108,8 +106,7 @@ module.exports = {
             if (!helpers.validateObject(basketToUpdate)) {
                 throw (new PromiseError(400, `Error reading the file record for the basket: ${fieldsToUpdate.id}, or that basket does not exist.`));
             }
-        }
-        catch (error) {
+        } catch (error) {
             throw (new PromiseError(500, `Error reading the file record for the basket: ${fieldsToUpdate.id}, or that basket does not exist.`, error));
         }
         // make a real basket out of this and build the orderCollection
@@ -135,8 +132,7 @@ module.exports = {
         try {
             // else update the customer record
             await fDb.update('basket', basketToUpdate.id, basketToUpdate);
-        }
-        catch (error) {
+        } catch (error) {
             throw (new PromiseError(500, `Error updating the file record for the basket: ${basketToUpdate.id}.`, error));
         }
 
@@ -144,14 +140,14 @@ module.exports = {
         return new ResponseObj(payload, 'basket/update');
     },
     /**
-    * @async
-    * @summary Basket delete function.
-    * @description  Deletes a basket with the basket id passed in the querystring
-    * @param reqObj.queryStringObject - used to retrieve the basket id.
-    * @param headers.token - must have a valid session token to process the delete function
-    * @returns success msg or promise error on failure
-    * @throws promise error
-    */
+     * @async
+     * @summary Basket delete function.
+     * @description  Deletes a basket with the basket id passed in the querystring
+     * @param reqObj.queryStringObject - used to retrieve the basket id.
+     * @param headers.token - must have a valid session token to process the delete function
+     * @returns success msg or promise error on failure
+     * @throws promise error
+     */
     delete: async function (reqObj) {
 
         // validate the token passed in on the headers
@@ -170,8 +166,7 @@ module.exports = {
             if (!result) {
                 throw (new PromiseError(400, `Could not delete the basket: ${deleteBasket.id}`));
             }
-        }
-        catch (error) {
+        } catch (error) {
             throw (new PromiseError(500, `Error deleting the file record for the basket: ${deleteBasket.id}.`, error));
         }
 
@@ -179,11 +174,11 @@ module.exports = {
         return new ResponseObj(payload, 'basket/delete');
     },
     /**
-    * @async
-    * @summary menu function
-    * @description  no validation. allows anyone to read the menu
-    * @returns the restaurant's menu
-    */
+     * @async
+     * @summary menu function
+     * @description  no validation. allows anyone to read the menu
+     * @returns the restaurant's menu
+     */
     menu: async function () {
 
         const app = require('../index');
@@ -194,14 +189,14 @@ module.exports = {
     },
 
     /**
-    * @async
-    * @summary checkOut function
-    * @description  validates the basket, totals it and sends it to stripe for payment processing. at the end it sends an email to the customer with a status message
-    * @param reqObj.payload.id - used to retrieve the basket id.
-    * @param headers.token - must have a valid session token to process the checkOut function
-    * @returns success msg or promise error on failure
-    * @throws promise error
-    */
+     * @async
+     * @summary checkOut function
+     * @description  validates the basket, totals it and sends it to stripe for payment processing. at the end it sends an email to the customer with a status message
+     * @param reqObj.payload.id - used to retrieve the basket id.
+     * @param headers.token - must have a valid session token to process the checkOut function
+     * @returns success msg or promise error on failure
+     * @throws promise error
+     */
     // post - basket id is in the body
     checkOut: async function (reqObj) {
 
