@@ -2,7 +2,7 @@
 Nodejs Master Course Homework Assignment #3
 
 Assignment: Build a back end nodejs api for a pizza delivery company's online ordering website. The primary requirement is that it not use any npm modules and only relies on node's rich array of builtin functionality such as fs, http, https, crypt, util, path and url just to name a few.</br>
-In homework assignment #3 I have added the front end code to the pizza delivery app. Once again this is vanilla js without any npm packages or things like jquery. The front end logic handles creation, modification and deletion of customers as well as the creation of an order basket, the ability to delete order items from the basket and in the future will include the ability to send to a credit card processor which has been currently stubbed out.
+In homework assignment #3 I have added the front end code to the pizza delivery app. Once again this is vanilla js without any npm packages or things like jquery. The front end logic handles creation, modification and deletion of customers as well as the creation of an order basket, the ability to delete order items from the basket and in the future will include the ability to send to a credit card processor which has been currently stubbed out. The menu items and subsequently order creation and processing is driven by a config file in app/configuration that allows the customer to add or subtract menu items just by modifying a json file and then restarting the server. I make heavy use of html templates and template builders that build the web pages either on the fly or at startup depending on the page.
 
 ## Description of key modules on the server side:
 
