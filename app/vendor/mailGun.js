@@ -1,21 +1,16 @@
 'use strict';
 
 /**
- * @file MailGun file for sending email updates to custom
+ * @file MailGun file for sending email updates to customers
  * @module mailGun.js
- * @description send email thru mailGun infrastructure
- * @exports send function
+ *
  */
 
 const logs = require('./../utils/logs');
-const {
-    PromiseError
-} = require('./../utils/handlerUtils');
+const { PromiseError } = require('./../utils/handlerUtils');
 const https = require('https');
 const queryString = require('querystring');
-const {
-    CONFIG
-} = require('../lib/config');
+const { CONFIG } = require('../lib/config');
 
 /**
  * @summary send email

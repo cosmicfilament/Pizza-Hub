@@ -1,10 +1,7 @@
 <div class="floatLeft orderSummaryWrapper">
-    <div class="orderSummaryInput"><input type="button" name="@@buttonName@@" value="X" class="cta brown"></div>
+    <div class="orderSummaryInput"><input type="hidden" name="@@orderItemId@@" class="orderItemId" />----------</div>
     <div class="orderSummaryItem">@@orderItemItem@@</div>
-    <div class="orderSummaryDesc">@@orderItemDesc@@</div>
-    <div class="orderSummaryQuantity">@@orderItemQuantity@@</div>
+    <div class="orderSummaryQuantity">@@orderItemTotalQuantity@@</div>
     <div class="orderSummaryPrice">@@orderItemPrice@@</div>
-    <div class="orderSummaryTotal">@@orderItemTotal@@</div>
+    <div class="orderSummaryTotalPrice">@@orderItemTotalPrice@@</div>
 </div>
-
-<!-- "${orderItem.item}_${(orderItem.description).replace(replaceSpaces, '_')}"  -->

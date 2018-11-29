@@ -1,4 +1,5 @@
 'use strict';
+/*eslint quotes: ["off", "double"]*/
 
 /**
  * @file basket class module. A basket holds one customer's shopping cart and sums the total
@@ -8,16 +9,9 @@
  */
 
 const helpers = require('./../public/js/common/helpers');
-const { CUST_ENUMS } = require('./customerModel');
-const { TOKEN_ENUMS } = require('./tokenModel');
+const enums = require('./../public/js/common/enumerations');
 const { smartMap } = require('../public/js/common/smartCollection')._mc;
-
-/** @enum */
-const BASKET_ENUMS = {
-    TOKEN_STRING_LENGTH: 10, // unique id is pppppppppp_tttttttttt - p:phone# t:token
-    KEY_LENGTH: CUST_ENUMS.PHONE_NUMBER_LENGTH + 1 + 10, // length of above
-    MAX_TIMESTAMP_LENGTH: 25 // human readable timestamp
-};
+const logs = require('./../utils/logs');
 
 /**
  * @summary Basket class
@@ -25,34 +19,24 @@ const BASKET_ENUMS = {
  * @classdesc Encapsulates a single cart or basket
  */
 class Basket {
-    constructor(id = '', phone = '', orderCollection = []) {
-        this.init(id, phone, orderCollection);
-    }
-    /**
-    * @summary init
-    * @description Basket init method
-    */
-    init(id, phone, orderCollection) {
-        this.id = id;
-        this.phone = phone;
-        this.orderCollection = orderCollection;
-        this.timestamp = Basket.timeStamp();
+    // bare constructor does nothing. use clone to create a concrete object
+    constructor(id = '', phone = '', expires = Date.now(), timestamp = Date.now(),
+        totalQuantity = 0, totalPrice = 0, orderCollection = null) {
+
+        this._id = id;
+        this._phone = phone;
+        this._expires = expires;
+        this._timestamp = timestamp;
+        this._totalQuantity = totalQuantity;
+        this._totalPrice = totalPrice;
+        this._orderCollection = orderCollection;
     }
 
-    /**
-    * @summary getter total method
-    * @description iterates thru the selection and choices summing up the total price
-    */
 
-    /**
-    * @static
-    * @summary timeStamp
-    * @description Basket timeStamp method
-    */
-    static timeStamp() {
-        const dateNow = new Date(Date.now());
-        return `${dateNow.getFullYear()}_${dateNow.getMonth() + 1}_${dateNow.getDate()}_${dateNow.toLocaleTimeString('en-US')}`;
+    stringify() {
+        return ({ "collection": this._orderCollection.stringify() });
     }
+
     /**
     * @static
     * @summary Basket clone method
@@ -67,58 +51,169 @@ class Basket {
             return obj;
         }
         const newBasket = new Basket();
-        let array = obj.collection.basket.itemsObj;
-        let map = obj.collection.map.mapObj;
-        let items = [];
+        if (obj instanceof Map) {
 
-        if (helpers.validateArray(array)) {
-            for (let index = 0; index < array.length; index++) {
-                let item = array[index];
-                items.push(item);
-            }
+            newBasket.orderCollection = obj;
+            newBasket.id = helpers.validateString(obj.id);
+            newBasket.phone = helpers.validateString(obj.phone);
+            newBasket.expires = helpers.validateString(obj.expires) ? obj.expires : Basket.createBasketExpiry();
+            newBasket.timestamp = helpers.validateString(obj.timestamp) ? obj.timestamp : Basket.createTimestamp();
+            newBasket.totalPrice = helpers.validateString(obj.totalPrice);
+            newBasket.totalQuantity = helpers.validateString(obj.totalQuantity);
         }
-        newBasket.id = map.id;
-        newBasket.phone = map.phone;
-        newBasket.totalPrice = map.totalPrice;
-        newBasket.totalQuantity = map.totalQuantity;
-        newBasket.orderCollection = new smartMap(items, map.id, map.phone,
-            map.totalQuantity, map.totalPrice);
+        else {
+
+            let array = obj.collection.basket.orderItems;
+            let header = obj.collection.header.metaData;
+            let items = [];
+
+            if (helpers.validateArray(array)) {
+                for (let index = 0; index < array.length; index++) {
+                    let item = array[index];
+                    items.push(item);
+                }
+            }
+            // all these are initialized before the orderCollection so that the setters
+            // will initialize their properties only.
+            newBasket.id = helpers.validateString(header.id);
+            newBasket.phone = helpers.validateString(header.phone);
+            // should be empty if created by the client from the
+            // browser otherwise should hold valid times
+            newBasket.expires = helpers.validateString(header.expires) ? header.expires : Basket.createBasketExpiry();
+            newBasket.timestamp = helpers.validateString(header.timestamp) ? header.timestamp : Basket.createTimestamp();
+            newBasket.totalPrice = helpers.validateString(header.totalPrice);
+            newBasket.totalQuantity = helpers.validateString(header.totalQuantity);
+
+            newBasket.orderCollection = new smartMap(items, newBasket.id, newBasket.phone,
+                newBasket.totalQuantity, newBasket.totalPrice, newBasket.expires, newBasket.timestamp);
+        }
 
         return newBasket;
     }
 
-    deepCopyOrderCollection(ary) {
-        this.orderCollection = new smartMap(ary);
+    static createBasketExpiry() {
+        return (Date.now() + enums.BASKET_EXPIRY);
     }
 
     /**
-    * @summary createId method
-    * @description creates a random string comprised of the customer phone number and a random 10 digit number
-    * @returns new basket id
-    * @throws nothing
+    * @static
+    * @summary timeStamp
+    * @description Basket timeStamp method
     */
-    createId() {
+    static createTimestamp() {
+        const dateNow = new Date(Date.now());
+        return `${dateNow.getFullYear()}_${dateNow.getMonth() + 1}_${dateNow.getDate()}_${dateNow.toLocaleTimeString('en-US')}`;
+    }
 
-        // Define all the possible characters that could go into a string
-        const possibleCharacters = TOKEN_ENUMS.CHARS;
+    shallowCopy(basket) {
+        if (helpers.validateObject(basket)) {
+            this._id = basket.id;
+            this._phone = basket.phone;
+            this._expires = Basket.createBasketExpiry();
+            this._timestamp = Basket.createTimestamp();
 
-        let token = '';
-        for (let i = 1; i <= BASKET_ENUMS.TOKEN_STRING_LENGTH; i++) {
-            // Get a random character from the possibleCharacters string
-            let randomCharacter = possibleCharacters.charAt(Math.floor(Math.random() * possibleCharacters.length));
-            // Append this character to the string
-            token += randomCharacter;
         }
+        else {
+            logs.log('error in updating the basket. Could not copy from the old basket.', 'b', 'red');
+            return false;
+        }
+        return true;
+    }
 
-        this.id = `${this.phone}_${token}`;
-        return this.id;
+    get id() {
+        return this._id;
+    }
+    set id(val) {
+        this._id = val;
+        if (this._orderCollection) {
+            this._orderCollection.id = val;
+        }
+        return this;
+    }
+
+    get phone() {
+        return this._phone;
+    }
+
+    set phone(val) {
+        this._phone = val;
+        if (this._orderCollection) {
+            this._orderCollection.phone = val;
+        }
+        return this;
+    }
+
+    get totalQuantity() {
+        return this._totalQuantity;
+    }
+
+    set totalQuantity(val) {
+        this._totalQuantity = val;
+        if (this._orderCollection) {
+            this._orderCollection.totalQuantity = val;
+        }
+    }
+
+    get totalPrice() {
+        return this._totalPrice;
+    }
+
+    set totalPrice(val) {
+        this._totalPrice = val;
+        if (this._orderCollection) {
+            this._orderCollection.totalPrice = val;
+        }
+        return this;
+    }
+
+    get expires() {
+        return this._expires;
+    }
+
+    set expires(val) {
+        this._expires = val;
+        if (this._orderCollection) {
+            this._orderCollection.expires = val;
+        }
+        return this;
+    }
+
+    get timestamp() {
+        return this._timestamp;
+    }
+
+    set timestamp(val) {
+        this._timestamp = val;
+        if (this._orderCollection) {
+            this._orderCollection.timestamp = val;
+        }
+        return this;
+    }
+
+    get orderCollection() {
+        return this._orderCollection;
+    }
+
+    set orderCollection(val) {
+        this._orderCollection = val;
+    }
+
+    validateBasketExpiry() {
+        // sanity check for a bs number
+        if (!helpers.validateIntegerRange(this._expires, enums.DATE_START, Date.now() + enums.BASKET_EXPIRY)) {
+            return 'expiration';
+        }
+        if (this._expires <= Date.now()) {
+            return false;
+        }
+        return true;
     }
     /**
     * @summary validateId method
     * @description Basket validateId method
     */
     validateId() {
-        if (typeof (this.id) !== 'string' && this.id.length !== BASKET_ENUMS.KEY_LENGTH) {
+        if (helpers.TYPEOF(this._id) !== 'string' && this._id !== enums.BASKETID_LENGTH) {
             return 'Basket Id';
         }
         return true;
@@ -128,7 +223,8 @@ class Basket {
     * @description Basket validatePhone method
     */
     validatePhone() {
-        if (!helpers.validateString(this.phone, false, CUST_ENUMS.PHONE_NUMBER_LENGTH, '=')) {
+
+        if (!helpers.validateString(this._phone, false, enums.PHONE_NUMBER_LENGTH, '=')) {
             return 'phone';
         }
         return true;
@@ -140,7 +236,7 @@ class Basket {
     */
     validateOrderCollection() {
 
-        if (!helpers.validateArray(this.orderCollection)) {
+        if (!this._orderCollection || helpers.TYPEOF(this._orderCollection) !== 'map') {
             return 'orderCollection';
         }
         return true;
@@ -150,7 +246,7 @@ class Basket {
     * @description Basket validateTimeStamp method
     */
     validateTimeStamp() {
-        if (!helpers.validateString(this.timestamp, false, BASKET_ENUMS.MAX_TIMESTAMP_LENGTH, '<=')) {
+        if (!helpers.validateString(this._timestamp, false, enums.MAX_TIMESTAMP_LENGTH, '<=')) {
             return false;
         }
         return true;
@@ -169,11 +265,18 @@ class Basket {
             return result;
         }
         if (!skipId) {
+
             result = this.validateId();
             if (result !== true) {
                 return result;
             }
+
+            result = this.validateBasketExpiry();
+            if (result !== true) {
+                return result;
+            }
         }
+
         result = this.validateOrderCollection();
         if (result !== true) {
             return result;
@@ -181,14 +284,6 @@ class Basket {
 
         return true;
     }
-
-    stringify() {
-        const result = this.orderCollection.stringify();
-        return result;
-    }
 }
 
-module.exports = {
-    Basket,
-    BASKET_ENUMS
-};
+module.exports = Basket;

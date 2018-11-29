@@ -9,14 +9,8 @@
 
 const fDb = require('./../lib/fileDb');
 const helpers = require('./../public/js/common/helpers');
-const {
-    validateCustomerToken,
-    ResponseObj,
-    PromiseError
-} = require('./../utils/handlerUtils');
-const {
-    Customer
-} = require('./../Models/customerModel');
+const { validateCustomerToken, ResponseObj, PromiseError } = require('./../utils/handlerUtils');
+const Customer = require('./../Models/customerModel');
 
 module.exports = {
     /**

@@ -11,7 +11,7 @@ body {
     border-style: solid;
     border-radius: 10px;
     box-shadow: 0 0 15px 5px rgba(182, 107, 41, .50);
-    min-width: 700px;
+    min-width: 615px;
     max-width: 1000px;
     /* width: 800px; */
     margin: 0 auto;

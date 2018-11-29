@@ -8,7 +8,7 @@
  */
 
 const fDb = require('./../lib/fileDb');
-const { Basket } = require('./../Models/basketModel');
+const Basket = require('./../Models/basketModel');
 const helpers = require('./../public/js/common/helpers');
 const { validateCustomerToken, ResponseObj, readBasket, PromiseError } = require('./../utils/handlerUtils');
 const email = require('../vendor/mailGun');
@@ -48,21 +48,20 @@ module.exports = {
         // validate the token passed in on the headers
         await validateCustomerToken(reqObj.headers.token);
 
-        newBasket.email = customer.email;
         // create the id on the basket record
-        newBasket.createId();
+        //newBasket.createId();
         // if we got this far then customer exists and we can slap his frozen pizza in the microwave.
         try {
             await fDb.create('basket', newBasket.id, newBasket.stringify());
         } catch (error) {
             throw (new PromiseError(500, `Could not create new basket. ${newBasket.id} for customer with phone number:  ${newBasket.phone}.`, error));
         }
-        const payload = JSON.stringify(`Succeeded in creating basket ${newBasket.id} for customer with phone number: ${newBasket.phone}.`);
+        const payload = JSON.stringify(newBasket.expires);
         return new ResponseObj(payload, 'basket/create');
     },
     /**
      * @async
-     * @summary Basket read function.
+     * @summary Summary read function.
      * @description  Reads an existing basket based on data in the reqObj.queryStringObject
      * @param reqObj.queryStringObject - basket id
      * @param headers.token - must have a valid session token to process the read function
@@ -74,8 +73,13 @@ module.exports = {
         // validate the token passed in on the headers
         await validateCustomerToken(reqObj.headers.token);
 
-        const basket = await readBasket(reqObj.queryStringObject.id);
-        const payload = JSON.stringify(basket);
+        let basket = await readBasket(reqObj.queryStringObject.id);
+        basket = Basket.clone(basket);
+        if (!helpers.validateObject(basket)) {
+            throw (new PromiseError(500, `Unable to retrieve the basket from the database: ${reqObj.queryStringObject.id}.`));
+        }
+        const payload = JSON.stringify(basket.stringify());
+
         return new ResponseObj(payload, 'basket/read');
     },
     /**
@@ -93,50 +97,37 @@ module.exports = {
         await validateCustomerToken(reqObj.headers.token);
 
         // basket id and fields that need to be updated
-        const fieldsToUpdate = Basket.clone(reqObj.payload);
+        const newBasket = Basket.clone(reqObj.payload);
 
-        let result = fieldsToUpdate.validateId();
+        let result = newBasket.validateId();
         if (result !== true) {
             throw (new PromiseError(400, `Validation failed on basket Id field: ${result}.`));
         }
-        let basketToUpdate = {};
+        let oldBasket = {};
         try {
-            // read the existing basket record and use it to build the update
-            basketToUpdate = await fDb.read('basket', fieldsToUpdate.id);
-            if (!helpers.validateObject(basketToUpdate)) {
-                throw (new PromiseError(400, `Error reading the file record for the basket: ${fieldsToUpdate.id}, or that basket does not exist.`));
+            oldBasket = await fDb.read('basket', newBasket.id);
+            if (!helpers.validateObject(oldBasket)) {
+                throw (new PromiseError(400, `Error reading the file record for the basket: ${newBasket.id}, or that basket does not exist.`));
             }
         } catch (error) {
-            throw (new PromiseError(500, `Error reading the file record for the basket: ${fieldsToUpdate.id}, or that basket does not exist.`, error));
+            throw (new PromiseError(500, `Error reading the file record for the basket: ${newBasket.id}, or that basket does not exist.`, error));
         }
         // make a real basket out of this and build the orderCollection
-        basketToUpdate = Basket.clone(basketToUpdate);
+        oldBasket = Basket.clone(oldBasket);
 
-        // test that there is atleast one update to make. The only items allowed to change (update) are order selections.
-        let dirtyFlag = false;
-
-        if (fieldsToUpdate.size !== '') {
-            result = fieldsToUpdate.validateOrderCollection();
-            if (result !== true) {
-                throw (new PromiseError(400, `Validation failed on basket field: ${result}.`));
-            }
-            dirtyFlag = true;
-            basketToUpdate.deepCopyOrderCollection(fieldsToUpdate.orderCollection);
-        }
-
-        // if no data changed then no update
-        if (!dirtyFlag) {
-            throw (new PromiseError(400, `Nothing to update. Data did not change for the basket: ${fieldsToUpdate.id}`));
+        result = newBasket.shallowCopy(oldBasket);
+        if (result !== true) {
+            throw (new PromiseError(500, `Copy error. Update failed on basket: ${newBasket.id}.`));
         }
 
         try {
-            // else update the customer record
-            await fDb.update('basket', basketToUpdate.id, basketToUpdate);
+            // update the customer's basket
+            await fDb.update('basket', newBasket.id, newBasket);
         } catch (error) {
-            throw (new PromiseError(500, `Error updating the file record for the basket: ${basketToUpdate.id}.`, error));
+            throw (new PromiseError(500, `Error updating the file record for the basket: ${newBasket.id}.`, error));
         }
 
-        const payload = JSON.stringify(`Successfully update the basket: ${basketToUpdate.id}.`);
+        const payload = JSON.stringify(`Successfully updated the basket: ${newBasket.id}.`);
         return new ResponseObj(payload, 'basket/update');
     },
     /**
@@ -173,20 +164,6 @@ module.exports = {
         const payload = JSON.stringify(`Successfully deleted the  basket: ${deleteBasket.id}.`);
         return new ResponseObj(payload, 'basket/delete');
     },
-    /**
-     * @async
-     * @summary menu function
-     * @description  no validation. allows anyone to read the menu
-     * @returns the restaurant's menu
-     */
-    menu: async function () {
-
-        const app = require('../index');
-        const menu = app.menu;
-
-        const payload = JSON.stringify(menu);
-        return new ResponseObj(payload, 'basket/menu');
-    },
 
     /**
      * @async
@@ -208,12 +185,23 @@ module.exports = {
         const total = basket.total;
         let emailMessage = `Successfully processed your charge for an order from the Pizza-Hub for ${total}.`;
 
+        let customer = {};
+        try {
+            // read the customer record
+            customer = await fDb.read('customer', basket.phone);
+            if (!helpers.validateObject(customer)) {
+                throw (new PromiseError(400, `Error reading the file record for the customer: ${basket.phone}, or that customer does not exist.`));
+            }
+        } catch (error) {
+            throw (new PromiseError(500, `Could not read customer record ${basket.phone}.`, error));
+        }
+
         await payment.process(total, basket.id).catch((error) => {
             const msg = `Error processing the charge for basket: ${basket.id}.`;
             throw (new PromiseError('500', msg, error));
         });
         // oops gonna get a phone call form an irate customer if this also
-        await email.send(basket.id, basket.email, emailMessage).catch((error) => {
+        await email.send(basket.id, customer.email, emailMessage).catch((error) => {
             const msg = `Error sending update email to the client for basket: ${basket.id}.`;
             throw (new PromiseError('500', msg, error));
         });

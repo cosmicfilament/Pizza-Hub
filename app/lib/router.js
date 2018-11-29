@@ -11,6 +11,7 @@ const sessionHandler = require('../handlers/sessionHandler');
 const customerHandler = require('./../handlers/customerHandler');
 const tokenHandler = require('./../handlers/tokenHandler');
 const basketHandler = require('./../handlers/basketHandler');
+const summaryHandler = require('./../handlers/summaryHandler');
 
 /**
  * @summary Message router object
@@ -36,9 +37,13 @@ const Router = function () {
         // loads the sessionDeleted web page after the customer logs out
         'sessiondeleted': { 'method': 'get', 'route': sessionHandler.logout },
         // loads the orderCreateFrm html web page
-        'ordercreatefrm': { 'method': 'get', 'route': sessionHandler.orderCreate },
-        // order Summary
-        'ordersummary': { 'method': 'get', 'route': sessionHandler.orderSummary },
+        'ordercreatefrm': { 'method': 'get', 'route': sessionHandler.orderCreateFrm },
+        // order Summary bare form no content
+        'ordersummaryfrm': { 'method': 'get', 'route': summaryHandler.orderSummaryFrm },
+        // order Summary content
+        'summary/read': { 'method': 'get', 'route': summaryHandler.read },
+        // deletes a record in the basket
+        'summary/delete': { 'method': 'delete', 'route': summaryHandler.delete },
         // ajax call to delete the customer record
         'customer/delete': { 'method': 'delete', 'route': customerHandler.delete },
         // ajax call to delete the token for a customer that is logging out
@@ -59,7 +64,6 @@ const Router = function () {
 
         'token/read': { 'method': 'get', 'route': tokenHandler.read },
         'token/update': { 'method': 'put', 'route': tokenHandler.update },
-        'basket/menu': { 'method': 'get', 'route': basketHandler.menu },
         'basket/checkout': { 'method': 'post', 'route': basketHandler.checkOut },
         'basket/create': { 'method': 'post', 'route': basketHandler.create },
         'basket/read': { 'method': 'get', 'route': basketHandler.read },

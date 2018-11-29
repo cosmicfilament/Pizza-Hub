@@ -28,7 +28,7 @@ const environments = {
             'name': 'Pizza-Hub',
             'fullName': 'Pizza-Hub Inc.',
             'motto': 'There\'s a little bit of Italy in each slice',
-            'phone': '1-00-EAT- PIES',
+            'phone': '1-800-EAT- PIES',
             'established': '2018'
         }
     },
@@ -50,7 +50,7 @@ const environments = {
             'name': 'Pizza-Hub',
             'fullName': 'Pizza-Hub Inc.',
             'motto': 'We add a little love to each slice.',
-            'phone': '1-00-EAT- PIES',
+            'phone': '1-800-EAT- PIES',
             'established': '2018'
         }
     }

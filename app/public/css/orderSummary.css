@@ -1,25 +1,42 @@
-.orderSummaryWrapper{
-    display: inline-grid;
+form.orderSummaryFrm,
+div.orderSummaryWrapper{
     font-family: 'Roboto', sans-serif;
-    font-weight: bold;
-    font-size: 1.5rem;
+    font-weight: normal;
+    font-size: 1rem;
+    width: 600px;
+    margin: 0 auto;
 }
+
+div.orderSummaryWrapper{
+    display: inline-grid;
+}
+
 div.orderSummaryWrapper div.orderSummaryInputHeader,
 div.orderSummaryWrapper div.orderSummaryInput,
 div.orderSummaryWrapper div.orderSummaryItem,
-div.orderSummaryWrapper div.orderSummaryDesc,
 div.orderSummaryWrapper div.orderSummaryQuantity,
 div.orderSummaryWrapper div.orderSummaryPrice,
-div.orderSummaryWrapper div.orderSummaryTotal{
-    font-size: 1rem;
+div.orderSummaryWrapper div.orderSummaryTotalPrice
+{
     color: rgba(139, 0, 0, 1);
     padding: 15px 5px 5px 5px;
 }
 
-div.orderSummaryWrapper div.orderSummaryInputHeader,
-div.orderSummaryWrapper div.orderSummaryInput{
+div.orderSummaryHeaderFooter div.orderSummaryInputHeader,
+div.orderSummaryHeaderFooter div.orderSummaryInput,
+div.orderSummaryHeaderFooter div.orderSummaryItem,
+div.orderSummaryHeaderFooter div.orderSummaryQuantity,
+div.orderSummaryHeaderFooter div.orderSummaryPrice,
+div.orderSummaryHeaderFooter div.orderSummaryTotalPrice{
+    color: black;
+    font-weight: normal;
+
+}
+
+div.orderSummaryInputHeader,
+div.orderSummaryInput{
     grid-column: 1;
-    text-align: center;
+    text-align: left;
 }
 
 div.orderSummaryInput input[type=button]{
@@ -28,32 +45,26 @@ div.orderSummaryInput input[type=button]{
     margin: 0;
 }
 
-div.orderSummaryWrapper div.orderSummaryItem{
+div.orderSummaryItem{
     grid-column: 2;
-    text-align: left;
+    text-align: right;
     width: 100px;
 }
 
-div.orderSummaryWrapper div.orderSummaryDesc{
+ div.orderSummaryQuantity{
     grid-column: 3;
-    text-align: left;
-    width: 150px;
+    text-align: right;
+    width: 75px;
 }
 
-div.orderSummaryWrapper div.orderSummaryQuantity{
+ div.orderSummaryPrice{
     grid-column: 4;
     text-align: right;
     width: 75px;
 }
 
-div.orderSummaryWrapper div.orderSummaryPrice{
+ div.orderSummaryTotalPrice{
     grid-column: 5;
-    text-align: right;
-    width: 75px;
-}
-
-div.orderSummaryWrapper div.orderSummaryTotal{
-    grid-column: 6;
     text-align: right;
     width: 75px;
 }

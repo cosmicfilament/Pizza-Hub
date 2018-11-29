@@ -10,13 +10,8 @@ const factory = require('../lib/templates/templateFactory');
 const readFileP = require('util').promisify(require('fs').readFile);
 const helpers = require('./../public/js/common/helpers');
 const logs = require('../utils/logs');
-const {
-    BASE_DIR
-} = require('../lib/config');
-const {
-    ResponseObj,
-    PromiseError
-} = require('./../utils/handlerUtils');
+const { BASE_DIR } = require('../lib/config');
+const { ResponseObj, PromiseError } = require('./../utils/handlerUtils');
 
 // file in current or target directory
 const makeFName = (relativePath) => {
@@ -126,24 +121,18 @@ module.exports = {
      * @summary notAllowed
      * @description  responds with 405 status code
      */
-    orderCreate: async function () {
+    orderCreateFrm: async function () {
 
         const body = factory.getTemplate('orderCreateFrm');
         const payloadStr = factory.buildWebPage(body, 'orderCreateFrm');
 
-        return new ResponseObj(payloadStr, 'session/orderCreate', 'text/html');
+        return new ResponseObj(payloadStr, 'session/orderCreateFrm', 'text/html');
     },
+
     /**
      * @summary notAllowed
      * @description  responds with 405 status code
      */
-    orderSummary: async function () {
-
-        const body = factory.getTemplate('orderSummary');
-        const payloadStr = factory.buildWebPage(body, 'orderSummary');
-
-        return new ResponseObj(payloadStr, 'session/orderSummary', 'text/html');
-    },
     notAllowed: async function () {
 
         const body = factory.getTemplate('405');

@@ -9,18 +9,9 @@
  */
 
 const helpers = require('./../public/js/common/helpers');
-const {
-    CONFIG
-} = require('../lib/config');
+const enums = require('./../public/js/common/enumerations');
+const { CONFIG } = require('../lib/config');
 const crypto = require('crypto');
-
-const CUST_ENUMS = {
-    MAX_NAME_STRING: 20, //max length of first or last name
-    PHONE_NUMBER_LENGTH: 10,
-    MINIMUM_PASSWORD_LENGTH: 8,
-    MAX_ADDRESS_LENGTH: 250, //if address is longer than this move
-    MAX_EMAIL_LENGTH: 254 //not sure of the validity of this cribbed from same source as email validation code
-};
 
 /**
  * @summary Customer class
@@ -79,7 +70,7 @@ class Customer {
      * @description Customer validateFirstName method
      */
     validateFirstName() {
-        if (!helpers.validateString(this.firstName, false, CUST_ENUMS.MAX_NAME_STRING, '<=')) {
+        if (!helpers.validateString(this.firstName, false, enums.MAX_NAME_STRING, '<=')) {
             return 'firstName';
         }
         return true;
@@ -89,7 +80,7 @@ class Customer {
      * @description Customer validateLastName method
      */
     validateLastName() {
-        if (!helpers.validateString(this.lastName, false, CUST_ENUMS.MAX_NAME_STRING, '<=')) {
+        if (!helpers.validateString(this.lastName, false, enums.MAX_NAME_STRING, '<=')) {
             return 'lastName';
         }
         return true;
@@ -104,7 +95,7 @@ class Customer {
 
         const err = 'email validation failed';
 
-        if (!helpers.validateString(this.email, false, CUST_ENUMS.MAX_EMAIL_LENGTH, '<=')) {
+        if (!helpers.validateString(this.email, false, enums.MAX_EMAIL_LENGTH, '<=')) {
             return err;
         }
 
@@ -138,7 +129,7 @@ class Customer {
      * @description Customer validatePhone method
      */
     validatePhone() {
-        if (!helpers.validateString(this.phone, false, CUST_ENUMS.PHONE_NUMBER_LENGTH, '=')) {
+        if (!helpers.validateString(this.phone, false, enums.PHONE_NUMBER_LENGTH, '=')) {
             return 'phone';
         }
         return true;
@@ -149,7 +140,7 @@ class Customer {
      * @todo rewrite this so that if the pwd i clear text we can do better validation
      */
     validatePassword() {
-        if (!helpers.validateString(this.password, false, CUST_ENUMS.MINIMUM_PASSWORD_LENGTH, '>=')) {
+        if (!helpers.validateString(this.password, false, enums.MINIMUM_PASSWORD_LENGTH, '>=')) {
             return 'password';
         }
         return true;
@@ -159,7 +150,7 @@ class Customer {
      * @description Customer validateAddress method
      */
     validateAddress() {
-        if (!helpers.validateString(this.address, false, CUST_ENUMS.MAX_ADDRESS_LENGTH, '<=')) {
+        if (!helpers.validateString(this.address, false, enums.MAX_ADDRESS_LENGTH, '<=')) {
             return 'address';
         }
         return true;
@@ -201,7 +192,4 @@ class Customer {
 
 }
 
-module.exports = {
-    Customer,
-    CUST_ENUMS
-};
+module.exports = Customer;

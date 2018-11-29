@@ -3,13 +3,53 @@
 		"path": "$ROOTPATH$\\app\\public\\js\\common\\smartCollection.js",
 		"bookmarks": [
 			{
-				"line": 166,
+				"line": 192,
+				"column": 0,
+				"label": ""
+			}
+		]
+	},
+	{
+		"path": "$ROOTPATH$\\app\\public\\js\\app.js",
+		"bookmarks": [
+			{
+				"line": 30,
 				"column": 0,
 				"label": ""
 			},
 			{
-				"line": 244,
+				"line": 209,
+				"column": 41,
+				"label": ""
+			},
+			{
+				"line": 273,
+				"column": 20,
+				"label": ""
+			},
+			{
+				"line": 292,
+				"column": 45,
+				"label": ""
+			}
+		]
+	},
+	{
+		"path": "$ROOTPATH$\\app\\public\\js\\basket.js",
+		"bookmarks": [
+			{
+				"line": 201,
 				"column": 0,
+				"label": ""
+			}
+		]
+	},
+	{
+		"path": "$ROOTPATH$\\app\\handlers\\basketHandler.js",
+		"bookmarks": [
+			{
+				"line": 180,
+				"column": 58,
 				"label": ""
 			}
 		]

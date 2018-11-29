@@ -6,12 +6,11 @@
  * @description worker kind of sort of process within the node loop. Fires timers to process intermittent tasks
  */
 
-const {
-    Token
-} = require('./../Models/tokenModel');
+const Token = require('./../Models/tokenModel');
 const fDb = require('./fileDb');
 const logs = require('./../utils/logs');
 const helpers = require('./../public/js/common/helpers');
+const enums = require('./../public/js/common/enumerations');
 
 const workers = {};
 /**
@@ -94,7 +93,7 @@ workers.cleanupExpiredTokensLoop = () => {
     setInterval(() => {
         workers.cleanupExpiredTokens();
         logs.log('Cleanup expired tokens called.', 'b', 'green');
-    }, 1000 * 60 * 60);
+    }, enums.CLEANUP_EXPIRED_TOKENS_CHECK);
 };
 
 /**
@@ -106,7 +105,7 @@ workers.logRotationLoop = () => {
         return workers.rotateLogs()
             .catch((err) => helpers.log('red', `Log rotation failed with error: ${err}`));
 
-    }, 1000 * 60 * 5);
+    }, enums.LOG_ROTATION_CHECK);
 };
 /**
  * @summary init

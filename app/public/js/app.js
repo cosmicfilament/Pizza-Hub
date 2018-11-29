@@ -9,6 +9,8 @@
 import { RequestObj, xhrRequest } from './ajax.js';
 import { SessionObj } from './session.js';
 import { BasketObj } from './basket.js';
+import { summary } from './summary.js';
+
 
 const app = {};
 
@@ -33,10 +35,16 @@ app.bindForms = function () {
 
             const formId = this.id;
 
+            if (formId === 'orderSummaryFrm') {
+                alert("Sorry this feature is not implemented.");
+                return;
+            }
+
             let newBasket = [];
             if (formId === 'orderCreateFrm') {
                 newBasket = app.basket.getNewBasketFromFrm(app);
                 if (newBasket === false) {
+                    helpers.log("red", "could not create the basket. Nothing was sent to the server");
                     return;
                 }
             }
@@ -176,10 +184,10 @@ app.formResponseProcessor = function (formId, previousReqObj, resObj) {
 
 
 // Load data on the page
-app.loadSavedDataOnLoggedInPages = function () {
+app.finishLoadingDataOnLoggedInPages = function () {
     // Get the current page from the body class
     var bodyClasses = document.querySelector("body").classList;
-    var primaryClass = typeof (bodyClasses[0]) === 'string' ? bodyClasses[0] : false;
+    var primaryClass = helpers.TYPEOF(bodyClasses[0]) === 'string' ? bodyClasses[0] : false;
 
     // Logic for customerEditFrm settings
     if (primaryClass === 'customerEditFrm') {
@@ -188,19 +196,14 @@ app.loadSavedDataOnLoggedInPages = function () {
 
     //Logic for orderCreateFrm settings
     if (primaryClass === 'orderCreateFrm') {
-        app.basket.updateOrderCreateFrm(app);
+        app.basket.updateOrderCreateFrm(app, true);
     }
-    // if (primaryClass === 'orderSummary') {
-    //     if (app.session.getPreviousOrder().prevTotalQuantity > 0) {
-    //         displayOrderSummary(app);
-    //     }
-    // }
 };
 
 app.loadCustomerEditFrmPage = function () {
     // Get the phone number from the current token, or log the user out if none is there
     const phone = app.session.getPhone();
-    if (typeof (phone) === 'string' && phone.length > 0) {
+    if (helpers.TYPEOF(phone) === 'string' && phone.length > 0) {
 
         // Fetch the customer data
         const reqObj = new RequestObj();
@@ -252,39 +255,7 @@ app.bindLogoutButton = function () {
     });
 };
 
-app.bindOrderSummaryButton = function () {
-
-    document.getElementById("orderSummaryButton").addEventListener("click", (e) => {
-
-        // Stop it from redirecting anywhere
-        e.preventDefault();
-
-        const basketTotalQty = app.session.getBasketTotalQuantity();
-        const prevBasketTotalQty = app.session.getPreviousOrder().prevTotalQuantity;
-
-        if (prevBasketTotalQty === 0) {
-            if (basketTotalQty > 0) {
-                app.session.clearSessionBasket();
-                return app.sendOrderToServer()
-                    .then((result) => {
-                        if (result) {
-                            window.location = "orderSummary";
-                            return true;
-                        }
-                        return false;
-                    })
-                    .catch((error) => { // bigassed error
-                        console.log(error);
-                        return false;
-                    });
-            } else {
-                window.location = "orderSummary";
-            }
-        }
-    });
-};
-
-// Log the customer out then redirect them to the deleted page if true
+// Log the customer out then redirect them to the deleted page if toUpperCase
 app.logOutCustomer = function (redirectCustomer = '/sessionDeleted') {
 
     // Get the current token id or false if not set
@@ -332,12 +303,15 @@ app.init = () => {
     // Bind menu buttons button
     app.bindLogoutButton();
 
-    //app.bindOrderSummaryButton();
+    BasketObj.bindRadioSelectButtons();
+
+    summary.bindOrderSummaryButton();
+    summary.bindDeleteButtons(app);
 
     app.setLoggedInClass(app.session.initSessionFromLocalStorage());
 
     // Load data on page
-    app.loadSavedDataOnLoggedInPages();
+    app.finishLoadingDataOnLoggedInPages();
 
     // start the timer that will auto renew the token if still logged in
     app.tokenRenewalLoop();

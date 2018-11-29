@@ -3,18 +3,13 @@
 /**
  * @file stripe file for processing credit card charges
  * @module stripe.js
- * @description stripe payments module
- * @exports process
+ *
  */
 
 const https = require('https');
 const queryString = require('querystring');
-const {
-    PromiseError
-} = require('./../utils/handlerUtils');
-const {
-    CONFIG
-} = require('../lib/config');
+const { PromiseError } = require('./../utils/handlerUtils');
+const { CONFIG } = require('../lib/config');
 const logs = require('./../utils/logs');
 
 // pretty much just copied the twilio stuff and changed a few lines.

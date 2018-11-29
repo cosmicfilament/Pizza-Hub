@@ -11,23 +11,10 @@
  * @exports list
  */
 
-const {
-    promisify
-} = require('util');
-const {
-    open,
-    close,
-    ftruncate,
-    readFile,
-    writeFile,
-    unlink,
-    readdir
-} = require('fs');
+const { promisify } = require('util');
+const { open, close, ftruncate, readFile, writeFile, unlink, readdir } = require('fs');
 const helpers = require('./../public/js/common/helpers');
-const {
-    BASE_DIR,
-    CONFIG
-} = require('./config');
+const { BASE_DIR, CONFIG } = require('./config');
 
 // fs functions converted from node callback to promises
 const openFileP = promisify(open);

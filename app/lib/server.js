@@ -10,16 +10,11 @@ const http = require('http');
 const https = require('https');
 const fs = require('fs');
 const url = require('url');
-const {
-    StringDecoder
-} = require('string_decoder');
+const { StringDecoder } = require('string_decoder');
 const router = require('./router');
 const helpers = require('./../public/js/common/helpers');
 const logs = require('./../utils/logs');
-const {
-    BASE_DIR,
-    CONFIG
-} = require('./config');
+const { BASE_DIR, CONFIG } = require('./config');
 
 const server = {};
 

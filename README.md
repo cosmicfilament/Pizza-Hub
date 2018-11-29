@@ -1,11 +1,10 @@
 # Pizza-Hub
-~~Nodejs Master Course Homework Assignment # 2~~</br>
-Nodejs Master Course Homework Assignment #3 (WIP)
+Nodejs Master Course Homework Assignment #3
 
 Assignment: Build a back end nodejs api for a pizza delivery company's online ordering website. The primary requirement is that it not use any npm modules and only relies on node's rich array of builtin functionality such as fs, http, https, crypt, util, path and url just to name a few.</br>
-In homework assignment #3 I have added the front end code to the pizza delivery app. Once again this is vanilla js without any packages or imports etc....
+In homework assignment #3 I have added the front end code to the pizza delivery app. Once again this is vanilla js without any npm packages or things like jquery. The front end logic handles creation, modification and deletion of customers as well as the creation of an order basket, the ability to delete order items from the basket and in the future will include the ability to send to a credit card processor which has been currently stubbed out.
 
-## Description of key modules:
+## Description of key modules on the server side:
 
 ### Classes (Models):
 
@@ -15,35 +14,66 @@ In homework assignment #3 I have added the front end code to the pizza delivery 
 
 3. Basket: The basket class in addition to being able to clone itself from payload date, knows how to traverse an array of orderSelections which each have one or more Choice selections and total up the price of the basket. The key is a unique 21 digit basket id which is a munge of the phone number and underscore and a 10 digit unique identifier. It could work like an index if we ever go national. ;o)
 
-4. OrderSelection: This class is very small and holds one menu selection. A selection can be something like a pizza or a topping
-
-5. Choice: Another small class that holds a choice within a selection and the price of that choice. A choice is either an 8" pizza or a 12" pizza. Toppings are each choices and a basket can have multiple toppings in it.
-
 ### Handlers (handlers):
 
 1. CustomerHandler: Manages creation, reading updating and deleting of customers in conjunction with the Customer class. Customer create does not need a token, but all subsequent customer crud functions require a session token.
 
-2. BasketHandler: Manages creation, reading, updating and deleting of baskets. Also generates the menu for the home page and initiates the payment process. All functions except the menu retrieval function require a sesssion token.
+2. BasketHandler: Manages creation, reading, updating and deleting of baskets. Although as I built the front end logic I ended up using only the create and read functions.
 
 3. TokenHandler: Manages the crud functions for the session token. Each handler uses the token to validate the client.
 
-4. DefaultHandler: Handles 404 and 405 responses. Was also used in initial testing.
+4. SessionHandler:  Handles straight html form and page requests as well as 404 and 405 responses.
+
+5. SummaryHandler: Reads the selected basket from the database(file) and coordinates putting together the summary of the order as well as handling deleting of individual order items in the basket. The basketHandler and the SummaryHandler could be consolidated but I see no urgent need to do that.
 
 ### Utils:
 
-- Various utility modules that are possibly reuseable in other projects and that provide functionality that is commonly used across multiple modules. Examples are server.js router.js, logs.js and config.js. Also the payment processing interface to stripe as well as the email interface to mail Gun is in this directory.
+- Various utility modules that are possibly reuseable in other projects and that provide functionality that is commonly used across multiple modules. Examples are server.js router.js, logs.js and config.js.
 
 ### Lib:
 
 - Core modules that are always reimplemented in one way or another for any project. Such as server.js, router.js, fileDb.js and config.js
 
-## Overview of the workflow:
+- The lib/templates javascript modules were added to build all of the html templates which are located in the htmlTemplates directory. I use unique strings in the html templates as variables or placeholders that are then populated with the correct data by the template builder javascript modules.
 
-1. Show the menu: http://localhost:3000/basket/menu calls basketHandler->menu
+## Client side files
 
-2. Create a new customer and grab a session token: http://localhost:3000/customer/create calls customerHandler->create, then on success send .../token/create which calls tokenHandler->create and returns a token valid for 30 minutes.
+### public/css
 
-3. Login and order an 8" pizza with pepperoni on it: http://localhost:3000/token/read with a valid phone number and password gets a session token back. Use that token to call .../basket/create to create an empty basket. Then call .../basket/update to add items to the basket. Finally call ../basket/checkout to complete the purchase process and receive an email response back from the pizza company.
+- All of the css files for the front end logic. They are pretty much broken down into separate files along functional lines. Global.css is really just an include file that includes all of the other css files so that only 1 css file is needed in the html document.
+
+## public/js
+
+1. App.js is the main javascript file and all other files interface through it.
+
+2. session.js manages the session state using a token that is passed in the header
+
+3. ajax.js handles the xmlHttpRequest processing and contains 2 helper classes RequestObj and ResponseObj.
+
+4. basket.js manages creating and processing the order basket.
+
+5. Summary.js manages creating and processing the summary page, deleting of orders and submitting the basket for payment.
+
+### Common modules shared between the browser and server
+
+- These files are located in a subdirectory off of the public/js directory called common. They use a technique that is used by jquery, underscore and many other packages to allow a file to be used in both node js and the browser.
+
+1. helpers.js holds common helper functions that are used throughout the application.
+
+2. enumerations.js holds enumerations that define mostly string lengths and number constants.
+
+3. smarCollection.js is a collection of objects that map the structure of a basket. The menu and the order display and creation use a collection with the smartCollection as the top level. Later on I saw the need for a map collection when I realized that I needed to process things at the item and choice level. So I added the smartMap. When the order form sends an order to the basketHandler as well as all of the summary form processing the smartMap is used. Eventually I need to do away with the smartcollection and re architect the menu and order form creation to also use the smartMap.
+
+## Todo:
+
+1. Wire the stripe code and mailGun code into the summaryHandler. Ran out of time.
+
+2. Refactor the menu creation and orderCreateFrm creation to use the smartMap and do away with the smartCollection array.
+
+3. Make the client responsive so that it resizes intelligently for tablets and phones.
+
+4. Update the comments.
+
 
 # Building the Pizza-Hub server:
 

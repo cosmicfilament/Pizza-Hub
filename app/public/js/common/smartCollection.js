@@ -90,7 +90,10 @@
         return this.id;
     };
 
-    _mc.smartMap = function (_array = [], id = '', phone = '', qty = 0, price = 0) {
+    // the map is a better solution for what I needed and eventually I
+    // switched the remaining code to using a map
+    _mc.smartMap = function (_array = [], id = '', phone = '', qty = 0,
+        price = 0, expires = '', timestamp = '') {
 
         const thisMap = new Map();
         Object.setPrototypeOf(thisMap, _mc.smartMap.prototype);
@@ -100,6 +103,8 @@
         thisMap.phone = phone;
         thisMap.totalQuantity = qty;
         thisMap.totalPrice = price;
+        thisMap.expires = expires;
+        thisMap.timestamp = timestamp;
 
         // map
         for (let x = 0; x < _array.length; x++) {
@@ -124,11 +129,33 @@
         return item;
     };
 
-    _mc.smartMap.prototype.MapDelete = function (key) {
+    _mc.smartMap.prototype.MapGetChild = function (key) {
         let item = this.get(key);
-        delete item.choices;
-        this.delete(key);
-        return this;
+        if (typeof (item) !== 'undefined') {
+            const choices = item.choices;
+            for (let choice of choices) {
+                if (choice.id === key) {
+                    return choice;
+                }
+            }
+        }
+        return false;
+    };
+
+    _mc.smartMap.prototype.MapDeleteElement = function (itemKey, childKey) {
+        let item = this.get(itemKey);
+        if (typeof (item) !== 'undefined') {
+            if (item.deleteChild(childKey)) {
+                // retrieve again and test for choices.length
+                item = this.get(itemKey);
+                if (item.choices.length === 0) {
+                    this.delete(itemKey);
+                }
+                this.updateTotals();
+                return true;
+            }
+        }
+        return false;
     };
 
     _mc.smartMap.prototype.setId = function (id) {
@@ -166,6 +193,15 @@
         return this.totalPrice;
     };
 
+    _mc.smartMap.prototype.setExpires = function (expires) {
+        this.expires = expires;
+        return this;
+    };
+
+    _mc.smartMap.prototype.getExpires = function () {
+        return this.expires;
+    };
+
     _mc.smartMap.prototype.stringify = function () {
 
         let theMapster = this;
@@ -181,13 +217,28 @@
         // kill the last comma and close the array
         itemsStr = itemsStr.replace(/,\s*$/, "]");
         // some values are numbers and need to be stringified
-        itemsStr = itemsStr.replace(/:(\d+)/g, ":\"$1\"");
-        mapStr = mapStr.replace(/:(\d+)/g, ":\"$1\"");
+        itemsStr = itemsStr.replace(/":(\d+)/g, "\":\"$1\"");
+        mapStr = mapStr.replace(/":(\d+)/g, "\":\"$1\"");
 
-        const mapObj = helpers.parseJsonToObject(mapStr);
-        const itemsObj = helpers.parseJsonToObject(itemsStr);
+        // the validateString should be unnecessary but there it is
+        const metaData = helpers.validateString(mapStr) ? helpers.parseJsonToObject(mapStr) : mapStr;
+        const orderItems = helpers.validateString(itemsStr) ? helpers.parseJsonToObject(itemsStr) : itemsStr;
 
-        return { "map": { mapObj }, "basket": { itemsObj } };
+        return { "header": { metaData }, "basket": { orderItems } };
+    };
+    _mc.smartMap.prototype.updateTotals = function () {
+
+        let qty = 0;
+        let price = 0;
+
+        for (let value of this) {
+            const item = value[1];
+            item.updateTotals();
+            qty += Number(item.totalQuantity);
+            price += Number(item.totalPrice);
+        }
+        this.totalQuantity = qty.toString();
+        this.totalPrice = price.toString();
     };
 
     function _Item() {
@@ -234,13 +285,43 @@
         return this.id;
     };
 
+    _mc.smartItem.prototype.deleteChild = function (childId) {
+        let newChoices = [];
+        let found = false;
+        for (let choice of this.choices) {
+            if (choice.id === childId) {
+                found = true;
+            }
+            else {
+                newChoices.push(choice);
+            }
+        }
+        if (found) {
+            this.choices = newChoices;
+        }
+        return found;
+    };
+
     _mc.smartItem.prototype.stringify = function () {
         let theItem = this;
         theItem = JSON.stringify(theItem);
         return theItem;
     };
 
+    _mc.smartItem.prototype.updateTotals = function () {
+        let totalPrice = 0;
+        let totalQty = 0;
+
+        for (let choice of this.choices) {
+            totalQty += Number(choice.quantity);
+            totalPrice += Number(choice.totalPrice);
+        }
+        this.totalPrice = totalPrice.toString();
+        this.totalQuantity = totalQty.toString();
+    };
+
     function _Choice() {
+        this.id = '';
         this.desc = '';
         this.price = 0;
         this.quantity = 0;

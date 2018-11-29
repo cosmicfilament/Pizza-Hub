@@ -24,7 +24,7 @@ SessionObj.prototype.getToken = function () {
 };
 
 SessionObj.prototype.isTokenValid = function () {
-    return (this._token !== false && typeof (this._token) === 'string' && this._token.length > 0) ? true : false;
+    return (this._token !== false && helpers.TYPEOF(this._token) === 'string' && this._token.length > 0) ? true : false;
 };
 
 SessionObj.prototype.setPhone = function (phone) {
@@ -43,86 +43,6 @@ SessionObj.prototype.getName = function () {
     return this._name;
 };
 
-// SessionObj.prototype.setBasket = function (basket) {
-//     this._basket = basket;
-//     return this;
-// };
-// SessionObj.prototype.addToBasket = function (basketGroup) {
-
-//     this._basket = (this._basket === []) ? basketGroup : this._basket.concat(basketGroup);
-
-//     const basketArray = basketGroup[0].orderGroup;
-//     for (let basket of basketArray) {
-//         this.addToBasketTotal(basket.total);
-//         this.addToBasketTotalQuantity(basket.quantity);
-//     }
-
-//     localStorage.setItem('basket', this._basket); //JSON.stringify(this._basket));
-//     localStorage.setItem('basketTotal', JSON.stringify(this._basketTotal));
-//     localStorage.setItem('basketTotalQuantity', JSON.stringify(this._basketTotalQuantity));
-
-//     return this;
-// };
-
-// SessionObj.prototype.getBasket = function () {
-//     console.log(this._basket);
-//     return this._basket;
-// };
-
-// SessionObj.prototype.addToBasketTotal = function (addend) {
-//     this._basketTotal += Number(addend);
-//     return this;
-// };
-
-// SessionObj.prototype.setBasketTotal = function (total) {
-//     this._basketTotal = total;
-//     return this;
-// };
-
-// SessionObj.prototype.getBasketTotal = function () {
-//     return this._basketTotal;
-// };
-
-// SessionObj.prototype.getFormattedBasketTotal = function () {
-//     return this.getFormattedTotal(this._basketTotal);
-// };
-
-// SessionObj.prototype.addToBasketTotalQuantity = function (addend) {
-//     this._basketTotalQuantity += Number(addend);
-//     return this;
-// };
-
-// SessionObj.prototype.setBasketTotalQuantity = function (total) {
-//     this._basketTotalQuantity = total;
-//     return this;
-// };
-
-// SessionObj.prototype.getBasketTotalQuantity = function () {
-//     return this._basketTotalQuantity;
-// };
-
-// SessionObj.prototype.getFormattedBasketTotalQuantity = function () {
-//     return this.getFormattedTotalQuantity(this._basketTotalQuantity);
-// };
-
-// SessionObj.prototype.setPreviousOrder = function (oldOrder) {
-//     this._previousOrder = oldOrder;
-//     return this;
-// };
-
-// SessionObj.prototype.getPreviousOrder = function () {
-//     return this._previousOrder;
-// };
-
-
-// SessionObj.prototype.getFormattedTotal = function (total) {
-//     return `Total: $${total}.00`;
-// };
-
-
-// SessionObj.prototype.getFormattedTotalQuantity = function (qty) {
-//     return `${qty} items in basket.`;
-// };
 
 // Get the session token from localstorage and set it in the this object
 SessionObj.prototype.initSessionFromLocalStorage = function () {
@@ -134,7 +54,7 @@ SessionObj.prototype.initSessionFromLocalStorage = function () {
     // only set the session if the localStorage values
     // have previously been set. Initially or on logout
     // token is set to false;
-    if (typeof (token) == 'string') {
+    if (helpers.TYPEOF(token) == 'string') {
         try {
             this.setToken(JSON.parse(token))
                 .setName(JSON.parse(name))

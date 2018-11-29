@@ -8,17 +8,10 @@
 
 const fDb = require('./../lib/fileDb');
 const helpers = require('./../public/js/common/helpers');
-
-const {
-    Customer
-} = require('./../Models/customerModel');
-const {
-    Token
-} = require('./../Models/tokenModel');
-const {
-    ResponseObj,
-    PromiseError
-} = require('./../utils/handlerUtils');
+const enums = require('./../public/js/common/enumerations');
+const Customer = require('./../Models/customerModel');
+const Token = require('./../Models/tokenModel');
+const { ResponseObj, PromiseError } = require('./../utils/handlerUtils');
 
 module.exports = {
     /**
@@ -66,7 +59,7 @@ module.exports = {
             throw (new PromiseError(400, 'Password did not match the customer\'s stored password.'));
         }
         // we made it this far so, let's create a token object
-        const newToken = new Token(Token.createTokenString(), custInDb.phone, custInDb.firstName);
+        const newToken = new Token(helpers.createUniqueId(enums.TOKENID_LENGTH), custInDb.phone, custInDb.firstName);
         //not sure how this could happen
         if (newToken.validateToken() !== true) {
             throw (new PromiseError(500, `Server error creating a session token for customer with phone number: ${custInDb.phone}.`));

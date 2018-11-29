@@ -3,15 +3,11 @@
 /**
  * @file helper functions for the handler modules
  * @module handlerUtils.js
- * @description functions shared across the handlers
+ *
  */
 
-const {
-    Basket
-} = require('../Models/basketModel');
-const {
-    Token
-} = require('../models/tokenModel');
+const Basket = require('../Models/basketModel');
+const Token = require('../models/tokenModel');
 const fDb = require('../lib/fileDb');
 const helpers = require('./../public/js/common/helpers');
 
@@ -119,7 +115,7 @@ utils.readBasket = async function (basketId) {
     if (!helpers.validateObject(result)) {
         throw (new utils.PromiseError(400, `Error reading the file record for the basket: ${newBasket.id}, or that basket does not exist.`));
     }
-    return newBasket;
+    return result;
 };
 
 module.exports = utils;

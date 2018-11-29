@@ -9,9 +9,7 @@
 
 const helpers = require('./../../public/js/common/helpers');
 const logs = require('../../utils/logs');
-const {
-    smartCollection
-} = require('../../public/js/common/smartCollection')._mc;
+const { smartCollection } = require('../../public/js/common/smartCollection')._mc;
 
 const menuBuilder = {};
 

@@ -10,26 +10,10 @@
 const {
     promisify
 } = require('util');
-const {
-    open,
-    close,
-    ftruncate,
-    readFile,
-    writeFile,
-    unlink,
-    readdir,
-    access,
-    stat
-} = require('fs');
-const {
-    F_OK,
-    R_OK,
-    W_OK
-} = require('constants');
+const { open, close, ftruncate, readFile, writeFile, unlink, readdir, access, stat } = require('fs');
+const { F_OK, R_OK, W_OK } = require('constants');
 
-const {
-    BASE_DIR
-} = require('../lib/config');
+const { BASE_DIR } = require('../lib/config');
 const debug = require('util').debuglog('files');
 
 // fs functions converted from node callback to promises

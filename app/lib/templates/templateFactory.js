@@ -9,12 +9,11 @@
 const menuLoader = require('./menuLoader');
 const menuBuilder = require('./menuBuilder');
 const orderBuilder = require('./orderBuilder');
+const summaryContentBuilder = require('./summaryContentBuilder');
 const templates = require('./templates');
 const helpers = require('./../../public/js/common/helpers');
 const logs = require('./../../utils/logs');
-const {
-    siteConfig
-} = require('../config').CONFIG;
+const { siteConfig } = require('../config').CONFIG;
 
 const templateFactory = {};
 
@@ -184,6 +183,10 @@ templateFactory.getMenuFile = () => {
 
 templateFactory.getTheApp = () => {
     return theApp;
+};
+
+templateFactory.buildSummaryContent = (collection) => {
+    return summaryContentBuilder.buildSummaryContent(templateFactory, collection);
 };
 
 module.exports = templateFactory;

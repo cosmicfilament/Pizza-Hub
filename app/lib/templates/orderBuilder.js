@@ -60,6 +60,7 @@ const buildOrderTemplate = function (templateFactory) {
             // the name of the actual item we are ordering. any subsequent
             // items in that group are option choices for the parentOrderItem
             let parentOrderItem = '';
+            let childOrderItem = false;
             // look on orderGroup.html and you will see where this goes.
             let orderItemCollection = '';
 
@@ -77,9 +78,15 @@ const buildOrderTemplate = function (templateFactory) {
 
                     // the first item in the orderGroup collection is always the name
                     // of the actual order item
+
                     if (!helpers.validateString(parentOrderItem)) {
                         parentOrderItem = orderItem.item.replace(replaceSpaces, '_');
+
                     }
+                    else {
+                        childOrderItem = orderItem.item.replace(replaceSpaces, '_');
+                    }
+
                     // if we are going to use radiobuttons for selections, then we
                     // also need an input to select the order quantity
                     if (select === 'single') {
@@ -104,7 +111,7 @@ const buildOrderTemplate = function (templateFactory) {
                                 htmlChoiceTemplate = htmlChoiceTemplate.replace('@@inputType@@', 'radio');
                                 // set the name value on all choices to the same value so
                                 // that they are grouped
-                                htmlChoiceTemplate = htmlChoiceTemplate.replace('@@radioButtonName@@', parentOrderItem);
+                                htmlChoiceTemplate = htmlChoiceTemplate.replace('@@ButtonName@@', parentOrderItem);
                                 // make the id the choice description
                                 htmlChoiceTemplate = htmlChoiceTemplate.replace('@@id@@', choice.desc.replace(replaceSpaces, '_'));
 
@@ -112,9 +119,14 @@ const buildOrderTemplate = function (templateFactory) {
                                 // set the input control type to number if is multi select
                                 htmlChoiceTemplate = htmlChoiceTemplate.replace('@@inputType@@', numberInputType);
                                 // in this case we want a unique name for each number input
-                                // so we use the choice description for name and id
-                                htmlChoiceTemplate = htmlChoiceTemplate.replace('@@radioButtonName@@', choice.desc.replace(replaceSpaces, '_'));
-                                htmlChoiceTemplate = htmlChoiceTemplate.replace('@@id@@', choice.desc.replace(replaceSpaces, '_'));
+                                // so we use the choice description for name and id will be set to ''
+                                htmlChoiceTemplate = htmlChoiceTemplate.replace('@@ButtonName@@', choice.desc.replace(replaceSpaces, '_'));
+                                htmlChoiceTemplate = htmlChoiceTemplate.replace('@@id@@', ''); //choice.desc.replace(replaceSpaces, '_'));
+                                if (childOrderItem !== false) {
+                                    // initially disable it if this is a multi order and we are on the childOrderItem
+                                    // the ChildInput class allows that to happen
+                                    htmlChoiceTemplate = htmlChoiceTemplate.replace('choiceInput', 'choiceInput multiChildInput');
+                                }
                             }
                             htmlChoiceTemplate = htmlChoiceTemplate.replace('@@desc@@', choice.desc);
 

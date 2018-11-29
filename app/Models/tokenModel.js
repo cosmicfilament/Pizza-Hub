@@ -3,22 +3,11 @@
 /**
  * @file Token class module which generates a session token
  * @module Token class and enumerations
- * @exports Token, TOKEN_ENUMS
+ * @exports Token
  */
 
 const helpers = require('./../public/js/common/helpers');
-const {
-    CUST_ENUMS
-} = require('./customerModel');
-
-const TOKEN_ENUMS = {
-    CHARS: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
-    TOKEN_STRING_LENGTH: 20,
-    // expires in 60 minutes
-    TOKEN_EXPIRY: 1000 * 60 * 60,
-    // for validating the date object
-    MAX_INT: Number.MAX_SAFE_INTEGER
-};
+const enums = require('./../public/js/common/enumerations');
 
 /**
  * @summary Token class
@@ -46,7 +35,7 @@ class Token {
         this.id = id;
         this.phone = phone;
         this.firstName = firstName;
-        this.expires = Date.now() + TOKEN_ENUMS.TOKEN_EXPIRY;
+        this.expires = Date.now() + enums.TOKEN_EXPIRY;
     }
     /**
      * @static
@@ -71,43 +60,16 @@ class Token {
         }
         return newToken;
     }
-    /**
-     * @static
-     * @summary Token CreateTokenString method
-     * @description Creates a new token id
-     * @returns a new token object
-     * @throws nothing
-     */
-    static createTokenString() {
 
-        // Define all the possible characters that could go into a string
-        const possibleCharacters = TOKEN_ENUMS.CHARS;
-
-        let token = '';
-        for (let i = 1; i <= TOKEN_ENUMS.TOKEN_STRING_LENGTH; i++) {
-            // Get a random character from the possibleCharacters string
-            let randomCharacter = possibleCharacters.charAt(Math.floor(Math.random() * possibleCharacters.length));
-            // Append this character to the string
-            token += randomCharacter;
-        }
-        // Return the final string
-        return token;
-    }
-    /**
-     * @summary Token updateExpiry method
-     * @description Extends the expiration by 60 minutes
-     * @param extend - boolean that if true extends the token and if false does nothing
-     * @returns a new Date object
-     * @throws nothing
-     */
     updateExpiry(extend = true) {
         if (extend) {
-            this.expires = Date.now() + TOKEN_ENUMS.TOKEN_EXPIRY;
+            this.expires = Date.now() + enums.TOKEN_EXPIRY;
         } else {
             this.expires = Date.now();
         }
         return this.expires;
     }
+
     stringify() {
         return JSON.stringify({
             'id': this.id,
@@ -121,7 +83,7 @@ class Token {
      * @description token validateId method
      */
     validateId() {
-        if (!helpers.validateString(this.id, false, TOKEN_ENUMS.TOKEN_STRING_LENGTH, '=')) {
+        if (!helpers.validateString(this.id, false, enums.TOKENID_LENGTH, '=')) {
             return 'token id';
         }
         return true;
@@ -132,7 +94,7 @@ class Token {
      */
 
     validatePhone() {
-        if (!helpers.validateString(this.phone, false, CUST_ENUMS.PHONE_NUMBER_LENGTH, '=')) {
+        if (!helpers.validateString(this.phone, false, enums.PHONE_NUMBER_LENGTH, '=')) {
             return 'customer phone';
         }
         return true;
@@ -144,7 +106,7 @@ class Token {
      */
 
     validateTokenExpiration() {
-        if (!helpers.validateIntegerRange(this.expires, 1, TOKEN_ENUMS.MAX_INT)) {
+        if (!helpers.validateIntegerRange(this.expires, enums.DATE_START, Date.now() + enums.TOKEN_EXPIRY)) {
             return 'expiration';
         }
         if (this.expires <= Date.now()) {
@@ -177,7 +139,4 @@ class Token {
     }
 }
 
-module.exports = {
-    Token,
-    TOKEN_ENUMS
-};
+module.exports = Token;

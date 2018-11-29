@@ -7,22 +7,9 @@
  */
 
 const zlib = require('zlib');
-const {
-    promisify
-} = require('util');
-const {
-    open,
-    close,
-    readFile,
-    writeFile,
-    readdir,
-    appendFile,
-    unlink
-} = require('fs');
-const {
-    BASE_DIR,
-    CONFIG
-} = require('../lib/config');
+const { promisify } = require('util');
+const { open, close, readFile, writeFile, readdir, appendFile, unlink } = require('fs');
+const { BASE_DIR, CONFIG } = require('../lib/config');
 const debug = require('util').debuglog('logs');
 
 // @todo pull out the string from the stack only with this file name in it

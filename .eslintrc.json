@@ -12,7 +12,8 @@
     "globals": {
         "MenuCollection": false,
         "helpers": false,
-        "_mc": false
+        "_mc": false,
+        "enums": false
     },
     "rules": {
         "indent": [

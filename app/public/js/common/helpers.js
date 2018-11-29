@@ -24,11 +24,17 @@
     }
 
 
-    const HELPERS_ENUMS = {
-        CHARS: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
-        UNIQUE_ID_LENGTH: 20,
-        MAX_INT: Number.MAX_SAFE_INTEGER
-    };
+    // is this a node js module?
+    const has_require = typeof require !== 'undefined';
+    let enums = root.enums;
+
+    if (typeof (enums) === 'undefined') {
+        if (has_require) {
+            enums = require('./enumerations.js');
+        } else {
+            throw new Error('Missing requires: enumerations.js');
+        }
+    }
 
     /**
      * @summary parseJsonToObject
@@ -57,7 +63,7 @@
     // value: boolean
     // returns result or false if value != boolean
     helpers.validateBool = (value = false) => { //boolean
-        return typeof (value) === 'boolean' ? !!value : false;
+        return helpers.TYPEOF(value) === 'boolean' ? !!value : false;
     };
 
     // validate string input
@@ -76,7 +82,7 @@
     helpers.validateString = (str = '', retval = false, len = 0, comparator = '>') => {
 
         // if it isn't a valid string why waste time
-        if (typeof (str) !== 'string' || str.length === 0) {
+        if (helpers.TYPEOF(str) !== 'string' || str.length === 0) {
             return false;
         }
         const _str = str.trim();
@@ -103,7 +109,7 @@
      * @returns string on match or false
      */
     helpers.validateStringArray = (str = '', arr = []) => { // string or false
-        if (typeof (str) === 'string' && arr.indexOf(str.trim()) > -1) {
+        if (helpers.TYPEOF(str) === 'string' && arr.indexOf(str.trim()) > -1) {
             return str.trim();
         }
         return false;
@@ -115,7 +121,7 @@
      * @returns the array of false
      */
     helpers.validateArray = (obj = '') => { // array object or false
-        if (typeof (obj) === 'object' && obj instanceof Array && obj.length > 0) {
+        if (helpers.TYPEOF(obj) === 'array' && obj instanceof Array && obj.length > 0) {
             return obj;
         }
         return false;
@@ -165,19 +171,19 @@
      * @param number, start number and length
      * @returns number or false
      */
-    helpers.validateIntegerRange = (num = 0, start = 0, len = HELPERS_ENUMS.MAX_INT) => { // number or false
-        if (typeof (num) === 'number' && num % 1 === 0 && num.between(start, len)) {
+    helpers.validateIntegerRange = (num = 0, start = 0, len = enums.MAX_INT) => { // number or false
+        if (helpers.TYPEOF(num) === 'number' && num % 1 === 0 && num.between(start, len)) {
             return num;
         }
         return false;
     };
 
-    helpers.createUniqueId = () => {
+    helpers.createUniqueId = (len = enums.UNIQUE_ID_LENGTH) => {
         // Define all the possible characters that could go into a string
-        const possibleCharacters = HELPERS_ENUMS.CHARS;
+        const possibleCharacters = enums.CHARS;
         let id = '';
 
-        for (let i = 1; i <= HELPERS_ENUMS.UNIQUE_ID_LENGTH; i++) {
+        for (let i = 1; i <= len; i++) {
             // Get a random character from the possibleCharacters string
             let randomCharacter = possibleCharacters.charAt(Math.floor(Math.random() * possibleCharacters.length));
             // Append this character to the string
@@ -194,33 +200,60 @@
      */
     helpers.log = (color, msg) => {
 
-        switch (color) {
-            case 'red':
-                color = '\x1b[31m%s';
-                break;
-            case 'green':
-                color = '\x1b[32m%s';
-                break;
-            case 'blue':
-                color = '\x1b[34m%s';
-                break;
-            case 'yellow':
-                color = '\x1b[33m%s';
-                break;
-            case 'black':
-                color = '\x1b[30m%s';
-                break;
-            case 'white':
-                color = '\x1b[37m%s';
-                break;
-            case 'cyan':
-                color = '\x1b[36m%s';
-                break;
-            case 'magenta':
-                color = '\x1b[35m%s';
-                break;
+        if (enums.DEBUG === true) {
+            switch (color) {
+                case 'red':
+                    color = '\x1b[31m%s';
+                    break;
+                case 'green':
+                    color = '\x1b[32m%s';
+                    break;
+                case 'blue':
+                    color = '\x1b[34m%s';
+                    break;
+                case 'yellow':
+                    color = '\x1b[33m%s';
+                    break;
+                case 'black':
+                    color = '\x1b[30m%s';
+                    break;
+                case 'white':
+                    color = '\x1b[37m%s';
+                    break;
+                case 'cyan':
+                    color = '\x1b[36m%s';
+                    break;
+                case 'magenta':
+                    color = '\x1b[35m%s';
+                    break;
+            }
+            console.log(color, msg);
         }
-        console.log(color, msg);
+    };
+
+    helpers.createFormattedTotalPrice = function (total) {
+        if (helpers.TYPEOF(total) !== 'number' && helpers.TYPEOF(total) !== 'string') {
+            total = 0;
+        }
+        return `Total: $${total}.00`; // kind of a hack.
+    };
+
+    helpers.createFormattedTotalQuantity = function (total) {
+        if (helpers.TYPEOF(total) !== 'number' && helpers.TYPEOF(total) !== 'string') {
+            total = 0;
+        }
+        return `${total} item(s).`; // see above.
+    };
+
+    // grabbed this little nugget from http://bonsaiden.github.io/JavaScript-Garden/#types.typeof
+    helpers.TYPEOF = function (value) {
+        if (value === null) {
+            return value;
+        }
+        if (typeof (value) === 'undefined') {
+            return 'undefined';
+        }
+        return Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
     };
 
 }).call(this);

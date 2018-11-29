@@ -1,26 +1,14 @@
 <h3>Order Summary.</h3>
 <hr />
-
 <div class="formWrapper">
-    <form id="orderSummaryFrm" action="/basket/create" method="POST">
+    <form class="orderSummaryFrm" id="orderSummaryFrm" action="alert" method="POST">
+        <input class="orderSummaryFrmBasketId" type="hidden" name="Update this in the app.js module on the browser." />
         <div class="formError"></div>
+        <div class="formSuccess">My mama wants to kill your guitar.</div>
         <div class="alignLeft orderSummaryData"></div>
-        <div class="floatLeft borderBottom orderSummaryWrapper">
-            <div class="orderSummaryInputHeader">Delete</div>
-            <div class="orderSummaryItem">Order Item</div>
-            <div class="orderSummaryDesc">Description</div>
-            <div class="orderSummaryQuantity">Order Quantity</div>
-            <div class="orderSummaryPrice">Order Price</div>
-            <div class="orderSummaryTotal">Total Price</div>
-        </div>
-        @@@orderSummaryCollection@@@
-        <div class="floatLeft marginBottom borderTop orderSummaryWrapper">
-            <div class="orderSummaryInput"><input type="button" name="deleteAll" value="All" class="cta brown"></div>
-            <div class="orderSummaryItem">Delete All</div>
-            <div class="orderSummaryDesc"></div>
-            <div class="orderSummaryQuantity">${formattedTotalQuantity}</div>
-            <div class="orderSummaryPrice"></div>
-            <div class="orderSummaryTotal">${formattedTotal}</div>
+        @@@theWholeEnchalada@@@
+        <div class="inputWrapper ctaWrapper">
+            <button type="submit" class="cta blue">Check Out</button>
         </div>
     </form>
 </div>

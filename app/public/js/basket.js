@@ -13,18 +13,15 @@ export function BasketObj() {
     this._orderCollection = null;
 }
 
-BasketObj.prototype.setBasketId = function (id) {
-    this._basketId = id;
-    return this;
-};
-
 BasketObj.prototype.getBasketId = function () {
     return this._basketId;
 };
 
-BasketObj.prototype.createBasketId = function (phone) {
-    this._basketId = `${phone}_${helpers.createUniqueId()}`;
-    this._phone = phone;
+BasketObj.prototype.createBasketId = function (app) {
+    if (this._phone.length !== enums.PHONE_NUMBER_LENGTH) {
+        this._phone = app.session.getPhone();
+    }
+    this._basketId = this.createUniqueId();
     return this;
 };
 
@@ -50,11 +47,55 @@ BasketObj.prototype.deleteItemFromOrderCollection = function (id) {
     return this._orderCollection.delete(id);
 };
 
+BasketObj.prototype.updateOrderCreateFrm = function (app, reset = false) {
+    if (reset) {
+        const numberInputs = document.querySelectorAll("input[type='number']");
+        for (let input of numberInputs) {
+            input.value = 0;
+        }
+        const childNumberInputs = document.querySelectorAll(".multiChildInput");
+        for (let input of childNumberInputs) {
+            input.firstChild.disabled = true;
+        }
+    }
+    const orderTotal = document.querySelector(".orderTotal");
+    orderTotal.innerHTML = this.getFormattedTotalPrice();
+
+    const cartStatus = document.querySelector(".cartStatus");
+    cartStatus.innerHTML = this.getFormattedTotalQuantity();
+
+    const logo = document.querySelector(".logo");
+    logo.scrollIntoView();
+};
+
+BasketObj.prototype.getFormattedTotalPrice = function () {
+
+    let total = helpers.validateObject(this._orderCollection) ? this._orderCollection.getTotalPrice() : 0;
+    total = helpers.validateIntegerRange(total) ? total : 0;
+
+    return helpers.createFormattedTotalPrice(total);
+};
+
+BasketObj.prototype.getFormattedTotalQuantity = function () {
+    let total = helpers.validateObject(this._orderCollection) ? this._orderCollection.getTotalQuantity() : 0;
+    total = helpers.validateIntegerRange(total) ? total : 0;
+
+    return helpers.createFormattedTotalQuantity(total);
+};
+
+BasketObj.prototype.createUniqueId = function (somePhoneNumber = '') {
+
+    if (somePhoneNumber === '') {
+        somePhoneNumber = this._phone;
+    }
+    return this._basketId = `${somePhoneNumber}_${helpers.createUniqueId()}`;
+};
+
 BasketObj.prototype.getNewBasketFromFrm = function (app) {
 
     this._orderCollection = new _mc.smartMap();
 
-    this.createBasketId(app.session.getPhone());
+    this.createBasketId(app);
 
     this._orderCollection.setId(this.getBasketId());
     this._orderCollection.setPhone(this.getPhone());
@@ -74,7 +115,7 @@ BasketObj.prototype.getNewBasketFromFrm = function (app) {
                 const basketItem = _mc.ItemFactory();
                 const itemName = orderGroup.querySelector("legend").textContent;
 
-                basketItem.id = helpers.createUniqueId();
+                basketItem.id = this.createUniqueId();
                 basketItem.item = itemName;
 
                 // we are going to create an array of item(s) with choice(s)
@@ -107,6 +148,7 @@ BasketObj.prototype.getNewBasketFromFrm = function (app) {
 
                                         choice.desc = choiceWrapper.querySelector(".choiceDesc").textContent;
                                         choice.price = choiceWrapper.querySelector(".choicePrice").textContent;
+                                        choice.id = this.createUniqueId();
 
                                         if (helpers.validateHtmlElement(input)) {
                                             if (input.type === 'number' && input.value > 0) {
@@ -135,7 +177,7 @@ BasketObj.prototype.getNewBasketFromFrm = function (app) {
                             } // end of choices
                         }
                     } // end of item
-                    if (basketItem.totalQuantity > 0 && basketItem.totalPrice > 0 && basketItem.choices.length > 0) {
+                    if (basketItem.totalQuantity > 0 && basketItem.totalPrice > 0 && basketItem.choices.length > 0 && basketItem.id) {
 
                         this._orderCollection.MapSet(basketItem.id, basketItem);
 
@@ -150,41 +192,33 @@ BasketObj.prototype.getNewBasketFromFrm = function (app) {
                 } // end of item
             }
         } // end of iterating thru the order Groups and adding to the map
-        return (this._orderCollection.getTotalQuantity() > 0) ? this._orderCollection.stringify() : false;
+        const newBasket = (this._orderCollection.getTotalQuantity() > 0) ? this._orderCollection.stringify() : false;
+
+        //@todo think about saving the state of the form
+        if (helpers.validateObject(newBasket)) {
+            localStorage.setItem('savedBasketId', this._orderCollection.id);
+            return newBasket;
+        }
 
     } // end of iterating thru the order Groups and adding to the map
     return false;
 };
 
-BasketObj.prototype.updateOrderCreateFrm = function (app, reset = false) {
-    if (reset) {
-        const numberInputs = document.querySelectorAll("input[type='number']");
-        for (let input of numberInputs) {
-            input.value = 0;
-        }
+
+BasketObj.bindRadioSelectButtons = function () {
+
+    const radioInputs = document.querySelectorAll("input[type='radio']");
+    for (let radio of radioInputs) {
+
+        // and add an eventlistener to their submit button, binding it to this function
+        radio.addEventListener("click", () => {
+
+            // re-enable the child number inputs once a selection is made
+            const childNumberInputs = document.querySelectorAll(".multiChildInput");
+            for (let input of childNumberInputs) {
+                input.firstChild.disabled = false;
+            }
+        });
+
     }
-    const orderTotal = document.querySelector(".orderTotal");
-    orderTotal.innerHTML = this.getFormattedTotalPrice();
-
-    const cartStatus = document.querySelector(".cartStatus");
-    cartStatus.innerHTML = this.getFormattedTotalQuantity();
-
-    const logo = document.querySelector(".logo");
-    logo.scrollIntoView();
-};
-
-
-BasketObj.prototype.getFormattedTotalPrice = function () {
-
-    let total = helpers.validateObject(this._orderCollection) ? this._orderCollection.getTotalPrice() : 0;
-    total = helpers.validateIntegerRange(total) ? total : 0;
-
-    return `Total: $${total}.00`;
-};
-
-BasketObj.prototype.getFormattedTotalQuantity = function () {
-    let total = helpers.validateObject(this._orderCollection) ? this._orderCollection.getTotalQuantity() : 0;
-    total = helpers.validateIntegerRange(total) ? total : 0;
-
-    return `${total} items in basket.`;
 };
